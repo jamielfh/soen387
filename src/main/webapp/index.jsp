@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +25,7 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="products.jsp">Products</a>
+                    <a class="nav-link" aria-current="page" href="Products.jsp">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"  aria-current="page" href="#">Login</a>
