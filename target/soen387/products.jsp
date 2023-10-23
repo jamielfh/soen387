@@ -1,3 +1,5 @@
+<%@ page import="shop.models.Product" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -40,40 +42,43 @@
   </div>
 </nav>
 
-<!--CART PAGE-->
-<h2>Your Shopping Cart</h2>
- <div class="container">
-  <table class="table table-loght">
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Product</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
-        <th scope="col">Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row"></th>
-        <td>Product Name</td>
-        <td>
-          <form action="" method="post" class="form-inline">
-            <input type="hidden" name="id" value="1" class="form-input">
-            <div class="form-group d-sm-flex justify-content-sm-center">
-              <a class="btn btn-sm btn-incre" href="#"><i class="bi bi-plus-square"></i></a>
-              <input type="text" name="quantity" class="form-control" id="autoSizingInput" value="1" readonly>
-              <a class="btn btn-sm btn-decre" href="#"><i class="bi bi-dash-square"></i></a>
-            </div>
 
-          </form>
-        </td>
-        <td>20.99</td>
-        <td><a class="btn btn-sm btn-danger">Delete</a></td>
-      </tr>
-    </tbody>
 
-  </table>
- </div>
+<!-- Product PAGE -->
+<div class="container">
+  <div class="card-header my-3">All Products </div>
+
+
+    <%
+      ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("products");
+      if (productList != null) {
+        for (Product product : productList) {
+    %>
+  <div class="row row-cols-1">
+      <div class="col-md-3 my-3">
+        <div class="card" style="width: 18rem;">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="productName"><%= product.getName() %></h5>
+            <h6 class="sku"><%= product.getSku()%></h6>
+            <p class="description"><%= product.getDescription() %></p>
+            <a class="viewProduct" href="#">View Product</a>
+            <h6><%= product.getPrice()%></h6>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%
+      }
+    } else {
+    %>
+    <p>No products available.</p>
+    <%
+      }
+    %>
+
+</div>
+
 </body>
 </html>
