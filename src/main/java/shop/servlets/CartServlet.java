@@ -1,3 +1,4 @@
+
 package shop.servlets;
 
 import shop.models.StorefrontFacade;
@@ -25,3 +26,4 @@ public class CartServlet extends HttpServlet {
         // Implementation for handling DELETE requests
     }
 }
+

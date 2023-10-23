@@ -1,3 +1,4 @@
+
 package shop.models;
 
 public class Product {
@@ -68,3 +69,4 @@ public class Product {
         this.price = price;
     }
 }
+

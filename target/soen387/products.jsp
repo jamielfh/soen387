@@ -7,7 +7,7 @@
   <title>Online Shop</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1><%= "Online Shop" %></h1>
@@ -24,40 +24,51 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="Products.jsp">Products</a>
+          <a class="nav-link" aria-current="page" href="products">Products</a>
         </li>
         <li class="nav-item">
           <a class="nav-link"  aria-current="page" href="#">Login</a>
         </li>
-        <li class="nav-item position-relative" >
-          <a class="nav-link active" id="cart" aria-current="page" href="#" >CART
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" >
+          <a class="nav-link active" id="cart" aria-current="page" href="cart.jsp" >CART
             <i class="bi bi-cart"></i>
             <span class="position-absolute top-0 end-0"></span>
           </a>
-
         </li>
-
       </ul>
-
     </div>
   </div>
 </nav>
+
 
 
 <!-- Product PAGE -->
 <div class="container">
   <div class="card-header my-3">All Products </div>
 
-  <ul>
+
     <%
       ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("products");
       if (productList != null) {
         for (Product product : productList) {
     %>
-    <li><%= product.getName() %></li>
+  <div class="row row-cols-1">
+      <div class="col-md-3 my-3">
+        <div class="card" style="width: 18rem;">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="productName"><%= product.getName() %></h5>
+            <h6 class="sku"><%= product.getSku()%></h6>
+            <p class="description"><%= product.getDescription() %></p>
+            <a class="viewProduct" href="#">View Product</a>
+            <h6><%= product.getPrice()%></h6>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <%
       }
     } else {
@@ -66,23 +77,8 @@
     <%
       }
     %>
-  </ul>
-  <div class="row">
-    <div class="col-md-3">
 
-      <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Product description</p>
-          <h6>Price</h6>
-          <a href="#" class="btn btn-primary">Add to Cart</a>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
 </div>
+
 </body>
 </html>

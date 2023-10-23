@@ -1,3 +1,4 @@
+
 package shop.exceptions;
 
 public class CartNotFoundException extends Exception {
