@@ -42,6 +42,18 @@
     </div>
 </nav>
 
-<h2>FRONT PAGE</h2>
+<!--LOGIN PAGE-->
 
+<div class="wrapper" id="login">
+    <form action="">
+        <h1>Login</h1>
+        <div class="input-box">
+            <input type="text" placeholder="Username" required><i class="bi bi-person"></i>
+        </div>
+        <div class="input-box">
+            <input type="password" placeholder="Password" required><i class="bi bi-lock"></i>
+        </div>
+        <button type="submit" class="btn">Login</button>
+    </form>
+</div>
 </body>

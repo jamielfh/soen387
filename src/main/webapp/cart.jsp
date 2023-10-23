@@ -2,20 +2,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Online Shop</title>
+  <title>Lunar Shadow Shop</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1><%= "Online Shop" %></h1>
+<h1><%= "Lunar Shadow Shop" %></h1>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ></script>
 <br/>
 
 <!-- Navigation BAR -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.jsp">SHOP</a>
+    <a class="navbar-brand" href="index.jsp">HOME<i class="bi bi-cloud-moon-fill"></i></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -25,7 +25,7 @@
           <a class="nav-link" aria-current="page" href="products">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  aria-current="page" href="#">Login</a>
+          <a class="nav-link"  aria-current="page" href="login.jsp">Login</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">

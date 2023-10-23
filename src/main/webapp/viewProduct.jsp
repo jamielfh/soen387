@@ -41,7 +41,23 @@
         </div>
     </div>
 </nav>
+<!--VIEW PRODUCTS-->
+<h1 style="padding-left: 20px">Details</h1>
+<div class="container" style="padding-top: 50px">
+    <div class="row">
+        <div class="col-md-5">
+            <h2>Product Image</h2>
+        </div>
+        <div class="col-md-7">
+            <h3>Product Name</h3>
+            <h6>SKU</h6>
+            <h4>Product Description</h4>
+            <h5>0.99</h5>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+        </div>
 
-<h2>FRONT PAGE</h2>
+    </div>
+
+</div>
 
 </body>
