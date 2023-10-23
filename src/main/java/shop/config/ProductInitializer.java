@@ -1,3 +1,4 @@
+
 package shop.config;
 
 import jakarta.servlet.annotation.WebListener;
@@ -38,11 +39,9 @@ public class ProductInitializer implements ServletContextListener {
         products.add(new Product("SKU1", "Product1", "Description1", "Vendor1", "slug1", 19.99));
         products.add(new Product("SKU2", "Product2", "Description2", "Vendor2", "slug2", 29.99));
         products.add(new Product("SKU3", "Product3", "Description3", "Vendor3", "slug3", 39.99));
-        products.add(new Product("SKU4", "Product4", "Description4", "Vendor4", "slug4", 49.99));
-        products.add(new Product("SKU5", "Product5", "Description5", "Vendor5", "slug5", 59.99));
-        products.add(new Product("SKU6", "Product6", "Description6", "Vendor6", "slug6", 69.99));
         return products;
     }
 }
+
 
 

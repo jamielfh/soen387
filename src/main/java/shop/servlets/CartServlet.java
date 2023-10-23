@@ -1,3 +1,4 @@
+
 package shop.servlets;
 
 import shop.models.StorefrontFacade;
@@ -12,7 +13,7 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 
 @WebServlet("/cart/products/*")
-public class  CartServlet extends HttpServlet {
+public class CartServlet extends HttpServlet {
     private StorefrontFacade facade = new StorefrontFacade();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -25,3 +26,4 @@ public class  CartServlet extends HttpServlet {
         // Implementation for handling DELETE requests
     }
 }
+
