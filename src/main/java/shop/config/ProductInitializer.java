@@ -1,3 +1,4 @@
+
 package shop.config;
 
 import jakarta.servlet.annotation.WebListener;
@@ -41,5 +42,6 @@ public class ProductInitializer implements ServletContextListener {
         return products;
     }
 }
+
 
 

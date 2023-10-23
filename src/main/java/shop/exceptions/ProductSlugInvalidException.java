@@ -1,3 +1,4 @@
+
 package shop.exceptions;
 
 public class ProductSlugInvalidException extends Exception {
@@ -11,4 +12,5 @@ public class ProductSlugInvalidException extends Exception {
     }
 
 }
+
 
