@@ -14,12 +14,20 @@ public class StorefrontFacade {
         this.carts = new HashMap<String, Cart>();
     }
 
-    public void createProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException {
+    public void createProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
         Product product = this.products.get(sku);
         if (product != null) {
             throw new ProductSkuExistsException();
         }
+
+        // validate if slug is unique
+        try {
+            Product slugProduct = getProductBySlug(slug);
+            if (slugProduct != null) {
+                throw new ProductSlugExistsException();
+            }
+        } catch (ProductNotFoundException ignored) {}
 
         // validate if slug is valid
         boolean isValidSlug = isValidSlug(slug);
@@ -31,7 +39,7 @@ public class StorefrontFacade {
         this.products.put(sku, newProduct);
     }
 
-    public void updateProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException {
+    public void updateProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException {
         Product productToUpdate = this.products.get(sku);
 
         // if no product found, throw ProductNotFoundException
@@ -44,6 +52,14 @@ public class StorefrontFacade {
         productToUpdate.setDescription(description);
         productToUpdate.setVendor(vendor);
         productToUpdate.setPrice(price);
+
+        // validate if slug is unique
+        try {
+            Product slugProduct = getProductBySlug(slug);
+            if (slugProduct != null) {
+                throw new ProductSlugExistsException();
+            }
+        } catch (ProductNotFoundException ignored) {}
 
         // validate if slug is valid
         boolean isValidSlug = isValidSlug(slug);
