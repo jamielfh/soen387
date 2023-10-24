@@ -1,4 +1,4 @@
-
+<%@ page import="shop.models.Product" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -17,22 +17,22 @@
 <!-- Navigation BAR -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.jsp">HOME<i class="bi bi-cloud-moon-fill"></i></a>
+        <a class="navbar-brand" href="/index.jsp">HOME<i class="bi bi-cloud-moon-fill"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="products">Products</a>
+                    <a class="nav-link" aria-current="page" href="/products/">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"  aria-current="page" href="login.jsp">Login</a>
+                    <a class="nav-link"  aria-current="page" href="/login.jsp">Login</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item" >
-                    <a class="nav-link active" id="cart" aria-current="page" href="cart.jsp" >CART
+                    <a class="nav-link active" id="cart" aria-current="page" href="/cart/products/" >CART
                         <i class="bi bi-cart"></i>
                         <span class="position-absolute top-0 end-0"></span>
                     </a>
@@ -49,11 +49,42 @@
             <h2>Product Image</h2>
         </div>
         <div class="col-md-7">
-            <h3>Product Name</h3>
-            <h6>SKU</h6>
-            <h4>Product Description</h4>
-            <h5>0.99</h5>
-            <a href="#" class="btn btn-primary">Add to Cart</a>
+            <%Product product = (Product) request.getAttribute("product");%>
+            <h3><%= product.getName()%></h3>
+            <h6><%= product.getSku()%></h6>
+            <h5><%= product.getDescription()%></h5>
+            <h5><%= product.getVendor()%></h5>
+            <h4><%= product.getPrice()%></h4>
+            <!-- Button that triggers the POST request using JavaScript -->
+            <button onclick="addToCart()">Add to Cart</button>
+
+            <!-- JavaScript function to perform the POST request -->
+            <script>
+                function addToCart() {
+                    // Create a new FormData object (empty, since there are no form fields)
+                    var formData = new FormData();
+
+                    // Create an XMLHttpRequest object
+                    var xhr = new XMLHttpRequest();
+
+                    // Configure the request
+                    xhr.open("POST", "http://localhost:8080/cart/products/<%=product.getSlug()%>", true);
+
+                    // Set the appropriate headers (if needed)
+                    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                    // Set up the callback function for when the request completes
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            // Handle the response, if needed
+                            console.log(xhr.responseText);
+                        }
+                    };
+
+                    // Send the POST request with the empty FormData object
+                    xhr.send(formData);
+                }
+            </script>
         </div>
 
     </div>

@@ -112,14 +112,15 @@ public class StorefrontFacade {
         return cart.getItems();
     }
 
-    public void addProductToCart(String user, String sku) throws ProductNotFoundException, ProductAlreadyInCartException, CartNotFoundException {
+    public void addProductToCart(String user, String sku) throws ProductNotFoundException, ProductAlreadyInCartException {
         Cart userCart = this.carts.get(user);
-        // if no cart found, throw CartNotFoundException
+        // if no cart found, create a new cart
         if (userCart == null) {
-            throw new CartNotFoundException();
+            newUser(user);
+            userCart = this.carts.get(user);
         }
 
-        // if cart found, add product to cart
+        // add product to cart
         Product productToAdd = getProduct(sku);
         List<Product> currentItems = userCart.getItems();
         if (currentItems.contains(productToAdd)) {

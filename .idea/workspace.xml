@@ -9,39 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="319ed2c6-a2df-49d2-9eb9-d60590a9378e" name="Changes" comment="fix merge conflict">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/itextpdf_tool_xmlworker.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/shop/exceptions/ProductSlugExistsException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/shop/servlets/CreateProductServlet.java" afterDir="false" />
+    <list default="true" id="319ed2c6-a2df-49d2-9eb9-d60590a9378e" name="Changes" comment="servlet paths done, not tested">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/config/ProductInitializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/config/ProductInitializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/CartNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/CartNotFoundException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductAlreadyInCartException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductAlreadyInCartException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductNotFoundException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductNotFoundInCartException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductNotFoundInCartException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductSkuExistsException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductSkuExistsException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductSlugInvalidException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/exceptions/ProductSlugInvalidException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/models/Cart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/models/Cart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/models/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/models/Product.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/models/StorefrontFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/models/StorefrontFacade.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/servlets/CartServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/servlets/CartServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/servlets/DownloadServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/servlets/DownloadServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/soen387/shop/servlets/ProductServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/soen387/shop/servlets/ProductServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/shop/models/StorefrontFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shop/models/StorefrontFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/shop/servlets/CartServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shop/servlets/CartServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shop/servlets/DownloadServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shop/servlets/DownloadServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/shop/servlets/ProductServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shop/servlets/ProductServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/config/ProductInitializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/config/ProductInitializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/CartNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/CartNotFoundException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductAlreadyInCartException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductAlreadyInCartException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductNotFoundException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductNotFoundInCartException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductNotFoundInCartException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductSkuExistsException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductSkuExistsException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductSlugInvalidException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/exceptions/ProductSlugInvalidException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/models/Cart.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/models/Cart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/models/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/models/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/cart.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/cart.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/products.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/products.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/viewProduct.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/viewProduct.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/models/StorefrontFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/models/StorefrontFacade.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/servlets/CartServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/servlets/CartServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/servlets/DownloadServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/soen387/WEB-INF/classes/shop/servlets/DownloadServlet.class" afterDir="false" />
@@ -64,12 +43,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "jamielfh"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;jamielfh&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -148,7 +127,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Tomcat 10.1.13" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 10.1.13" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+    <configuration name="Tomcat 10.1.13" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" focusToolWindowBeforeRun="true" APPLICATION_SERVER_NAME="Tomcat 10.1.13" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="soen387:war exploded">
@@ -246,6 +225,8 @@
       <updated>1697665316148</updated>
       <workItem from="1697665317721" duration="842000" />
       <workItem from="1697761232606" duration="6540000" />
+      <workItem from="1698080646309" duration="189000" />
+      <workItem from="1698095507398" duration="1574000" />
     </task>
     <task id="LOCAL-00001" summary="Business logic and servlets">
       <option name="closed" value="true" />
@@ -279,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698034027277</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="servlet paths done, not tested">
+      <option name="closed" value="true" />
+      <created>1698038957090</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698038957090</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,14 +280,15 @@
     <MESSAGE value="Fix merge conflict" />
     <MESSAGE value="target files" />
     <MESSAGE value="fix merge conflict" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix merge conflict" />
+    <MESSAGE value="servlet paths done, not tested" />
+    <option name="LAST_COMMIT_MESSAGE" value="servlet paths done, not tested" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/out/production/soen387/shop/servlets/ProductServlet.class</url>
-          <line>63</line>
+          <line>74</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

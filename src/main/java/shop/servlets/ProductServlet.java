@@ -39,7 +39,7 @@ public class ProductServlet extends HttpServlet {
             try {
                 Product product = getProductBySlug(facade, slug);
                 request.setAttribute("product", product);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/product.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/viewProduct.jsp");
                 dispatcher.forward(request, response);
             } catch (ProductNotFoundException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
