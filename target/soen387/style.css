@@ -1,0 +1,38 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+}
+
+.wrapper h1{
+    text-align: center;
+}
+
+.wrapper .input-box{
+    position: relative;
+    width:100%;
+    height:50px;
+    margin:30px 0;
+}
+
+.input-box input{
+    width:100%;
+    height:100%;
+}
+
+.input-box i{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+.wrapper.btn:hover{
+    background-color: darkgrey;
+}
+
+.wrapper .btn{
+    background: lightgrey;
+}
