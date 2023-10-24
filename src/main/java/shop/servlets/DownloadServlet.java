@@ -1,8 +1,7 @@
 package shop.servlets;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +12,6 @@ import shop.models.Product;
 import shop.models.StorefrontFacade;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 @WebServlet(name = "DownloadServlet", value = "/products/download")
@@ -21,40 +19,21 @@ public class DownloadServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        // Fetch product objects
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         List<Product> productList = getProducts(facade);
 
-        // Set the content type to PDF
-        response.setContentType("application/pdf");
+        // Convert product data to JSON in pretty-print style
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonData = gson.toJson(productList);
 
-        // Set the content disposition to attachment to trigger a download
-        response.setHeader("Content-Disposition", "attachment; filename=\"product_list.pdf\"");
+        // Set the content type to JSON, and the content disposition to attachment to trigger a download
+        response.setContentType("application/json");
+        response.setHeader("Content-Disposition", "attachment; filename=products.json");
 
-        // Create a Document
-        Document document = new Document();
-
-        try {
-            // Get the response's OutputStream
-            OutputStream out = response.getOutputStream();
-
-            // Create a PdfWriter to write to the OutputStream
-            PdfWriter.getInstance(document, out);
-
-            // Open the document
-            document.open();
-
-            // Add content to the PDF
-            for (Product product : productList) {
-                document.add(new Paragraph(product.getName() + "\t" + product.getPrice()));
-            }
-
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product catalog could not be downloaded");
-        } finally {
-            // Close the document
-            document.close();
-        }
+        // Write JSON response
+        response.getWriter().write(jsonData);
     }
 
     private List<Product> getProducts(StorefrontFacade facade) {
