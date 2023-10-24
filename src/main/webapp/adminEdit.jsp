@@ -17,7 +17,7 @@
 <!-- Navigation BAR -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.jsp">HOME<i class="bi bi-cloud-moon-fill"></i></a>
+        <a class="navbar-brand" href="index.jsp">HOME</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,6 +42,41 @@
     </div>
 </nav>
 
-<h2>FRONT PAGE</h2>
+<!--Admin Page-->
+<h1 style="justify-content: center">PRODUCT CATALOGUE</h1>
+<div class="container" style="display: flex; justify-content: flex-end">
+    <button type="button" class="btn" style="background-color: #b5ff9e">Add Product</button>
+</div>
+<div class="container" style="display: flex; justify-content: flex-end; padding-top: 10px">
+    <button type="button" class="btn" style="background-color: #85adff">Download<i class="bi bi-download"></i></button>
+</div>
+<div class="container">
+    <table class="table table-loght">
+        <thead>
+        <tr>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Vendor</th>
+            <th>Slug</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1111</td>
+            <td>Product1</td>
+            <td>A product</td>
+            <td>1.99</td>
+            <td>Vendor1</td>
+            <td><a href="#">LINK</a></td>
+            <td>
+                <button type="button" class="btn" style="background-color: lightgrey">Edit</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
