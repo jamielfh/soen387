@@ -18,7 +18,7 @@ import shop.models.StorefrontFacade;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/cart/products/*")
+@WebServlet(name = "CartServlet", value = "/cart/products/*")
 public class CartServlet extends HttpServlet {
     //private StorefrontFacade facade = new StorefrontFacade();
 
@@ -47,6 +47,7 @@ public class CartServlet extends HttpServlet {
         try {
             Product product = getProductBySlug(facade, slug);
             addProductToCart(facade, user, product.getSku());
+            response.sendRedirect("/cart/products/");
         } catch (ProductNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
         } catch (ProductAlreadyInCartException e) {

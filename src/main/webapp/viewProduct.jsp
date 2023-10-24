@@ -55,36 +55,10 @@
             <h5><%= product.getDescription()%></h5>
             <h5><%= product.getVendor()%></h5>
             <h4><%= product.getPrice()%></h4>
-            <!-- Button that triggers the POST request using JavaScript -->
-            <button onclick="addToCart()">Add to Cart</button>
 
-            <!-- JavaScript function to perform the POST request -->
-            <script>
-                function addToCart() {
-                    // Create a new FormData object (empty, since there are no form fields)
-                    var formData = new FormData();
-
-                    // Create an XMLHttpRequest object
-                    var xhr = new XMLHttpRequest();
-
-                    // Configure the request
-                    xhr.open("POST", "http://localhost:8080/cart/products/<%=product.getSlug()%>", true);
-
-                    // Set the appropriate headers (if needed)
-                    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                    // Set up the callback function for when the request completes
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                            // Handle the response, if needed
-                            console.log(xhr.responseText);
-                        }
-                    };
-
-                    // Send the POST request with the empty FormData object
-                    xhr.send(formData);
-                }
-            </script>
+            <form id="addToCartForm" action="/cart/products/<%=product.getSlug()%>" method="post">
+                <button type="submit">Add to Cart</button>
+            </form>
         </div>
 
     </div>

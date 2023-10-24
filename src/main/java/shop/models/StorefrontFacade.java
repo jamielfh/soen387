@@ -39,8 +39,8 @@ public class StorefrontFacade {
         this.products.put(sku, newProduct);
     }
 
-    public void updateProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException {
-        Product productToUpdate = this.products.get(sku);
+    public void updateProduct(String oldSku, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
+        Product productToUpdate = this.products.get(oldSku);
 
         // if no product found, throw ProductNotFoundException
         if (productToUpdate == null) {
@@ -52,6 +52,13 @@ public class StorefrontFacade {
         productToUpdate.setDescription(description);
         productToUpdate.setVendor(vendor);
         productToUpdate.setPrice(price);
+
+        // validate if sku is unique
+        Product skuProduct = this.products.get(sku);
+        if (skuProduct != null) {
+            throw new ProductSkuExistsException();
+        }
+        productToUpdate.setSku(sku);
 
         // validate if slug is unique
         try {
@@ -68,6 +75,7 @@ public class StorefrontFacade {
         }
         productToUpdate.setSlug(slug);
 
+        this.products.remove(oldSku);
         this.products.put(sku, productToUpdate);
     }
 

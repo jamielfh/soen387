@@ -49,7 +49,9 @@
 <!--Admin Page-->
 <h1 style="justify-content: center">PRODUCT CATALOGUE</h1>
 <div class="container" style="display: flex; justify-content: flex-end">
-    <button type="button" class="btn" style="background-color: #b5ff9e">Add Product</button>
+    <a href="/admin/add-product">
+        <button type="button" class="btn" style="background-color: #b5ff9e">Add Product</button>
+    </a>
 </div>
 <div class="container" style="display: flex; justify-content: flex-end; padding-top: 10px">
     <button type="button" class="btn" style="background-color: #85adff">Download<i class="bi bi-download"></i></button>
@@ -81,7 +83,9 @@
             <td><%= product.getVendor() %></td>
             <td><a href="products/<%= product.getSlug()%>">LINK</a></td>
             <td>
-                <button type="button" class="btn" style="background-color: lightgrey">Edit</button>
+                <a href="/admin/<%=product.getSlug()%>">
+                    <button type="button" class="btn" style="background-color: lightgrey">Edit Product</button>
+                </a>
             </td>
         </tr>
         <%

@@ -2,6 +2,7 @@
 package shop.servlets;
 
 import shop.exceptions.ProductNotFoundException;
+import shop.exceptions.ProductSkuExistsException;
 import shop.exceptions.ProductSlugExistsException;
 import shop.exceptions.ProductSlugInvalidException;
 import shop.models.Product;
@@ -17,7 +18,7 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "productServlet", value = "/products/*")
+@WebServlet(name = "ProductServlet", value = "/products/*")
 public class ProductServlet extends HttpServlet {
     //private StorefrontFacade facade = new StorefrontFacade();
 
@@ -53,22 +54,28 @@ public class ProductServlet extends HttpServlet {
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
 
-        String slug = pathInfo.substring(1); // Removing leading "/"
+        String oldSlug = pathInfo.substring(1); // Removing leading "/"
         String sku = request.getParameter("sku");
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String vendor = request.getParameter("vendor");
         String newSlug = request.getParameter("slug");
-        double price = Double.parseDouble(request.getParameter("price"));
 
         try {
-            updateProduct(facade, sku, name, description, vendor, newSlug, price);
+            double price = Double.parseDouble(request.getParameter("price"));
+            String oldSku = getProductBySlug(facade, oldSlug).getSku();
+            updateProduct(facade, oldSku, sku, name, description, vendor, newSlug, price);
+            response.sendRedirect("/admin");
         } catch (ProductNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
         } catch (ProductSlugInvalidException ex) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product slug invalid");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product slug format is invalid");
         } catch (ProductSlugExistsException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product slug already in use");
+        } catch (ProductSkuExistsException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product sku already in use");
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product price is not a number");
         }
     }
 
@@ -82,9 +89,9 @@ public class ProductServlet extends HttpServlet {
         return facade.getProductBySlug(slug);
     }
 
-    private void updateProduct(StorefrontFacade facade, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException {
+    private void updateProduct(StorefrontFacade facade, String oldSku, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
         // Update product in the facade
-        facade.updateProduct(sku, name, description, vendor, slug, price);
+        facade.updateProduct(oldSku, sku, name, description, vendor, slug, price);
     }
 }
 

@@ -51,19 +51,28 @@
             <h2>Product Image</h2>
         </div>
         <div class="col-md-7">
-            <h5>Product1</h5>
-            <input class="form-control" type="text" placeholder="Product Name">
-            <h5>SKU</h5>
-            <input class="form-control" type="text" placeholder="SKU">
-            <h5>Description</h5>
-            <input class="form-control" type="text" placeholder="Description">
-            <h5>Vendor</h5>
-            <input class="form-control" type="text" placeholder="Vendor">
-            <h5>0.99</h5>
-            <input class="form-control" type="text" placeholder="Price">
-
-            <!--Button to Commit Changes-->
-            <button type="submit" style="background-color: lightgrey; border: none; border-radius: 5px; padding: 5px; display: inline-block ">Submit</button>
+            <%Product product = (Product) request.getAttribute("product");%>
+            <form id="editProductForm" action="/products/<%=product.getSlug()%>" method="post">
+                <label for="sku">SKU:</label>
+                <input class="form-control" type="text" id="sku" name="sku" value="<%=product.getSku()%>">
+                <br>
+                <label for="name">Name:</label>
+                <input class="form-control" type="text" id="name" name="name" value="<%=product.getName()%>">
+                <br>
+                <label for="description">Description:</label>
+                <input class="form-control" type="text" id="description" name="description" value="<%=product.getDescription()%>">
+                <br>
+                <label for="vendor">Vendor:</label>
+                <input class="form-control" type="text" id="vendor" name="vendor" value="<%=product.getVendor()%>">
+                <br>
+                <label for="slug">Slug:</label>
+                <input class="form-control" type="text" id="slug" name="slug" value="<%=product.getSlug()%>">
+                <br>
+                <label for="price">Price:</label>
+                <input class="form-control" type="text" id="price" name="price" value="<%=product.getPrice()%>">
+                <br>
+                <button type="submit" style="background-color: lightgrey; border: none; border-radius: 5px; padding: 5px; display: inline-block">Submit</button>
+            </form>
         </div>
 
 
