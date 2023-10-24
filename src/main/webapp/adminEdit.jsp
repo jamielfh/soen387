@@ -1,4 +1,5 @@
-
+<%@ page import="shop.models.Product" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -67,18 +68,34 @@
         </tr>
         </thead>
         <tbody>
+        <%
+            ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("products");
+            if (productList != null) {
+                for (Product product : productList) {
+        %>
         <tr>
-            <td>1111</td>
-            <td>Product1</td>
-            <td>A product</td>
-            <td>1.99</td>
-            <td>Vendor1</td>
-            <td><a href="#">LINK</a></td>
+            <td><%= product.getSku()%></td>
+            <td><%= product.getName() %></td>
+            <td><%= product.getDescription() %></td>
+            <td><%= product.getPrice() %></td>
+            <td><%= product.getVendor() %></td>
+            <td><a href="products/<%= product.getSlug()%>">LINK</a></td>
             <td>
                 <button type="button" class="btn" style="background-color: lightgrey">Edit</button>
             </td>
         </tr>
+        <%
+            }
+        } else {
+        %>
+        <tr>
+            <td colspan="5">No products in catalogue.</td>
+        </tr>
+        <%
+            }
+        %>
         </tbody>
+
     </table>
 </div>
 

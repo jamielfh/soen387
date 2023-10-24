@@ -101,14 +101,15 @@ public class StorefrontFacade {
         this.carts.put(user, new Cart());
     }
 
-    public List<Product> getCart(String user) throws CartNotFoundException {
+    public List<Product> getCart(String user) {
         Cart cart = this.carts.get(user);
-        // if no cart found, throw CartNotFoundException
+        // if no cart found, create a new cart
         if (cart == null) {
-            throw new CartNotFoundException();
+            newUser(user);
+            cart = this.carts.get(user);
         }
 
-        // if cart found, return list of products
+        // return list of products
         return cart.getItems();
     }
 

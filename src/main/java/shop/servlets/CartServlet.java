@@ -30,14 +30,10 @@ public class CartServlet extends HttpServlet {
         String user = request.getSession().getId();
 
         // Request for the items in cart
-        try {
-            List<Product> items = getCart(facade, user);
-            request.setAttribute("items", items);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
-            dispatcher.forward(request, response);
-        } catch (CartNotFoundException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Cart not found");
-        }
+        List<Product> items = getCart(facade, user);
+        request.setAttribute("items", items);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
+        dispatcher.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -79,7 +75,7 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private List<Product> getCart(StorefrontFacade facade, String user) throws CartNotFoundException {
+    private List<Product> getCart(StorefrontFacade facade, String user) {
         // Get all products from the facade
         return facade.getCart(user);
     }
