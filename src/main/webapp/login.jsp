@@ -45,11 +45,8 @@
 <!--LOGIN PAGE-->
 
 <div class="wrapper" id="login">
-    <form action="">
-        <h1>Login</h1>
-        <div class="input-box">
-            <input type="text" placeholder="Username" required><i class="bi bi-person"></i>
-        </div>
+    <form method="post" action="login">
+        <h1>Staff Login</h1>
         <div class="input-box">
             <input type="password" name="password" placeholder="Password" aria-label="Password" required><i class="bi bi-lock"></i>
         </div>
