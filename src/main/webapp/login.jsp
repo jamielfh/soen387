@@ -19,6 +19,14 @@
         <h1>Staff Login</h1>
         <div class="input-box">
             <input type="password" name="password" placeholder="Password" aria-label="Password" required><i class="bi bi-lock"></i>
+
+            <!-- Check if there's an error message and display it -->
+            <% String error = (String)request.getAttribute("error"); %>
+            <% if (error != null) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+            <% } %>
         </div>
         <button type="submit" class="btn">Login</button>
     </form>

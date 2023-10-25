@@ -17,8 +17,9 @@ public class LoginServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
         dispatcher.forward(request, response);
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws ServletException, IOException {
         String enteredPassword = request.getParameter("password");
 
         // For now, staff users' passcode is assumed to always be 'secret'
@@ -26,7 +27,10 @@ public class LoginServlet extends HttpServlet {
             request.getSession().setAttribute("staff", true);
             response.sendRedirect("/admin");
         } else {
-            response.sendRedirect("/login");
+            // Set an error attribute and re-forward the request to the login page with the error message
+            request.setAttribute("error", "Invalid password. Please try again.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response);
         }
     }
 }
