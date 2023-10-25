@@ -4,8 +4,12 @@
   function toggleStaffButtons() {
     if (isStaff) {
       document.getElementById("admin-button").style.display = "block";
+      document.getElementById("logout-button").style.display = "block";
+      document.getElementById("login-button").style.display = "none";
     } else {
       document.getElementById("admin-button").style.display = "none";
+      document.getElementById("logout-button").style.display = "none";
+      document.getElementById("login-button").style.display = "block";
     }
   }
 
@@ -28,11 +32,14 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="products">Products</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="login-button">
                         <a class="nav-link"  aria-current="page" href="login">Login</a>
                     </li>
                     <li class="nav-item" id="admin-button">
                         <a class="nav-link" href="admin">Admin</a>
+                    </li>
+                    <li class="nav-item" id="logout-button">
+                        <a class="nav-link"  aria-current="page" href="logout">Log out</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
