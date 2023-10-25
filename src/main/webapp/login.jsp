@@ -51,7 +51,7 @@
             <input type="text" placeholder="Username" required><i class="bi bi-person"></i>
         </div>
         <div class="input-box">
-            <input type="password" placeholder="Password" required><i class="bi bi-lock"></i>
+            <input type="password" name="password" placeholder="Password" aria-label="Password" required><i class="bi bi-lock"></i>
         </div>
         <button type="submit" class="btn">Login</button>
     </form>
