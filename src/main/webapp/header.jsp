@@ -1,3 +1,17 @@
+<script type="text/javascript">
+  let isStaff = <%= session.getAttribute("staff") == Boolean.TRUE %>;
+
+  function toggleStaffButtons() {
+    if (isStaff) {
+      document.getElementById("admin-button").style.display = "block";
+    } else {
+      document.getElementById("admin-button").style.display = "none";
+    }
+  }
+
+  window.onload = toggleStaffButtons;
+</script>
+
 <header>
     <h1><%= "Lunar Shadow Shop" %></h1>
     <br/>
@@ -15,12 +29,15 @@
                         <a class="nav-link" aria-current="page" href="products">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  aria-current="page" href="login.jsp">Login</a>
+                        <a class="nav-link"  aria-current="page" href="login">Login</a>
+                    </li>
+                    <li class="nav-item" id="admin-button">
+                        <a class="nav-link" href="admin">Admin</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item" >
-                        <a class="nav-link active" id="cart" aria-current="page" href="cart.jsp" >CART
+                        <a class="nav-link active" id="cart" aria-current="page" href="cart" >CART
                             <i class="bi bi-cart"></i>
                             <span class="position-absolute top-0 end-0"></span>
                         </a>
