@@ -30,21 +30,21 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="products">Products</a>
+                        <a class="nav-link" aria-current="page" href="<%= request.getContextPath() %>/products">Products</a>
                     </li>
                     <li class="nav-item" id="login-button">
-                        <a class="nav-link"  aria-current="page" href="login">Login</a>
+                        <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/login">Login</a>
                     </li>
                     <li class="nav-item" id="admin-button">
-                        <a class="nav-link" href="admin">Admin</a>
+                        <a class="nav-link" href="<%= request.getContextPath() %>/admin">Admin</a>
                     </li>
                     <li class="nav-item" id="logout-button">
-                        <a class="nav-link"  aria-current="page" href="logout">Log out</a>
+                        <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/logout">Log out</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item" >
-                        <a class="nav-link active" id="cart" aria-current="page" href="cart" >CART
+                        <a class="nav-link active" id="cart" aria-current="page" href="<%= request.getContextPath() %>/cart/products/" >CART
                             <i class="bi bi-cart"></i>
                             <span class="position-absolute top-0 end-0"></span>
                         </a>
