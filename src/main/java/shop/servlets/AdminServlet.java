@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import shop.exceptions.ProductNotFoundException;
 import shop.exceptions.ProductSkuExistsException;
 import shop.exceptions.ProductSlugExistsException;
@@ -26,23 +27,30 @@ public class AdminServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
+        HttpSession session = request.getSession(false);
 
-        if (pathInfo == null || pathInfo.equals("/")) {
+        if (session == null || session.getAttribute("staff") == null ||
+                session.getAttribute("staff").equals(false)) {
+            // Staff is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this resource.");
+        } else if (pathInfo == null || pathInfo.equals("/")) {
             // Request for the admin product catalogue
             List<Product> products = getProducts(facade);
             request.setAttribute("products", products);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/adminEdit.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/adminEdit.jsp");
             dispatcher.forward(request, response);
         } else if (pathInfo.equals("/add-product")) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/addProduct.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/addProduct.jsp");
             dispatcher.forward(request, response);
         } else {
+            System.out.println("not found: " + pathInfo);
             // Request to get a specific product to edit
             String slug = pathInfo.substring(1); // Removing leading "/"
             try {
                 Product product = getProductBySlug(facade, slug);
                 request.setAttribute("product", product);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/editProduct.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/editProduct.jsp");
                 dispatcher.forward(request, response);
             } catch (ProductNotFoundException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");

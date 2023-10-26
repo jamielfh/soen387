@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import shop.models.Product;
 import shop.models.StorefrontFacade;
 
@@ -19,21 +20,30 @@ public class DownloadServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        // Fetch product objects
-        ServletContext context = request.getServletContext();
-        StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
-        List<Product> productList = getProducts(facade);
+        HttpSession session = request.getSession(false);
 
-        // Convert product data to JSON in pretty-print style
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonData = gson.toJson(productList);
+        if (session == null || session.getAttribute("staff") == null ||
+                session.getAttribute("staff").equals(false)) {
+            // Staff is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this resource.");
+        } else {
+            // Fetch product objects
+            ServletContext context = request.getServletContext();
+            StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
+            List<Product> productList = getProducts(facade);
 
-        // Set the content type to JSON, and the content disposition to attachment to trigger a download
-        response.setContentType("application/json");
-        response.setHeader("Content-Disposition", "attachment; filename=products.json");
+            // Convert product data to JSON in pretty-print style
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String jsonData = gson.toJson(productList);
 
-        // Write JSON response
-        response.getWriter().write(jsonData);
+            // Set the content type to JSON, and the content disposition to attachment to trigger a download
+            response.setContentType("application/json");
+            response.setHeader("Content-Disposition", "attachment; filename=products.json");
+
+            // Write JSON response
+            response.getWriter().write(jsonData);
+        }
     }
 
     private List<Product> getProducts(StorefrontFacade facade) {

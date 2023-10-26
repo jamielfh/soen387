@@ -10,48 +10,23 @@
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<h1><%= "Lunar Shadow Shop" %></h1>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ></script>
-<br/>
-
-<!-- Navigation BAR -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.jsp">HOME<i class="bi bi-cloud-moon-fill"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="products">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link"  aria-current="page" href="login.jsp">Login</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item" >
-                    <a class="nav-link active" id="cart" aria-current="page" href="cart.jsp" >CART
-                        <i class="bi bi-cart"></i>
-                        <span class="position-absolute top-0 end-0"></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="header.jsp" />
 
 <!--LOGIN PAGE-->
 
 <div class="wrapper" id="login">
-    <form action="">
-        <h1>Login</h1>
+    <form method="post" action="<%= request.getContextPath() %>/login">
+        <h1>Staff Login</h1>
         <div class="input-box">
-            <input type="text" placeholder="Username" required><i class="bi bi-person"></i>
-        </div>
-        <div class="input-box">
-            <input type="password" placeholder="Password" required><i class="bi bi-lock"></i>
+            <input type="password" name="password" placeholder="Password" aria-label="Password" required><i class="bi bi-lock"></i>
+
+            <!-- Check if there's an error message and display it -->
+            <% String error = (String)request.getAttribute("error"); %>
+            <% if (error != null) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+            <% } %>
         </div>
         <button type="submit" class="btn">Login</button>
     </form>
