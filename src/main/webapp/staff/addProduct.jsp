@@ -6,11 +6,11 @@
     <title>Lunar Shadow Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<jsp:include page="header.jsp" />
+<jsp:include page="../header.jsp" />
 
 <!--Adding Products Page-->
 <h1 style="padding-left: 20px">Add New Product</h1>
