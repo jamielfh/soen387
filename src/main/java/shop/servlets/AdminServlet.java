@@ -44,7 +44,6 @@ public class AdminServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/addProduct.jsp");
             dispatcher.forward(request, response);
         } else {
-            System.out.println("not found: " + pathInfo);
             // Request to get a specific product to edit
             String slug = pathInfo.substring(1); // Removing leading "/"
             try {
