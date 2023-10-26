@@ -31,11 +31,9 @@ public class DownloadServlet extends HttpServlet {
             // Fetch product objects
             ServletContext context = request.getServletContext();
             StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
-            List<Product> productList = getProducts(facade);
 
             // Convert product data to JSON in pretty-print style
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String jsonData = gson.toJson(productList);
+            String jsonData = facade.downloadProductCatalog();
 
             // Set the content type to JSON, and the content disposition to attachment to trigger a download
             response.setContentType("application/json");
@@ -44,11 +42,6 @@ public class DownloadServlet extends HttpServlet {
             // Write JSON response
             response.getWriter().write(jsonData);
         }
-    }
-
-    private List<Product> getProducts(StorefrontFacade facade) {
-        // Get all products from the facade
-        return facade.getAllProducts();
     }
 }
 

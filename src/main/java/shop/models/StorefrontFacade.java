@@ -1,6 +1,8 @@
 
 package shop.models;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import shop.exceptions.*;
 
 import java.util.*;
@@ -164,8 +166,9 @@ public class StorefrontFacade {
     }
 
     public String downloadProductCatalog() {
-        // Return a string representing the catalog content
-        return null;
+        // Convert product data to JSON in pretty-print style
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(getAllProducts());
     }
 
     public List<Product> getAllProducts() {
