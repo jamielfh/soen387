@@ -28,7 +28,7 @@
   <div class="row row-cols-1">
       <div class="col-md-3 my-3">
         <div class="card" style="width: 18rem;">
-          <img src="..." class="card-img-top" alt="...">
+          <img src="<%= product.getImageURL() %>" class="card-img-top" alt="Image of <%= product.getName() %>">
           <div class="card-body">
             <h5 class="productName"><%= product.getName() %></h5>
             <h6 class="sku"><%= product.getSku()%></h6>

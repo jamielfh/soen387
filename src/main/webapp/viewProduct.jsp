@@ -16,11 +16,11 @@
 <h1 style="padding-left: 20px">Details</h1>
 <div class="container" style="padding-top: 50px">
     <div class="row">
+        <%Product product = (Product) request.getAttribute("product");%>
         <div class="col-md-5">
-            <h2>Product Image</h2>
+            <img src="<%= product.getImageURL() %>" class="card-img-top" alt="Image of <%= product.getName() %>">
         </div>
         <div class="col-md-7">
-            <%Product product = (Product) request.getAttribute("product");%>
             <h3><%= product.getName()%></h3>
             <h6><%= product.getSku()%></h6>
             <h5><%= product.getDescription()%></h5>

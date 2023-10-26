@@ -7,6 +7,7 @@ public class Product {
     private String description;
     private String vendor;
     private String slug;
+    private String imageURL;
     private double price;
 
     public Product() {
@@ -19,6 +20,9 @@ public class Product {
         this.vendor = vendor;
         this.slug = slug;
         this.price = price;
+
+        // Default image (no-image image)
+        this.imageURL = "https://demofree.sirv.com/nope-not-here.jpg";
     }
 
     public String getSku() {
@@ -68,5 +72,14 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
 }
 
