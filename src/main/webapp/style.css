@@ -36,3 +36,7 @@
 .wrapper .btn{
     background: lightgrey;
 }
+
+.hidden {
+    display: none;
+}
