@@ -41,6 +41,7 @@ public class StorefrontFacade {
 
     public void updateProduct(String oldSku, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
         Product productToUpdate = this.products.get(oldSku);
+        this.products.remove(oldSku);
 
         // if no product found, throw ProductNotFoundException
         if (productToUpdate == null) {
@@ -75,7 +76,6 @@ public class StorefrontFacade {
         }
         productToUpdate.setSlug(slug);
 
-        this.products.remove(oldSku);
         this.products.put(sku, productToUpdate);
     }
 
