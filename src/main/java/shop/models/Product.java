@@ -25,6 +25,16 @@ public class Product {
         this.imageURL = "https://demofree.sirv.com/nope-not-here.jpg";
     }
 
+    public Product(String sku, String name, String description, String vendor, String slug, double price, String imageURL) {
+        this.sku = sku;
+        this.name = name;
+        this.description = description;
+        this.vendor = vendor;
+        this.slug = slug;
+        this.price = price;
+        this.imageURL = imageURL;
+    }
+
     public String getSku() {
         return sku;
     }

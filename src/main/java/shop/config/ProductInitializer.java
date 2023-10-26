@@ -36,9 +36,9 @@ public class ProductInitializer implements ServletContextListener {
 
     private List<Product> initializeProducts() {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("SKU1", "Product1", "Description1", "Vendor1", "slug1", 19.99));
-        products.add(new Product("SKU2", "Product2", "Description2", "Vendor2", "slug2", 29.99));
-        products.add(new Product("SKU3", "Product3", "Description3", "Vendor3", "slug3", 39.99));
+        products.add(new Product("PU944", "Cat Recovery Suit", "One size fits all. Cat not included.", "Purrito", "cat-recovery-suit", 19.99, "https://i.etsystatic.com/33459047/r/il/81260e/4453593375/il_fullxfull.4453593375_260e.jpg"));
+        products.add(new Product("LU441", "Portrait of Luna", "Print of the cat queen Luna. Measures 30x30 inches.", "Lunar Shadow", "luna-portrait", 39.99, "https://i.etsystatic.com/42801559/r/il/98915b/5245110747/il_1588xN.5245110747_r5cb.jpg"));
+        products.add(new Product("PE125", "Catnip Crochet Toy", "Random color. Measures 2 inches long. Comes with catnip sachet.", "PetCo", "catnip-crochet-toy", 14.20, "https://i.etsystatic.com/20292668/r/il/224457/4737848035/il_1588xN.4737848035_ne6v.jpg"));
         return products;
     }
 }
