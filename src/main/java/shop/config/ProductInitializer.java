@@ -11,13 +11,9 @@ import shop.models.StorefrontFacade;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @WebListener
 public class ProductInitializer implements ServletContextListener {
@@ -49,18 +45,27 @@ public class ProductInitializer implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        // Cleanup code, if needed
+        try {
+            // Unregister the JDBC driver to prevent memory leaks
+            Driver jdbcDriver = DriverManager.getDriver(dbConnection.getMetaData().getURL());
+            DriverManager.deregisterDriver(jdbcDriver);
+
+            // Close the database connection during application shutdown
+            if (dbConnection != null) {
+                dbConnection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Connection connectToDb(String url, String user, String password) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -70,7 +75,6 @@ public class ProductInitializer implements ServletContextListener {
             return JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
             e.printStackTrace();
-            // Return an empty object as a fallback
             return new JsonObject();
         }
     }
