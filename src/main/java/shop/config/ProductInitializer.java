@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @WebListener
 public class ProductInitializer implements ServletContextListener {
@@ -26,7 +27,7 @@ public class ProductInitializer implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
 
         // Connect to database based on access details from configuration file
-        JsonObject dbInfo = readJsonFile("/Users/carmen/IdeaProjects/soen387/src/main/resources/db_config.json");
+        JsonObject dbInfo = readJsonFile(getClass().getClassLoader().getResource("db_config.json").getPath());
         dbConnection = connectToDb(
                 dbInfo.get("db_url").getAsString(),
                 dbInfo.get("db_user").getAsString(),
