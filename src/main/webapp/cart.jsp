@@ -98,6 +98,13 @@
     </script>
 
   </table>
+   <a href="checkout.jsp">
+     <button class="btn btn-primary justify-content-center" type="submit">Place Order</button>
+   </a>
  </div>
+
+
+
+
 </body>
 </html>
