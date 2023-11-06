@@ -1,22 +1,39 @@
-
 package shop.config;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import shop.models.Product;
 import shop.models.StorefrontFacade;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletContextEvent;
-import jakarta.servlet.ServletContextListener;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebListener
 public class ProductInitializer implements ServletContextListener {
+    Connection dbConnection;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        // Initialize the list of products
+
+        // Connect to database based on access details from configuration file
+        JsonObject dbInfo = readJsonFile("/Users/carmen/IdeaProjects/soen387/src/main/resources/db_config.json");
+        dbConnection = connectToDb(
+                dbInfo.get("db_url").getAsString(),
+                dbInfo.get("db_user").getAsString(),
+                dbInfo.get("db_password").getAsString()
+        );
+
+        // Initialize the list of products based on the database
         List<Product> products = initializeProducts();
 
         // Store the list of products in the application context
@@ -34,14 +51,52 @@ public class ProductInitializer implements ServletContextListener {
         // Cleanup code, if needed
     }
 
+    private Connection connectToDb(String url, String user, String password) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private JsonObject readJsonFile(String filename) {
+        try {
+            FileReader reader = new FileReader(filename);
+            return JsonParser.parseReader(reader).getAsJsonObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Return an empty object as a fallback
+            return new JsonObject();
+        }
+    }
+
     private List<Product> initializeProducts() {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("PU944", "Cat Recovery Suit", "One size fits all. Cat not included.", "Purrito", "cat-recovery-suit", 19.99, "https://i.etsystatic.com/33459047/r/il/81260e/4453593375/il_fullxfull.4453593375_260e.jpg"));
-        products.add(new Product("LU441", "Portrait of Luna", "Print of the cat queen Luna. Measures 30x30 inches.", "Lunar Shadow", "luna-portrait", 39.99, "https://i.etsystatic.com/42801559/r/il/98915b/5245110747/il_1588xN.5245110747_r5cb.jpg"));
-        products.add(new Product("PE125", "Catnip Crochet Toy", "Random color. Measures 2 inches long. Comes with catnip sachet.", "PetCo", "catnip-crochet-toy", 14.20, "https://i.etsystatic.com/20292668/r/il/224457/4737848035/il_1588xN.4737848035_ne6v.jpg"));
+
+        // Map product table data to Product objects and add them to the list
+        try {
+            ResultSet productData = dbConnection.createStatement().executeQuery("select * from product;");
+
+            while (productData.next()) {
+                Product product = new Product(
+                        productData.getString("sku"),
+                        productData.getString("name"),
+                        productData.getString("description"),
+                        productData.getString("vendor"),
+                        productData.getString("slug"),
+                        productData.getDouble("price"),
+                        productData.getString("img_url")
+                );
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return products;
     }
 }
-
-
-
