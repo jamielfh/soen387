@@ -1,84 +1,66 @@
-
 package shop.models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import shop.dao.ProductDAO;
 import shop.exceptions.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class StorefrontFacade {
-    private Map<String, Product> products;
     private Map<String, Cart> carts;
+    private ProductDAO productDAO = new ProductDAO();
 
     public StorefrontFacade() {
-        this.products = new HashMap<String, Product>();
         this.carts = new HashMap<String, Cart>();
     }
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
-        Product product = this.products.get(sku);
-        if (product != null) {
+        if (productDAO.getBySKU(sku) != null) {
             throw new ProductSkuExistsException();
         }
 
         // validate if slug is unique
-        try {
-            Product slugProduct = getProductBySlug(slug);
-            if (slugProduct != null) {
-                throw new ProductSlugExistsException();
-            }
-        } catch (ProductNotFoundException ignored) {}
+        if (productDAO.getBySlug(slug) != null) {
+            throw new ProductSlugExistsException();
+        }
 
         // validate if slug is valid
-        boolean isValidSlug = isValidSlug(slug);
-        if (!isValidSlug) {
+        if (!isValidSlug(slug)) {
             throw new ProductSlugInvalidException();
         }
 
         Product newProduct = new Product(sku, name, description, vendor, slug, price);
-        this.products.put(sku, newProduct);
+        productDAO.add(newProduct);
     }
 
     public void updateProduct(String oldSku, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
-        Product productToUpdate = this.products.get(oldSku);
-        this.products.remove(oldSku);
 
         // if no product found, throw ProductNotFoundException
-        if (productToUpdate == null) {
+        Product oldProduct = productDAO.getBySKU(oldSku);
+        if (oldProduct == null) {
             throw new ProductNotFoundException();
         }
 
-        // if product found, update product
-        productToUpdate.setName(name);
-        productToUpdate.setDescription(description);
-        productToUpdate.setVendor(vendor);
-        productToUpdate.setPrice(price);
-
         // validate if sku is unique
-        Product skuProduct = this.products.get(sku);
-        if (skuProduct != null) {
+        if (!oldSku.equals(sku) && productDAO.getBySKU(sku) != null) {
             throw new ProductSkuExistsException();
         }
-        productToUpdate.setSku(sku);
 
         // validate if slug is unique
-        try {
-            Product slugProduct = getProductBySlug(slug);
-            if (slugProduct != null) {
-                throw new ProductSlugExistsException();
-            }
-        } catch (ProductNotFoundException ignored) {}
+        if (!oldProduct.getSlug().equals(slug) && productDAO.getBySlug(slug) != null) {
+            throw new ProductSlugExistsException();
+        }
 
         // validate if slug is valid
-        boolean isValidSlug = isValidSlug(slug);
-        if (!isValidSlug) {
+        if (!isValidSlug(slug)) {
             throw new ProductSlugInvalidException();
         }
-        productToUpdate.setSlug(slug);
 
-        this.products.put(sku, productToUpdate);
+        productDAO.update(oldSku, sku, name, description, vendor, slug, price);
     }
 
     private boolean isValidSlug(String input) {
@@ -88,7 +70,7 @@ public class StorefrontFacade {
     }
 
     public Product getProduct(String sku) throws ProductNotFoundException {
-        Product product = this.products.get(sku);
+        Product product = productDAO.getBySKU(sku);
 
         // if no product found, throw ProductNotFoundException
         if (product == null) {
@@ -99,10 +81,9 @@ public class StorefrontFacade {
     }
 
     public Product getProductBySlug(String slug) throws ProductNotFoundException {
-        for (Product product : products.values()) {
-            if (product.getSlug().equals(slug)) {
-                return product;
-            }
+        Product product = productDAO.getBySlug(slug);
+        if (product != null) {
+            return product;
         }
         throw new ProductNotFoundException();
     }
@@ -172,15 +153,10 @@ public class StorefrontFacade {
     }
 
     public List<Product> getAllProducts() {
-        return new ArrayList<>(products.values());
+        ProductDAO p = new ProductDAO();
+        return p.getAll();
     }
 
-    public void setProducts(List<Product> productList) {
-        // Convert the list of products to a map
-        for (Product product : productList) {
-            this.products.put(product.getSku(), product);
-        }
-    }
 }
 
 

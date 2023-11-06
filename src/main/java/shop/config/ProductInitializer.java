@@ -4,13 +4,12 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import shop.models.Product;
 import shop.models.StorefrontFacade;
 import shop.util.DatabaseConnector;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 
 @WebListener
 public class ProductInitializer implements ServletContextListener {
@@ -24,33 +23,9 @@ public class ProductInitializer implements ServletContextListener {
             e.printStackTrace();
         }
 
-        // Initialize the list of products based on the database
-        List<Product> products = new ArrayList<>();
-        try (Connection dbConnection = DatabaseConnector.getConnection();
-             ResultSet productData = dbConnection.createStatement().executeQuery("select * from product;")) {
-            while (productData.next()) {
-                Product product = new Product(
-                        productData.getString("sku"),
-                        productData.getString("name"),
-                        productData.getString("description"),
-                        productData.getString("vendor"),
-                        productData.getString("slug"),
-                        productData.getDouble("price"),
-                        productData.getString("img_url")
-                );
-                products.add(product);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Store the list of products in the application context
+        // Store the StorefrontFacade in the application context
         ServletContext context = sce.getServletContext();
-        context.setAttribute("products", products);
-
-        // Store the list of products in the StorefrontFacade
         StorefrontFacade facade = new StorefrontFacade();
-        facade.setProducts(products);
         context.setAttribute("storefrontFacade", facade);
     }
 
