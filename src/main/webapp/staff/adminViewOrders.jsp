@@ -21,6 +21,8 @@
             <th>Order ID</th>
             <th>Total</th>
             <th>Order Link</th>
+            <th>Shipping Status</th>
+            <th>Tracking Number</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +30,8 @@
             <td>OrderID</td>
             <td>totalPrice</td>
             <td>URL</td>
+            <td>Shipped</td>
+            <td>123456789</td>
         </tr>
         </tbody>
     </table>

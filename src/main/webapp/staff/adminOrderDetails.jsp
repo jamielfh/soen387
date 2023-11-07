@@ -20,6 +20,7 @@
             <h3>Customer Order Details</h3>
             <h4 class="d-flex justify-content-between align-items -center-mb-3">
                 <span class="text-muted">Order ID</span>
+                <span>trackingNumber</span>
             </h4>
             <ul class="list-group mb-3 sticky-top">
                 <li class="list-group-item d-flex justify-content-between lh-condensed">

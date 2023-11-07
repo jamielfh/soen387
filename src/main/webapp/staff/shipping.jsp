@@ -37,7 +37,10 @@
 
     <div class="row">
         <p>Customer Name</p>
-        <p>Customer Address</p>
+        <p>shippingAddress</p>
+
+        <h4>Tracking Code</h4>
+        <p>trackingNumber</p>
 
         <h3>Shipping Company</h3>
         <input type="radio" id="canadaPost">
