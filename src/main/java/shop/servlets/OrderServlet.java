@@ -33,12 +33,16 @@ public class OrderServlet extends HttpServlet {
             if (user.isStaff()) {
                 // Request for all orders
                 orders = getAllOrders(facade);
+                request.setAttribute("orders", orders);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/adminViewOrders.jsp");
+                dispatcher.forward(request, response);
             } else {
+                // Request for user's orders
                 orders = getOrders(facade, user);
+                request.setAttribute("orders", orders);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/viewOrders.jsp");
+                dispatcher.forward(request, response);
             }
-            request.setAttribute("orders", orders);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/viewOrders.jsp");
-            dispatcher.forward(request, response);
         } else {
             // Request for a specific order
             int orderId = Integer.parseInt(pathInfo.substring(1)); // Removing leading "/"
@@ -74,20 +78,7 @@ public class OrderServlet extends HttpServlet {
         response.sendRedirect("/orders/");
     }
 
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        ServletContext context = request.getServletContext();
-        StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
 
-        try {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String trackingNumber = request.getParameter("trackingNumber");
-            shipOrder(facade, orderId, trackingNumber);
-            response.sendRedirect("/orders/");
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Order ID is not a number");
-        }
-    }
 
     private List<Order> getAllOrders(StorefrontFacade facade) {
         return facade.getAllOrders();
@@ -103,10 +94,6 @@ public class OrderServlet extends HttpServlet {
 
     private void createOrder(StorefrontFacade facade, User user, String shippingAddress) {
         facade.createOrder(user, shippingAddress);
-    }
-
-    private void shipOrder(StorefrontFacade facade, int orderId, String trackingNumber) {
-        facade.shipOrder(orderId, trackingNumber);
     }
 
 }

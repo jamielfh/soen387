@@ -186,7 +186,7 @@ public class StorefrontFacade {
 
     public Order getOrder(User user, int id) throws UserDoesNotMatchOrderException {
         Order order = orderDAO.getOrder(id);
-        if (user != null && user != order.getUser()) {
+        if (user != null && user.getId() != order.getUser().getId()) {
             throw new UserDoesNotMatchOrderException();
         }
         return order;

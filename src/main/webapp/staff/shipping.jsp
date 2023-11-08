@@ -1,4 +1,5 @@
-
+<%@ page import="shop.models.Order" %>
+<%@ page import="shop.models.OrderProduct" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -21,33 +22,46 @@
             <span class="text-muted">Order ID</span>
         </h4>
     </div>
+    <%Order order = (Order) request.getAttribute("order");%>
     <ul class="list-group mb-3 sticky-top">
+        <%
+            double totalPrice = 0.0;
+            for (OrderProduct orderProduct : order.getOrderProducts()) {
+        %>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
             <div>
-                <h5 class="my-0">Product Name</h5>
-                <small class="text=muted">Product Description</small>
+                <h5 class="my-0"><%=orderProduct.getProduct().getName()%></h5>
+                <small class="text=muted"><%=orderProduct.getProduct().getDescription()%></small>
             </div>
-            <span class="text-muted">2$</span>
+            <div>
+                <span class="text-muted">$<%=orderProduct.getProduct().getPrice()%></span>
+                <span class="text-muted">$<%=orderProduct.getQuantity()%></span>
+            </div>
+
         </li>
+        <%
+                totalPrice += orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
+            }
+        %>
         <li class="list-group-item d-flex justify-content-between">
             <span>Total</span>
-            <strong>Total Price</strong>
+            <strong><%=totalPrice%>></strong>
         </li>
     </ul>
 
+    <form action="/shipping/<%=order.getId()%>" method="post">
     <div class="row">
-        <p>Customer Name</p>
-        <p>shippingAddress</p>
+        <p>User ID: <%=order.getUser().getId()%></p>
+        <p>Shipping Address: <%=order.getShippingAddress()%>></p>
 
-        <h4>Tracking Code</h4>
-        <p>trackingNumber</p>
+        <label>Tracking Number</label>
+        <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" required="required">
 
         <h3>Shipping Company</h3>
         <input type="radio" id="canadaPost">
         <label for="canadaPost">Canada Post</label>
         <input type="radio" id="ups">
         <label for="ups">UPS</label>
-
 
         <div class="row">
             <h3>Delivery Time</h3>
@@ -58,10 +72,9 @@
         </div>
     </div>
     <div>
-        <a href="#">
-            <button class="btn btn-primary">Ship Order</button>
-        </a>
+        <button class="btn btn-primary" type="submit">Ship Order</button>
     </div>
+    </form>
 
 </div>
 </body>

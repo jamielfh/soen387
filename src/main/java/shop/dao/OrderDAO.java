@@ -160,10 +160,12 @@ public class OrderDAO {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
-            user = new User(
-                    userId,
-                    resultSet.getBoolean("is_staff")
-            );
+            if (resultSet.next()) {
+                user = new User(
+                        userId,
+                        resultSet.getBoolean("is_staff")
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
