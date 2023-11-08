@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import shop.dao.CartDAO;
 import shop.dao.OrderDAO;
 import shop.dao.ProductDAO;
+import shop.dao.UserDAO;
 import shop.exceptions.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,27 @@ public class StorefrontFacade {
     private OrderDAO orderDAO = new OrderDAO();
 
     public StorefrontFacade() {}
+
+    public void createUser(User user, String password) {
+        if (UserDAO.passwordExists(password)) {
+            return; // Error: password is not unique
+        }
+
+        if (UserDAO.idExists(user.getId())) {
+            return; // Error: id is not unique
+        }
+
+        UserDAO.add(user, password);
+    }
+
+    // Create user with auto-generated id, return the new id
+    public int createUser(Boolean is_staff, String password) {
+        if (UserDAO.passwordExists(password)) {
+            return -1; // Error: password is not unique
+        }
+
+        return UserDAO.add(is_staff, password);
+    }
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
