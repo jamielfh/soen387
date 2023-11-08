@@ -1,5 +1,5 @@
 {
-  "project_root": "/Users/carmen/IdeaProjects/soen387",
+  "passwords_path": "/Users/carmen/IdeaProjects/soen387/passwords.json",
   "db_url": "jdbc:mysql://76.66.197.78:3307/lunar_shadow",
   "db_user": "dbuser",
   "db_password": "dbpass"

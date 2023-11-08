@@ -81,4 +81,4 @@ target/
 META-INF/
 
 # Other
-src/main/resources/db_config.json
+#src/main/resources/db_config.json

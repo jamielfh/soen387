@@ -48,7 +48,7 @@ public class UserDAO {
     }
 
     public static int getIdForPassword(String password) {
-        JsonObject jsonData = JsonIO.readJson(JsonIO.getPwFileName());
+        JsonObject jsonData = JsonIO.readJson(JsonIO.getPasswordsPath());
         if (jsonData == null) {
             return -1; // JSON data not loaded
         }
@@ -126,7 +126,7 @@ public class UserDAO {
     public static void add(String password, int id) {
 
         // Read existing user/password entries
-        String passwordsFile = JsonIO.getPwFileName();
+        String passwordsFile = JsonIO.getPasswordsPath();
         JsonObject jsonData = JsonIO.readJson(passwordsFile);
 
         // If the existing JSON data is null, create a new JSON object
@@ -148,6 +148,6 @@ public class UserDAO {
         usersArray.add(userEntry);
 
         // Write the updated JSON data back to the file
-        JsonIO.writeJson(JsonIO.getPwFileName(), jsonData);
+        JsonIO.writeJson(passwordsFile, jsonData);
     }
 }
