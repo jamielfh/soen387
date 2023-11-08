@@ -54,7 +54,9 @@
     </tr>
     <%
         index++;
-      }
+      } %>
+    <tr><td></td><td></td><td></td><td></td><td><button onclick="clearCart()">Clear Cart</button></td></tr>
+    <%
     } else {
     %>
     <tr>
@@ -86,6 +88,25 @@
               productRow.remove();
             }
 
+            // Reload the page
+            location.reload();
+          }
+        };
+
+        // Send the DELETE request
+        xhr.send();
+      }
+
+      function clearCart() {
+        // Create an XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure the request
+        xhr.open("DELETE", "http://localhost:8080/cart/products/clear-cart");
+
+        // Set up the callback function for when the request completes
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
             // Reload the page
             location.reload();
           }
