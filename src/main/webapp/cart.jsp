@@ -38,13 +38,11 @@
       <th scope="row"><%= index + 1 %></th>
       <td><%= product.getProduct().getName() %></td>
       <td>
-        <form action="" method="post" class="form-inline">
+        <form action="<%= request.getContextPath() %>/cart/products/<%= product.getProduct().getSlug() %>" method="post" class="form-inline">
           <input type="hidden" name="id" value="<%= index + 1 %>" class="form-input">
           <div class="form-group d-sm-flex justify-content-sm-center">
-            <a class="btn btn-sm btn-incre" href="#"><i class="bi bi-plus-square"></i></a>
             <input type="text" name="quantity" class="form-control" id="autoSizingInput"
-                   value="1" readonly>
-            <a class="btn btn-sm btn-decre" href="#"><i class="bi bi-dash-square"></i></a>
+                   value="<%= product.getQuantity() %>" >
           </div>
         </form>
       </td>
