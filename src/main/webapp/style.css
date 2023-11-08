@@ -40,3 +40,8 @@
 .hidden {
     display: none;
 }
+
+.px-width{
+    width: 700px;
+    margin: auto;
+}
