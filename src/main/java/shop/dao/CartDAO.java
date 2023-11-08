@@ -29,7 +29,24 @@ public class CartDAO {
         return new Cart(user, cartProducts);
     }
 
-    public void addProductToCart(User user, String sku) {
+    public int checkProductInCart(User user, String sku) {
+        int count = 0;
+        String sql = "select count(*) from cart where user_id = ? and product_sku = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, user.getId());
+            statement.setString(2, sku);
+            ResultSet resultSet = statement.executeQuery();
+
+            count = resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+        public void addProductToCart(User user, String sku) {
         String sql = "insert into cart (user_id, product_sku, quantity) values(?, ?, ?)";
 
         try (Connection connection = DatabaseConnector.getConnection();

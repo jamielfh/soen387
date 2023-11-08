@@ -123,8 +123,17 @@ public class StorefrontFacade {
         return new ArrayList<>();
     }
 
+    public int checkProductInCart(User user, String sku) {
+        return cartDAO.checkProductInCart(user, sku);
+    }
+
     public void addProductToCart(User user, String sku) {
-        cartDAO.addProductToCart(user, sku);
+        int qty = checkProductInCart(user, sku);
+        if (qty > 0) {
+            setProductQuantityInCart(user, sku, qty + 1);
+        } else {
+            cartDAO.addProductToCart(user, sku);
+        }
     }
 
     public void removeProductFromCart(User user, String sku) {
