@@ -29,7 +29,7 @@ public class CartServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        User user = (User) context.getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         // Request for the items in cart
         List<CartProduct> items = getCart(facade, user);
@@ -43,7 +43,7 @@ public class CartServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        User user = (User) context.getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         String slug = pathInfo.substring(1); // Removing leading "/"
         try {
@@ -67,7 +67,7 @@ public class CartServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        User user = (User) context.getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         String slug = pathInfo.substring(1); // Removing leading "/"
         if (slug.equals("clear-cart")) {

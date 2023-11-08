@@ -23,7 +23,7 @@ public class OrderServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        User user = (User) context.getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         if (pathInfo == null || pathInfo.equals("/")) {
             // Request for the order list
