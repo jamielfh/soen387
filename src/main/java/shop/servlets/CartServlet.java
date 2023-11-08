@@ -48,7 +48,13 @@ public class CartServlet extends HttpServlet {
         String slug = pathInfo.substring(1); // Removing leading "/"
         try {
             Product product = getProductBySlug(facade, slug);
-            addProductToCart(facade, user, product.getSku());
+            String quantity = request.getParameter("quantity");
+            if (quantity == null) {
+                addProductToCart(facade, user, product.getSku());
+            } else {
+                int qty = Integer.parseInt(quantity);
+                setProductQuantityInCart(facade, user, product.getSku(), qty);
+            }
             response.sendRedirect("/cart/products/");
         } catch (ProductNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
@@ -64,11 +70,15 @@ public class CartServlet extends HttpServlet {
         User user = (User) context.getAttribute("user");
 
         String slug = pathInfo.substring(1); // Removing leading "/"
-        try {
-            Product product = getProductBySlug(facade, slug);
-            removeProductFromCart(facade, user, product.getSku());
-        } catch (ProductNotFoundException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
+        if (slug.equals("clear-cart")) {
+            clearCart(facade, user);
+        } else {
+            try {
+                Product product = getProductBySlug(facade, slug);
+                removeProductFromCart(facade, user, product.getSku());
+            } catch (ProductNotFoundException e) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
+            }
         }
     }
 

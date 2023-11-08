@@ -89,7 +89,7 @@ public class StorefrontFacade {
     private boolean isValidSlug(String input) {
         // Check if the slug is not null and its length is within the limit
         // Use a regular expression to check if the slug contains only lowercase letters, numbers, or dashes
-        return input != null && input.length() <= 100 && input.matches("^[a-z0-9-]*$");
+        return input != null && input.length() <= 100 && input.matches("^[a-z0-9-]*$") && !input.equals("clear-cart");
     }
 
     public Product getProduct(String sku) throws ProductNotFoundException {
