@@ -159,6 +159,10 @@ public class StorefrontFacade {
         orderDAO.createOrder(newOrder);
     }
 
+    public List<Order> getAllOrders() {
+        return orderDAO.getAllOrders();
+    }
+
     public List<Order> getOrders(User user) {
         return orderDAO.getOrders(user);
     }

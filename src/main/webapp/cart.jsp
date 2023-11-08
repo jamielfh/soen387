@@ -1,5 +1,6 @@
 <%@ page import="shop.models.Product" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="shop.models.CartProduct" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -28,14 +29,14 @@
     </thead>
     <tbody>
     <%
-      ArrayList<Product> productList = (ArrayList<Product>) request.getAttribute("items");
+      ArrayList<CartProduct> productList = (ArrayList<CartProduct>) request.getAttribute("items");
       if (productList != null && !productList.isEmpty()) {
         int index = 0; // To keep track of the index for unique identifiers
-        for (Product product : productList) {
+        for (CartProduct product : productList) {
     %>
     <tr>
       <th scope="row"><%= index + 1 %></th>
-      <td><%= product.getName() %></td>
+      <td><%= product.getProduct().getName() %></td>
       <td>
         <form action="" method="post" class="form-inline">
           <input type="hidden" name="id" value="<%= index + 1 %>" class="form-input">
@@ -47,10 +48,10 @@
           </div>
         </form>
       </td>
-      <td><%= product.getPrice() %></td>
+      <td><%= product.getProduct().getPrice() %></td>
       <td>
         <!-- Button that triggers the DELETE request using JavaScript -->
-        <button onclick="deleteProduct('<%= product.getSlug() %>')">Delete Product</button>
+        <button onclick="deleteProduct('<%= product.getProduct().getSlug() %>')">Delete Product</button>
       </td>
     </tr>
     <%

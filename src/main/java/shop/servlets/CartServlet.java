@@ -12,8 +12,10 @@ import shop.exceptions.CartNotFoundException;
 import shop.exceptions.ProductAlreadyInCartException;
 import shop.exceptions.ProductNotFoundException;
 import shop.exceptions.ProductNotFoundInCartException;
+import shop.models.CartProduct;
 import shop.models.Product;
 import shop.models.StorefrontFacade;
+import shop.models.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,10 +29,10 @@ public class CartServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        String user = request.getSession().getId();
+        User user = (User) context.getAttribute("user");
 
         // Request for the items in cart
-        List<Product> items = getCart(facade, user);
+        List<CartProduct> items = getCart(facade, user);
         request.setAttribute("items", items);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
         dispatcher.forward(request, response);
@@ -41,7 +43,7 @@ public class CartServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        String user = request.getSession().getId();
+        User user = (User) context.getAttribute("user");
 
         String slug = pathInfo.substring(1); // Removing leading "/"
         try {
@@ -50,8 +52,6 @@ public class CartServlet extends HttpServlet {
             response.sendRedirect("/cart/products/");
         } catch (ProductNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
-        } catch (ProductAlreadyInCartException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product already in cart");
         }
     }
 
@@ -61,7 +61,7 @@ public class CartServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        String user = request.getSession().getId();
+        User user = (User) context.getAttribute("user");
 
         String slug = pathInfo.substring(1); // Removing leading "/"
         try {
@@ -69,14 +69,10 @@ public class CartServlet extends HttpServlet {
             removeProductFromCart(facade, user, product.getSku());
         } catch (ProductNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
-        } catch (CartNotFoundException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Cart not found");
-        } catch (ProductNotFoundInCartException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found in cart");
         }
     }
 
-    private List<Product> getCart(StorefrontFacade facade, String user) {
+    private List<CartProduct> getCart(StorefrontFacade facade, User user) {
         // Get all products from the facade
         return facade.getCart(user);
     }
@@ -86,11 +82,19 @@ public class CartServlet extends HttpServlet {
         return facade.getProductBySlug(slug);
     }
 
-    private void addProductToCart(StorefrontFacade facade, String user, String sku) throws ProductNotFoundException, ProductAlreadyInCartException {
+    private void addProductToCart(StorefrontFacade facade, User user, String sku) {
         facade.addProductToCart(user, sku);
     }
 
-    private void removeProductFromCart(StorefrontFacade facade, String user, String sku) throws ProductNotFoundException, CartNotFoundException, ProductNotFoundInCartException {
+    private void removeProductFromCart(StorefrontFacade facade, User user, String sku) {
         facade.removeProductFromCart(user, sku);
+    }
+
+    private void setProductQuantityInCart(StorefrontFacade facade, User user, String sku, int quantity) {
+        facade.setProductQuantityInCart(user, sku, quantity);
+    }
+
+    private void clearCart(StorefrontFacade facade, User user) {
+        facade.clearCart(user);
     }
 }

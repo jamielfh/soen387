@@ -58,6 +58,30 @@ public class OrderDAO {
         }
     }
 
+    public List<Order> getAllOrders() {
+        List<Order> orders = new ArrayList<>();
+        String sql = "select * from order";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Order order = new Order(
+                        resultSet.getInt("id"),
+                        resultSet.getString("shipping_address"),
+                        resultSet.getString("tracking_num"),
+                        getUser(resultSet.getInt("user_id")),
+                        getOrderProducts(resultSet.getInt("id"))
+                );
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
     public List<Order> getOrders(User user) {
         List<Order> orders = new ArrayList<>();
         String sql = "select * from order where user_id = ?";
@@ -95,7 +119,7 @@ public class OrderDAO {
                     resultSet.getInt("id"),
                     resultSet.getString("shipping_address"),
                     resultSet.getString("tracking_num"),
-                    new User(1),
+                    getUser(resultSet.getInt("user_id")),
                     getOrderProducts(resultSet.getInt("id"))
             );
         } catch (SQLException e) {
@@ -124,6 +148,25 @@ public class OrderDAO {
         }
 
         return orderProducts;
+    }
+
+    public User getUser(int userId) {
+        User user = null;
+        String sql = "select * from user where id = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            user = new User(
+                    userId,
+                    resultSet.getBoolean("is_staff")
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
     public void shipOrder(int id, String trackingNumber) {
