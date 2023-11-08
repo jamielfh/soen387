@@ -3,6 +3,7 @@ package shop.models;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import shop.dao.ProductDAO;
+import shop.dao.UserDAO;
 import shop.exceptions.*;
 
 import java.util.HashMap;
@@ -153,8 +154,28 @@ public class StorefrontFacade {
     }
 
     public List<Product> getAllProducts() {
-        ProductDAO p = new ProductDAO();
-        return p.getAll();
+        return productDAO.getAll();
+    }
+
+    public void createUser(User user, String password) {
+        if (UserDAO.passwordExists(password)) {
+            return; // Error: password is not unique
+        }
+
+        if (UserDAO.idExists(user.getId())) {
+            return; // Error: id is not unique
+        }
+
+        UserDAO.add(user, password);
+    }
+
+    // Create user with auto-generated id, return the new id
+    public int createUser(Boolean is_staff, String password) {
+        if (UserDAO.passwordExists(password)) {
+            return -1; // Error: password is not unique
+        }
+
+         return UserDAO.add(is_staff, password);
     }
 
 }
