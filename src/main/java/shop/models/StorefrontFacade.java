@@ -2,20 +2,21 @@ package shop.models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import shop.dao.CartDAO;
+import shop.dao.OrderDAO;
 import shop.dao.ProductDAO;
 import shop.exceptions.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StorefrontFacade {
-    private Map<String, Cart> carts;
     private ProductDAO productDAO = new ProductDAO();
+    private CartDAO cartDAO = new CartDAO();
+    private OrderDAO orderDAO = new OrderDAO();
 
-    public StorefrontFacade() {
-        this.carts = new HashMap<String, Cart>();
-    }
+    public StorefrontFacade() {}
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
@@ -88,62 +89,32 @@ public class StorefrontFacade {
         throw new ProductNotFoundException();
     }
 
-    public void newUser(String user) {
+    /*public void newUser(String user) {
         this.carts.put(user, new Cart());
+    }*/
+
+    public List<CartProduct> getCart(User user) {
+        Cart cart = cartDAO.getCart(user);
+        if (cart != null) {
+            return cart.getCartProducts();
+        }
+        return new ArrayList<>();
     }
 
-    public List<Product> getCart(String user) {
-        Cart cart = this.carts.get(user);
-        // if no cart found, create a new cart
-        if (cart == null) {
-            newUser(user);
-            cart = this.carts.get(user);
-        }
-
-        // return list of products
-        return cart.getItems();
+    public void addProductToCart(User user, String sku) {
+        cartDAO.addProductToCart(user, sku);
     }
 
-    public void addProductToCart(String user, String sku) throws ProductNotFoundException, ProductAlreadyInCartException {
-        Cart userCart = this.carts.get(user);
-        // if no cart found, create a new cart
-        if (userCart == null) {
-            newUser(user);
-            userCart = this.carts.get(user);
-        }
-
-        // add product to cart
-        Product productToAdd = getProduct(sku);
-        List<Product> currentItems = userCart.getItems();
-        if (currentItems.contains(productToAdd)) {
-            throw new ProductAlreadyInCartException();
-        } else {
-            currentItems.add(productToAdd);
-        }
-
-        userCart.setItems(currentItems);
-        this.carts.put(user, userCart);
+    public void removeProductFromCart(User user, String sku) {
+        cartDAO.removeProductFromCart(user, sku);
     }
 
-    public void removeProductFromCart(String user, String sku) throws ProductNotFoundException, CartNotFoundException, ProductNotFoundInCartException {
-        Cart userCart = this.carts.get(user);
-        // if no cart found, throw CartNotFoundException
-        if (userCart == null) {
-            throw new CartNotFoundException();
-        }
+    public void setProductQuantityInCart(User user, String sku, int quantity) {
+        cartDAO.setProductQuantityInCart(user, sku, quantity);
+    }
 
-        // if cart found, find product in cart
-        Product productToRemove = getProduct(sku);
-        List<Product> currentItems = userCart.getItems();
-
-        if (currentItems.contains(productToRemove)) {
-            currentItems.remove(productToRemove);
-        } else {
-            throw new ProductNotFoundInCartException();
-        }
-
-        userCart.setItems(currentItems);
-        this.carts.put(user, userCart);
+    public void clearCart(User user) {
+        cartDAO.clearCart(user);
     }
 
     public String downloadProductCatalog() {
@@ -153,8 +124,33 @@ public class StorefrontFacade {
     }
 
     public List<Product> getAllProducts() {
-        ProductDAO p = new ProductDAO();
-        return p.getAll();
+        return productDAO.getAll();
+    }
+
+    public void createOrder(User user, String shippingAddress) {
+        List<CartProduct> cartProducts = getCart(user);
+        List<OrderProduct> orderProducts = cartProducts.stream()
+                .map(x -> new OrderProduct(x.getProduct(), x.getQuantity()))
+                .collect(Collectors.toList());
+
+        Order newOrder = new Order(shippingAddress, user, orderProducts);
+        orderDAO.createOrder(newOrder);
+    }
+
+    public List<Order> getOrders(User user) {
+        return orderDAO.getOrders(user);
+    }
+
+    public Order getOrder(User user, int id) throws UserDoesNotMatchOrderException {
+        Order order = orderDAO.getOrder(id);
+        if (user != null && user != order.getUser()) {
+            throw new UserDoesNotMatchOrderException();
+        }
+        return order;
+    }
+
+    public void shipOrder(int id, String trackingNumber) {
+        orderDAO.shipOrder(id, trackingNumber);
     }
 
 }
