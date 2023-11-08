@@ -166,6 +166,7 @@ public class StorefrontFacade {
 
         Order newOrder = new Order(shippingAddress, user, orderProducts);
         orderDAO.createOrder(newOrder);
+        clearCart(user);
     }
 
     public List<Order> getAllOrders() {

@@ -1,4 +1,5 @@
-
+<%@ page import="shop.models.Order" %>
+<%@ page import="shop.models.OrderProduct" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -17,37 +18,53 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
+            <%Order order = (Order) request.getAttribute("order");%>
             <h4 class="d-flex justify-content-between align-items -center-mb-3">
-                <span class="text-muted">Order ID</span>
-                <span>trackingNumber</span>
+                <span class="text-muted"><%=order.getId()%></span>
+                <span>
+                    <%
+                    String trackingNumber = order.getTrackingNumber() == null ? "-" : order.getTrackingNumber();
+                    %>
+                    <%=trackingNumber%>
+                </span>
             </h4>
             <ul class="list-group mb-3 sticky-top">
+                <%
+                    double totalPrice = 0.0;
+                    for (OrderProduct orderProduct : order.getOrderProducts()) {
+                %>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h5 class="my-0">Product Name</h5>
-                        <small class="text-muted">Product Description</small>
+                        <h5 class="my-0"><%=orderProduct.getProduct().getName()%></h5>
+                        <small class="text-muted"><%=orderProduct.getProduct().getDescription()%></small>
                     </div>
-                    <span class="text-muted">Price</span>
+                    <span class="text-muted"><%=orderProduct.getProduct().getPrice()%></span>
+                    <span class="text-muted"><%=orderProduct.getQuantity()%></span>
                 </li>
+                <%
+                        totalPrice += orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
+                    }
+                %>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total</span>
-                    <strong>Total Price</strong>
+                    <strong><%=totalPrice%></strong>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="row">
+    <!--div class="row">
         <div class="col-md-6 mb-3">
             <p>First Name</p>
         </div>
         <div class="col-md-6 mb-3">
             <p>Last Name</p>
         </div>
-    </div>
+    </div-->
     <div class="mb-3">
-        <p>Address</p>
+        <h5>Shipping Address</h5>
+        <p><%=order.getShippingAddress()%></p>
     </div>
-    <div class="row">
+    <!--div class="row">
         <div class="col-md-4 mb-4">
             <p>Country</p>
         </div>
@@ -58,7 +75,7 @@
             <p>Postal Code</p>
         </div>
 
-    </div>
+    </div-->
 
 </div>
 

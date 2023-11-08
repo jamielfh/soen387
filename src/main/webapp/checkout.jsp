@@ -1,4 +1,5 @@
-
+<%@ page import="shop.models.CartProduct" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -25,24 +26,47 @@
                 <span class="text-muted">Your Cart</span>
             </h4>
             <ul class="list-group mb-3 sticky-top">
+                <%
+                    ArrayList<CartProduct> productList = (ArrayList<CartProduct>) request.getAttribute("items");
+                    if (productList != null && !productList.isEmpty()) {
+                        double totalPrice = 0.0;
+                        for (CartProduct product : productList) {
+                %>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h5 class="my-0">Product Name</h5>
-                        <small class="text=muted">Product Description</small>
+                        <h5 class="my-0"><%=product.getProduct().getName()%></h5>
+                        <small class="text=muted"><%=product.getProduct().getDescription()%>></small>
                     </div>
-                    <span class="text-muted">2$</span>
+                    <div>
+                        <span class="text-muted"><%=product.getQuantity()%></span>
+                        <span class="text-muted">$<%=product.getProduct().getPrice()%></span>
+                    </div>
+
                 </li>
+                <%
+                        totalPrice += product.getProduct().getPrice() * product.getQuantity();
+                    }
+                %>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total</span>
-                    <strong>Total Price</strong>
+                    <strong><%=totalPrice%></strong>
                 </li>
+                <%
+                } else {
+                %>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    </z><h5 class="my-0">No items in cart.</h5>
+                </li>
+                <%
+                    }
+                %>
             </ul>
         </div>
 
         <div class="col-md-8 order-md-1">
             <h4>Billing Address</h4>
-            <form class="needs-validation" novalidate="">
-                <div class="row">
+            <form action="/orders/" method="post">
+                <!--div class="row">
                     <div class="col-md-6 mb-3">
                         <label>First Name</label>
                         <input type="text" class="form-control" placeholder="" required="required">
@@ -51,31 +75,29 @@
                         <label>Last Name</label>
                         <input type="text" class="form-control" placeholder="" required="required">
                     </div>
-                </div>
+                </div-->
                 <div class="mb-3">
                     <div class="input-group">
                         <label>Address
-                            <input type="text" class="form-control" placeholder="1111 street A" required="required">
+                            <input type="text" class="form-control" id="address" name="address" placeholder="1111 street A" required="required">
                         </label>
-
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-4">
                         <div class="input-group">
                             <label>Country
-                                <input type="text" class="form-control" placeholder="Canada" required="required">
+                                <input type="text" class="form-control" id="country" name="country" placeholder="Canada" required="required">
                             </label>
-
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label>City</label>
-                        <input type="text" class="form-control" placeholder="Montreal" required="required">
+                        <input type="text" class="form-control" id="city" name="city" placeholder="Montreal" required="required">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label>Postal Code</label>
-                        <input type="text" class="form-control" placeholder="1A1 2B2" required="required">
+                        <input type="text" class="form-control" id="postal" name="postal" placeholder="1A1 2B2" required="required">
                     </div>
                 </div>
                 <button class="btn btn-primary btn-block" type="submit">Place Order</button>

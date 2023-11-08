@@ -1,4 +1,5 @@
-
+<%@ page import="shop.models.Order" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -19,20 +20,44 @@
     <thead>
     <tr>
       <th>Order ID</th>
-      <th>Total</th>
       <th>Order Link</th>
       <th>Shipping Status</th>
       <th>Tracking Number</th>
     </tr>
     </thead>
     <tbody>
+    <%
+      ArrayList<Order> orderList = (ArrayList<Order>) request.getAttribute("orders");
+      if (orderList != null) {
+        for (Order order : orderList) {
+    %>
     <tr>
-      <td>OrderID</td>
-      <td>totalPrice</td>
-      <td>URL</td>
-      <td>Shipped</td>
-      <td>123456789</td>
+      <td><%=order.getId()%></td>
+      <td>
+        <a class="viewOrder" href="/orders/<%= order.getId()%>">View Order Details</a>
+      </td>
+      <td>
+        <%
+        String shippingStatus = order.getTrackingNumber() == null ? "Not shipped" : "Shipped";
+        %>
+        <%=shippingStatus%></td>
+      <td>
+        <%
+          String trackingNumber = order.getTrackingNumber() == null ? "-" : order.getTrackingNumber();
+        %>
+        <%=trackingNumber%>
+      </td>
     </tr>
+    <%
+      }
+    } else {
+    %>
+    <tr>
+      <td colspan="5">No orders.</td>
+    </tr>
+    <%
+      }
+    %>
     </tbody>
   </table>
 </div>
