@@ -16,7 +16,7 @@
 
 <div class="wrapper" id="login">
     <form method="post" action="<%= request.getContextPath() %>/login">
-        <h1>Staff Login</h1>
+        <h1>Login</h1>
         <div class="input-box">
             <input type="password" name="password" placeholder="Password" aria-label="Password" required><i class="bi bi-lock"></i>
 
@@ -28,7 +28,7 @@
             </div>
             <% } %>
         </div>
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btn">Log in</button>
     </form>
 </div>
 </body>

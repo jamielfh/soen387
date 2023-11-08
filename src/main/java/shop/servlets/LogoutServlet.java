@@ -11,10 +11,7 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        // Clear the staff session attribute
-        request.getSession().removeAttribute("staff");
-
-        // Redirect to the login page
+        request.getSession().invalidate();
         response.sendRedirect("/login");
     }
 }

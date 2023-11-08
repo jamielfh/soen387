@@ -15,6 +15,7 @@ import shop.exceptions.ProductSlugExistsException;
 import shop.exceptions.ProductSlugInvalidException;
 import shop.models.Product;
 import shop.models.StorefrontFacade;
+import shop.models.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,13 +28,12 @@ public class AdminServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
 
-        if (session == null || session.getAttribute("staff") == null ||
-                session.getAttribute("staff").equals(false)) {
+        if (session.getAttribute("user") == null || !((User) session.getAttribute("user")).isStaff()) {
             // Staff is not logged in, deny access
             response.sendError(HttpServletResponse.SC_FORBIDDEN,
-                    "Access denied. You must be logged in to view this resource.");
+                    "Access denied. You must be logged in to view this page.");
         } else if (pathInfo == null || pathInfo.equals("/")) {
             // Request for the admin product catalogue
             List<Product> products = getProducts(facade);
