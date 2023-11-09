@@ -197,6 +197,25 @@ public class StorefrontFacade {
         orderDAO.shipOrder(id, trackingNumber);
     }
 
+    // Merge the given user's cart to the given other cart
+    public void mergeCart(User user, List<CartProduct> otherCart) {
+
+        for (CartProduct product: otherCart) {
+            String sku = product.getProduct().getSku();
+            int newQuantity = product.getQuantity();
+            Integer oldQuantity = checkProductInCart(user, sku);
+
+            if (oldQuantity == null) {
+                cartDAO.addProductToCart(user, sku);
+                if (newQuantity > 1) {
+                    cartDAO.setProductQuantityInCart(user, sku, newQuantity);
+                }
+            } else if (oldQuantity < newQuantity) {
+                cartDAO.setProductQuantityInCart(user, sku, newQuantity);
+            }
+        }
+    }
+
 }
 
 
