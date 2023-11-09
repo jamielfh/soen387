@@ -20,22 +20,22 @@ public class StorefrontFacade {
 
     public StorefrontFacade() {}
 
-    public void createUser(User user, String password) {
+    public void createUser(User user, String password) throws PasswordExistsException, UserIdExistsException {
         if (UserDAO.passwordExists(password)) {
-            return; // Error: password is not unique
+            throw new PasswordExistsException();
         }
 
         if (UserDAO.idExists(user.getId())) {
-            return; // Error: id is not unique
+            throw new UserIdExistsException();
         }
 
         UserDAO.add(user, password);
     }
 
     // Create user with auto-generated id, return the new id
-    public int createUser(Boolean is_staff, String password) {
+    public int createUser(Boolean is_staff, String password) throws UserIdExistsException {
         if (UserDAO.passwordExists(password)) {
-            return -1; // Error: password is not unique
+            throw new UserIdExistsException();
         }
 
         return UserDAO.add(is_staff, password);
