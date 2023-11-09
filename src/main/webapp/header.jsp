@@ -46,7 +46,7 @@
                         <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/login">Login</a>
                     </li>
                     <li class="nav-item hidden" id="admin-button">
-                        <a class="nav-link" href="<%= request.getContextPath() %>/staff/staffHome.jsp">Admin</a>
+                        <a class="nav-link" href="<%= request.getContextPath() %>/admin/home">Admin</a>
                     </li>
                     <li class="nav-item hidden" id="logout-button">
                         <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/logout">Log out</a>

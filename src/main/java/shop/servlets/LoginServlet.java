@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
             request.getSession().setAttribute("user", new User(userId, isStaff));
 
             if (isStaff) {
-                response.sendRedirect("/admin");
+                response.sendRedirect("/admin/home");
             } else {
                 response.sendRedirect("/");
             }

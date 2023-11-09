@@ -41,7 +41,10 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("products", products);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/adminEdit.jsp");
             dispatcher.forward(request, response);
-        } else if (pathInfo.equals("/add-product")) {
+        } else if (pathInfo.equals("/home")) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/staffHome.jsp");
+            dispatcher.forward(request, response);
+        }else if (pathInfo.equals("/add-product")) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/addProduct.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -59,7 +62,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
