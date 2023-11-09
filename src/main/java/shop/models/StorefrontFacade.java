@@ -43,7 +43,7 @@ public class StorefrontFacade {
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
-        if (productDAO.getBySKU(sku) != null) {
+        if (productDAO.getBySku(sku) != null) {
             throw new ProductSkuExistsException();
         }
 
@@ -64,13 +64,13 @@ public class StorefrontFacade {
     public void updateProduct(String oldSku, String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
 
         // if no product found, throw ProductNotFoundException
-        Product oldProduct = productDAO.getBySKU(oldSku);
+        Product oldProduct = productDAO.getBySku(oldSku);
         if (oldProduct == null) {
             throw new ProductNotFoundException();
         }
 
         // validate if sku is unique
-        if (!oldSku.equals(sku) && productDAO.getBySKU(sku) != null) {
+        if (!oldSku.equals(sku) && productDAO.getBySku(sku) != null) {
             throw new ProductSkuExistsException();
         }
 
@@ -94,7 +94,7 @@ public class StorefrontFacade {
     }
 
     public Product getProduct(String sku) throws ProductNotFoundException {
-        Product product = productDAO.getBySKU(sku);
+        Product product = productDAO.getBySku(sku);
 
         // if no product found, throw ProductNotFoundException
         if (product == null) {

@@ -18,7 +18,7 @@ public class CartDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CartProduct cartProduct = new CartProduct(
-                        new ProductDAO().getBySKU(resultSet.getString("product_sku")),
+                        new ProductDAO().getBySku(resultSet.getString("product_sku")),
                         resultSet.getInt("qt")
                 );
                 cartProducts.add(cartProduct);

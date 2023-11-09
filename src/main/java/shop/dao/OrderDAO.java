@@ -2,7 +2,6 @@ package shop.dao;
 
 import shop.models.Order;
 import shop.models.OrderProduct;
-import shop.models.Product;
 import shop.models.User;
 import shop.util.DatabaseConnector;
 
@@ -140,7 +139,7 @@ public class OrderDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 OrderProduct orderProduct = new OrderProduct(
-                        new ProductDAO().getBySKU(resultSet.getString("product_sku")),
+                        new ProductDAO().getBySku(resultSet.getString("product_sku")),
                         resultSet.getInt("qt")
                 );
                 orderProducts.add(orderProduct);

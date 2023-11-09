@@ -9,35 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-    public Product getBySKU(String sku) {
-        Product product = null;
 
-        try (Connection connection = DatabaseConnector.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select * from product where sku = '" + sku + "'");
-            if (resultSet.next()) {
-                product = new Product(
-                        resultSet.getString("sku"),
-                        resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getString("vendor"),
-                        resultSet.getString("slug"),
-                        resultSet.getBigDecimal("price"),
-                        resultSet.getString("img_url"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return product;
+    public Product getBySku(String sku) {
+        String sql = "select * from product where sku = ?";
+        return getProduct(sku, sql);
     }
 
     public Product getBySlug(String slug) {
+        String sql = "select * from product where slug = ?";
+        return getProduct(slug, sql);
+    }
+
+    private Product getProduct(String param, String sql) {
         Product product = null;
 
         try (Connection connection = DatabaseConnector.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select * from product where slug = '" + slug + "'");
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, param);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 product = new Product(
                         resultSet.getString("sku"),
@@ -124,10 +113,7 @@ public class ProductDAO {
             statement.setString(7, oldSku);
 
             int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated == 0) {
-                return false;
-            }
-            return true;
+            return rowsUpdated != 0;
         } catch (SQLException e) {
            return false;
         }
