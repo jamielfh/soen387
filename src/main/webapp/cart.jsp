@@ -44,7 +44,7 @@
                       method="post" class="form-inline">
                     <input type="hidden" name="id" value="<%= index + 1 %>" class="form-input">
                     <div class="form-group d-sm-flex justify-content-sm-center">
-                        <input type="text" name="quantity" class="form-control" id="autoSizingInput"
+                        <input type="number" name="quantity" class="form-control" id="autoSizingInput"
                                value="<%= product.getQuantity() %>">
                     </div>
                 </form>
@@ -80,7 +80,7 @@
         </tbody>
     </table>
 
-    <a href="/cart/checkout">
+    <a href="</cart/checkout">
         <button class="btn btn-primary justify-content-center" type="submit">Place Order</button>
     </a>
 </div>
@@ -136,12 +136,4 @@
   }
 </script>
 
-  </table>
-
- </div>
-
-
-
-
-</body>
 </html>
