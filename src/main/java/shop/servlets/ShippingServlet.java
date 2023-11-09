@@ -7,19 +7,27 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import shop.exceptions.UserDoesNotMatchOrderException;
-import shop.models.CartProduct;
 import shop.models.Order;
 import shop.models.StorefrontFacade;
 import shop.models.User;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "ShippingServlet", value = "/shipping/*")
 public class ShippingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null || !((User) session.getAttribute("user")).isStaff()) {
+            // Staff is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this page.");
+            return;
+        }
+
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
@@ -38,7 +46,16 @@ public class ShippingServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null || !((User) session.getAttribute("user")).isStaff()) {
+            // Staff is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this page.");
+            return;
+        }
+
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();

@@ -7,10 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import shop.exceptions.ProductNotFoundException;
 import shop.exceptions.UserDoesNotMatchOrderException;
 import shop.models.Order;
-import shop.models.Product;
 import shop.models.StorefrontFacade;
 import shop.models.User;
 
@@ -26,6 +24,13 @@ public class OrderServlet extends HttpServlet {
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
         User user = (User) request.getSession().getAttribute("user");
+
+        if (user == null) {
+            // User is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this page.");
+            return;
+        }
 
         if (pathInfo == null || pathInfo.equals("/")) {
             // Request for the order list
@@ -63,7 +68,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         User user = (User) request.getSession().getAttribute("user");

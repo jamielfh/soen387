@@ -22,6 +22,14 @@ public class CheckoutServlet extends HttpServlet {
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         User user = (User) request.getSession().getAttribute("user");
 
+        if (user == null) {
+            // User is not logged in, redirect to login page with message
+            request.setAttribute("error", "You must log in to check out.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
         // Request for the items in cart
         List<CartProduct> items = getCart(facade, user);
         request.setAttribute("items", items);
