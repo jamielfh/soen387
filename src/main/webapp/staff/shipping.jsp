@@ -1,5 +1,6 @@
 <%@ page import="shop.models.Order" %>
 <%@ page import="shop.models.OrderProduct" %>
+<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -25,7 +26,7 @@
     <%Order order = (Order) request.getAttribute("order");%>
     <ul class="list-group mb-3 sticky-top">
         <%
-            double totalPrice = 0.0;
+            BigDecimal totalPrice = new BigDecimal(0);
             for (OrderProduct orderProduct : order.getOrderProducts()) {
         %>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -40,7 +41,7 @@
 
         </li>
         <%
-                totalPrice += orderProduct.getProduct().getPrice() * orderProduct.getQuantity();
+                totalPrice = totalPrice.add(orderProduct.getProduct().getPrice().multiply(new BigDecimal(orderProduct.getQuantity())));
             }
         %>
         <li class="list-group-item d-flex justify-content-between">

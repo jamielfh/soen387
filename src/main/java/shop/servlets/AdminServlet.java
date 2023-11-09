@@ -18,6 +18,7 @@ import shop.models.StorefrontFacade;
 import shop.models.User;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "AdminServlet", value = "/admin/*")
@@ -71,7 +72,7 @@ public class AdminServlet extends HttpServlet {
             String slug = request.getParameter("slug");
 
             try {
-                double price = Double.parseDouble(request.getParameter("price"));
+                BigDecimal price = new BigDecimal(request.getParameter("price"));
                 createProduct(facade, sku, name, description, vendor, slug, price);
                 response.sendRedirect("/products/" + slug);
             } catch (ProductSkuExistsException e) {
@@ -98,7 +99,7 @@ public class AdminServlet extends HttpServlet {
         return facade.getProductBySlug(slug);
     }
 
-    private void createProduct(StorefrontFacade facade, String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
+    private void createProduct(StorefrontFacade facade, String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // Create product in the facade
         facade.createProduct(sku, name, description, vendor, slug, price);
     }

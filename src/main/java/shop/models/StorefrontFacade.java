@@ -8,6 +8,7 @@ import shop.dao.ProductDAO;
 import shop.dao.UserDAO;
 import shop.exceptions.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class StorefrontFacade {
         return UserDAO.add(is_staff, password);
     }
 
-    public void createProduct(String sku, String name, String description, String vendor, String slug, double price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
+    public void createProduct(String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
         if (productDAO.getBySKU(sku) != null) {
             throw new ProductSkuExistsException();
@@ -60,7 +61,7 @@ public class StorefrontFacade {
         productDAO.add(newProduct);
     }
 
-    public void updateProduct(String oldSku, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
+    public void updateProduct(String oldSku, String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
 
         // if no product found, throw ProductNotFoundException
         Product oldProduct = productDAO.getBySKU(oldSku);

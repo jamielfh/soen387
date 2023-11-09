@@ -3,6 +3,7 @@ package shop.dao;
 import shop.models.Product;
 import shop.util.DatabaseConnector;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ProductDAO {
                         resultSet.getString("description"),
                         resultSet.getString("vendor"),
                         resultSet.getString("slug"),
-                        resultSet.getDouble("price"),
+                        resultSet.getBigDecimal("price"),
                         resultSet.getString("img_url"));
             }
         } catch (SQLException e) {
@@ -44,7 +45,7 @@ public class ProductDAO {
                         resultSet.getString("description"),
                         resultSet.getString("vendor"),
                         resultSet.getString("slug"),
-                        resultSet.getDouble("price"),
+                        resultSet.getBigDecimal("price"),
                         resultSet.getString("img_url"));
             }
         } catch (SQLException e) {
@@ -54,7 +55,7 @@ public class ProductDAO {
         return product;
     }
 
-    public boolean add(String sku, String name, String description, String vendor, String slug, Double price, String imageURL) {
+    public boolean add(String sku, String name, String description, String vendor, String slug, BigDecimal price, String imageURL) {
         String sql = "insert into product (sku, name, description, vendor, slug, price, img_url) values(?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnector.getConnection();
@@ -67,7 +68,7 @@ public class ProductDAO {
             statement.setString(7, imageURL);
 
             if (price != null) {
-                statement.setDouble(6, price);
+                statement.setBigDecimal(6, price);
             } else {
                 statement.setNull(6, Types.DECIMAL);
             }
@@ -96,7 +97,7 @@ public class ProductDAO {
                         resultSet.getString("description"),
                         resultSet.getString("vendor"),
                         resultSet.getString("slug"),
-                        resultSet.getDouble("price"),
+                        resultSet.getBigDecimal("price"),
                         resultSet.getString("img_url")
                 );
                 products.add(product);
@@ -108,7 +109,7 @@ public class ProductDAO {
         return products;
     }
 
-    public boolean update(String oldSku, String sku, String name, String description, String vendor, String slug, double price) {
+    public boolean update(String oldSku, String sku, String name, String description, String vendor, String slug, BigDecimal price) {
         String sql = "update product set name=?, description=?, vendor=?, slug=?, price=?, sku=? where sku=?";
 
         try (Connection connection = DatabaseConnector.getConnection();
@@ -118,7 +119,7 @@ public class ProductDAO {
             statement.setString(2, description);
             statement.setString(3, vendor);
             statement.setString(4, slug);
-            statement.setDouble(5, price);
+            statement.setBigDecimal(5, price);
             statement.setString(6, sku);
             statement.setString(7, oldSku);
 

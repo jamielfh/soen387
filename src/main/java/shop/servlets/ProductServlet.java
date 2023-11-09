@@ -16,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "ProductServlet", value = "/products/*")
@@ -62,7 +63,7 @@ public class ProductServlet extends HttpServlet {
         String newSlug = request.getParameter("slug");
 
         try {
-            double price = Double.parseDouble(request.getParameter("price"));
+            BigDecimal price = new BigDecimal(request.getParameter("price"));
             String oldSku = getProductBySlug(facade, oldSlug).getSku();
             updateProduct(facade, oldSku, sku, name, description, vendor, newSlug, price);
             response.sendRedirect("/admin");
@@ -89,7 +90,7 @@ public class ProductServlet extends HttpServlet {
         return facade.getProductBySlug(slug);
     }
 
-    private void updateProduct(StorefrontFacade facade, String oldSku, String sku, String name, String description, String vendor, String slug, double price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
+    private void updateProduct(StorefrontFacade facade, String oldSku, String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductNotFoundException, ProductSlugInvalidException, ProductSlugExistsException, ProductSkuExistsException {
         // Update product in the facade
         facade.updateProduct(oldSku, sku, name, description, vendor, slug, price);
     }

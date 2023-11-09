@@ -1,5 +1,6 @@
 <%@ page import="shop.models.CartProduct" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -29,22 +30,22 @@
                 <%
                     ArrayList<CartProduct> productList = (ArrayList<CartProduct>) request.getAttribute("items");
                     if (productList != null && !productList.isEmpty()) {
-                        double totalPrice = 0.0;
+                        BigDecimal totalPrice = new BigDecimal(0);
                         for (CartProduct product : productList) {
                 %>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h5 class="my-0"><%=product.getProduct().getName()%></h5>
                         <small class="text=muted"><%=product.getProduct().getDescription()%>></small>
+                        <p>Quantity: <%=product.getQuantity()%></p>
                     </div>
                     <div>
-                        <span class="text-muted"><%=product.getQuantity()%></span>
-                        <span class="text-muted">$<%=product.getProduct().getPrice()%></span>
+                        <span class="text-muted">$<%=product.getProduct().getPrice().multiply(new BigDecimal(product.getQuantity()))%></span>
                     </div>
 
                 </li>
                 <%
-                        totalPrice += product.getProduct().getPrice() * product.getQuantity();
+                        totalPrice = totalPrice.add(product.getProduct().getPrice().multiply(new BigDecimal(product.getQuantity())));
                     }
                 %>
                 <li class="list-group-item d-flex justify-content-between">

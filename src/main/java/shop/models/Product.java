@@ -1,6 +1,8 @@
 
 package shop.models;
 
+import java.math.BigDecimal;
+
 public class Product {
     private String sku;
     private String name;
@@ -8,12 +10,12 @@ public class Product {
     private String vendor;
     private String slug;
     private String imageURL;
-    private double price;
+    private BigDecimal price;
 
     public Product() {
     }
 
-    public Product(String sku, String name, String description, String vendor, String slug, double price) {
+    public Product(String sku, String name, String description, String vendor, String slug, BigDecimal price) {
         this.sku = sku;
         this.name = name;
         this.description = description;
@@ -25,7 +27,7 @@ public class Product {
         this.imageURL = "https://demofree.sirv.com/nope-not-here.jpg";
     }
 
-    public Product(String sku, String name, String description, String vendor, String slug, double price, String imageURL) {
+    public Product(String sku, String name, String description, String vendor, String slug, BigDecimal price, String imageURL) {
         this.sku = sku;
         this.name = name;
         this.description = description;
@@ -75,11 +77,11 @@ public class Product {
         this.slug = slug;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
