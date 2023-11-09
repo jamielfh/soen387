@@ -80,7 +80,7 @@
         </tbody>
     </table>
 
-    <a href="</cart/checkout">
+    <a href="/cart/checkout">
         <button class="btn btn-primary justify-content-center" type="submit">Place Order</button>
     </a>
 </div>
