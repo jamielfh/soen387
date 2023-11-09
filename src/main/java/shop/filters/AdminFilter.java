@@ -20,9 +20,7 @@ public class AdminFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         User user = (User) session.getAttribute("user");
 
-        /*if (session != null && session.getAttribute("staff") != null &&
-                session.getAttribute("staff").equals(true)) {*/
-        if (user.isStaff()) {
+        if (user != null && user.isStaff()) {
             // Staff is logged in, allow access
             chain.doFilter(request, response);
         } else {

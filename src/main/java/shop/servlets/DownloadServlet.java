@@ -1,29 +1,25 @@
 package shop.servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import shop.models.Product;
 import shop.models.StorefrontFacade;
+import shop.models.User;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "DownloadServlet", value = "/products/download")
 public class DownloadServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
 
-        if (session == null || session.getAttribute("staff") == null ||
-                session.getAttribute("staff").equals(false)) {
+        if (user == null || !user.isStaff()) {
             // Staff is not logged in, deny access
             response.sendError(HttpServletResponse.SC_FORBIDDEN,
                     "Access denied. You must be logged in to view this resource.");

@@ -1,6 +1,7 @@
 
 package shop.servlets;
 
+import jakarta.servlet.http.HttpSession;
 import shop.exceptions.ProductNotFoundException;
 import shop.exceptions.ProductSkuExistsException;
 import shop.exceptions.ProductSlugExistsException;
@@ -15,6 +16,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.RequestDispatcher;
+import shop.models.User;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -50,7 +53,17 @@ public class ProductServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null || !user.isStaff()) {
+            // Staff is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this page.");
+            return;
+        }
+
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();

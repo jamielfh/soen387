@@ -63,6 +63,15 @@ public class AdminServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null || !((User) session.getAttribute("user")).isStaff()) {
+            // Staff is not logged in, deny access
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You must be logged in to view this page.");
+            return;
+        }
+
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         String pathInfo = request.getPathInfo();
