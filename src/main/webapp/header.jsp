@@ -5,6 +5,7 @@
 
   function toggleStaffButtons() {
     if (isLoggedIn) {
+        document.getElementById("order-button").style.display = "block";
       document.getElementById("logout-button").style.display = "block";
       document.getElementById("login-button").style.display = "none";
     } else {
@@ -38,11 +39,14 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="<%= request.getContextPath() %>/products">Products</a>
                     </li>
+                    <li class="nav-item hidden" id="order-button">
+                        <a class="nav-link" aria-current="page" href="<%= request.getContextPath() %>/orders/">Orders</a>
+                    </li>
                     <li class="nav-item hidden" id="login-button">
                         <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/login">Login</a>
                     </li>
                     <li class="nav-item hidden" id="admin-button">
-                        <a class="nav-link" href="<%= request.getContextPath() %>/admin">Admin</a>
+                        <a class="nav-link" href="<%= request.getContextPath() %>/staff/staffHome.jsp">Admin</a>
                     </li>
                     <li class="nav-item hidden" id="logout-button">
                         <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/logout">Log out</a>

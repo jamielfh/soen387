@@ -35,17 +35,17 @@
         <div class="card-body">
             <h5 class="card-title">View All Orders</h5>
             <p class="card-text">To view all orders.</p>
-            <a href="<%= request.getContextPath() %>" class="btn btn-primary">View All Orders</a>
+            <a href="<%= request.getContextPath() %>/orders/" class="btn btn-primary">View All Orders</a>
         </div>
     </div>
 
-    <div class="card mb-3" style="width: 18rem;">
+    <!--div class="card mb-3" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">Ship an Order</h5>
             <p class="card-text">To ship out an order.</p>
             <a href="<%= request.getContextPath() %>" class="btn btn-primary">Ship Order</a>
         </div>
-    </div>
+    </div-->
 
 </div>
 </body>

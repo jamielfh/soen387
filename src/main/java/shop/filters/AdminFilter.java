@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import shop.models.User;
 
 // Restrict access to all URLs under the /staff directory to authenticated users only
 @WebFilter("/staff/*")
@@ -17,9 +18,11 @@ public class AdminFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         HttpSession session = httpRequest.getSession(false);
+        User user = (User) session.getAttribute("user");
 
-        if (session != null && session.getAttribute("staff") != null &&
-                session.getAttribute("staff").equals(true)) {
+        /*if (session != null && session.getAttribute("staff") != null &&
+                session.getAttribute("staff").equals(true)) {*/
+        if (user.isStaff()) {
             // Staff is logged in, allow access
             chain.doFilter(request, response);
         } else {
