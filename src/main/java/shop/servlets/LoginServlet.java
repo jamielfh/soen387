@@ -27,11 +27,11 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String enteredPassword = request.getParameter("password");
-        int userId = UserDAO.getIdForPassword(enteredPassword);
+        int userId = UserDAO.getUserFromPassword(enteredPassword).getId();
 
         if (userId != -1) {
             boolean isStaff = UserDAO.idIsStaff(userId);
-            User user = new User(userId, isStaff);
+            User user = new User(userId, isStaff, enteredPassword);
 
             // Merge user's cart with the past session cart if it exists
             List<CartProduct> pastCart = (List<CartProduct>) request.getSession().getAttribute("anonCart");

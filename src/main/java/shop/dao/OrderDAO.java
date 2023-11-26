@@ -69,7 +69,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        getUser(resultSet.getInt("user_id")),
+                        UserDAO.getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
                 orders.add(order);
@@ -119,7 +119,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        getUser(resultSet.getInt("user_id")),
+                        UserDAO.getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
             }
@@ -149,27 +149,6 @@ public class OrderDAO {
         }
 
         return orderProducts;
-    }
-
-    public User getUser(int userId) {
-        User user = null;
-        String sql = "select * from user where id = ?";
-
-        try (Connection connection = DatabaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(
-                        userId,
-                        resultSet.getBoolean("is_staff")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return user;
     }
 
     public void shipOrder(int id, String trackingNumber) {

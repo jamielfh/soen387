@@ -1,9 +1,7 @@
 package shop.dao;
 
-import com.google.gson.*;
 import shop.models.User;
 import shop.util.DatabaseConnector;
-import shop.util.JsonIO;
 
 import java.sql.*;
 
@@ -47,6 +45,105 @@ public class UserDAO {
         return false; // ID was not found
     }
 
+    public static User getUserFromId(int userId) {
+        User user = null;
+        String sql = "select * from user where id = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(
+                        userId,
+                        resultSet.getBoolean("is_staff"),
+                        resultSet.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    public static User getUserFromPassword(String password) {
+        User user = null;
+        String sql = "select * from user where password = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getBoolean("is_staff"),
+                        password
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    public static boolean passwordExists(String password) {
+        return getUserFromPassword(password) != null;
+    }
+
+    public static int createUser(boolean isStaff, String password) {
+        String sql = "insert into user (isStaff, password) values(?, ?)";
+        String sql2 = "SELECT LAST_INSERT_ID()";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             Statement statement2 = connection.createStatement()) {
+            statement.setBoolean(1, isStaff);
+            statement.setString(2, password);
+
+            statement.executeUpdate();
+            ResultSet resultSet = statement2.executeQuery(sql2);
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static void setPassword(User user, String password) {
+        String sql = "update user set password = ? where id = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, password);
+            statement.setInt(2, user.getId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void changePermission(User user, boolean isStaff) {
+        String sql = "update user set isStaff = ? where id = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, isStaff);
+            statement.setInt(2, user.getId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
     public static int getIdForPassword(String password) {
         JsonObject jsonData = JsonIO.readJson(JsonIO.getPasswordsPath());
         if (jsonData == null) {
@@ -65,10 +162,6 @@ public class UserDAO {
         }
 
         return -1; // Password not found
-    }
-
-    public static boolean passwordExists(String password) {
-        return getIdForPassword(password) != -1;
     }
 
     // Add user info to both the database and JSON file
@@ -150,4 +243,5 @@ public class UserDAO {
         // Write the updated JSON data back to the file
         JsonIO.writeJson(passwordsFile, jsonData);
     }
+    */
 }

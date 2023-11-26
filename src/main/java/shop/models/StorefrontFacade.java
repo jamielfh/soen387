@@ -20,18 +20,39 @@ public class StorefrontFacade {
 
     public StorefrontFacade() {}
 
-    public void createUser(User user, String password) throws PasswordExistsException, UserIdExistsException {
+    public void createUser(User user, boolean isStaff, String password) throws PasswordExistsException, UserIdExistsException, PasswordInvalidException {
         if (UserDAO.passwordExists(password)) {
             throw new PasswordExistsException();
+        }
+
+        if (!isValidPassword(password)) {
+            throw new PasswordInvalidException();
         }
 
         if (UserDAO.idExists(user.getId())) {
             throw new UserIdExistsException();
         }
 
-        UserDAO.add(user, password);
+        UserDAO.createUser(isStaff, password);
     }
 
+    public void setPassword(User user, String password) throws PasswordExistsException, PasswordInvalidException {
+        if (UserDAO.passwordExists(password)) {
+            throw new PasswordExistsException();
+        }
+
+        if (!isValidPassword(password)) {
+            throw new PasswordInvalidException();
+        }
+
+        UserDAO.setPassword(user, password);
+    }
+
+    public void changePermission(User user, String role) {
+        UserDAO.changePermission(user, role.equals("staff"));
+    }
+
+    /*
     // Create user with auto-generated id, return the new id
     public int createUser(Boolean is_staff, String password) throws UserIdExistsException {
         if (UserDAO.passwordExists(password)) {
@@ -39,6 +60,13 @@ public class StorefrontFacade {
         }
 
         return UserDAO.add(is_staff, password);
+    }
+     */
+
+    private boolean isValidPassword(String input) {
+        // Check if the password is not null and at least 4 characters
+        // Use a regular expression to check if the password contains only alphanumeric characters
+        return input != null && input.length() >= 4 && input.matches("^[a-zA-Z0-9]*$");
     }
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
