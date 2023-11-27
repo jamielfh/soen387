@@ -39,5 +39,21 @@
         </div>
     </div>
 
+    <div class="card mb-3" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Privilege Setting</h5>
+            <p class="card-text">To view all orders, view specific order details, and to ship orders.</p>
+            <a href="<%= request.getContextPath() %>" class="btn btn-primary">Go to Role Settings</a>
+        </div>
+    </div>
+
+    <div class="card mb-3" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Change Password</h5>
+            <p class="card-text">To view all orders, view specific order details, and to ship orders.</p>
+            <a href="<%= request.getContextPath() %>" class="btn btn-primary">Change Password</a>
+        </div>
+    </div>
+
 </div>
 </body>
