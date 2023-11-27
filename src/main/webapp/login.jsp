@@ -29,6 +29,13 @@
             <% } %>
         </div>
         <button type="submit" class="btn">Log in</button>
+        <div>
+            <a href="setPassword.jsp">New User? Set your password here</a>
+        </div>
+        <div>
+            <a href="changePassword.jsp">Change your password here</a>
+        </div>
+
     </form>
 </div>
 </body>
