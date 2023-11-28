@@ -12,23 +12,23 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="header.jsp" />
 
-<!--Set Password-->
-<h1 style="padding-left: 250px">Set your Password</h1>
+<!--Claim Order Page-->
+<h1 style="padding-left: 250px">Claim Order</h1>
 
 <div class="wrapper">
     <form method="post">
+        <h4>Claim your order ID with your password</h4>
         <div class="input-box">
-            <label style="font-size: larger">Username<input type="text" placeholder="Jane Doe" required></label>
+            <label>Enter your Order ID<input type="text" placeholder="123456" required></label>
         </div>
         <div class="input-box">
-            <label style="font-size: larger">New Password<input type="password" required></label>
+            <label>Enter your Username<input type="text" placeholder="Jane Doe" required></label>
         </div>
         <div class="input-box">
-            <label style="font-size: larger">Confirm Password<input type="password" required></label>
+            <label>Enter your password<input type="password" required></label>
         </div>
-        <button type="submit" class="btn">Submit</button>
+        <button type="submit" class="btn">Claim Order</button>
     </form>
 </div>
-
 
 </body>
