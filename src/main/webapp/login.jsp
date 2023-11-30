@@ -33,9 +33,6 @@
             <br>
             <a href="<%= request.getContextPath() %>/passcode/set">New User? Set your passcode here</a>
         </div>
-        <div>
-            <a href="<%= request.getContextPath() %>/passcode/change">Change your passcode here</a>
-        </div>
 
     </form>
 </div>

@@ -6,17 +6,18 @@
   function toggleStaffButtons() {
     if (isLoggedIn) {
         document.getElementById("order-button").style.display = "block";
-      document.getElementById("logout-button").style.display = "block";
-      document.getElementById("login-button").style.display = "none";
+        document.getElementById("change-passcode-button").style.display = "block";
+        document.getElementById("logout-button").style.display = "block";
+        document.getElementById("login-button").style.display = "none";
     } else {
-      document.getElementById("logout-button").style.display = "none";
-      document.getElementById("login-button").style.display = "block";
+        document.getElementById("logout-button").style.display = "none";
+        document.getElementById("login-button").style.display = "block";
     }
 
     if (isStaff) {
-      document.getElementById("admin-button").style.display = "block";
+        document.getElementById("admin-button").style.display = "block";
     } else {
-      document.getElementById("admin-button").style.display = "none";
+        document.getElementById("admin-button").style.display = "none";
     }
   }
 
@@ -48,8 +49,11 @@
                     <li class="nav-item hidden" id="admin-button">
                         <a class="nav-link" href="<%= request.getContextPath() %>/admin/home">Admin</a>
                     </li>
+                    <li class="nav-item hidden" id="change-passcode-button">
+                        <a class="nav-link" href="<%= request.getContextPath() %>/passcode/change">Change Passcode</a>
+                    </li>
                     <li class="nav-item hidden" id="logout-button">
-                        <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/logout">Log out</a>
+                        <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/logout">Logout</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">

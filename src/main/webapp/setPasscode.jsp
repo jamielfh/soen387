@@ -40,7 +40,7 @@
     </form>
     <br>
     <div>
-        <a href="<%= request.getContextPath() %>/passcode/change">Existing user? Change your passcode here instead</a>
+        <a href="<%= request.getContextPath() %>/login">Existing user? Login here instead</a>
     </div>
 </div>
 
