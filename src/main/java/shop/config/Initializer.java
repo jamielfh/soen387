@@ -18,7 +18,7 @@ public class Initializer implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             // Explicitly register the jdbc driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -17,19 +17,7 @@ public class JsonIO {
     }
 
     public static String getDbUrl() {
-        return dbInfo.get("db_url").getAsString();
-    }
-
-    public static String getDbUser() {
-        return dbInfo.get("db_user").getAsString();
-    }
-
-    public static String getDbPw() {
-        return dbInfo.get("db_password").getAsString();
-    }
-
-    public static String getPasswordsPath() {
-        return dbInfo.get("passwords_path").getAsString();
+        return "jdbc:sqlite:" + dbInfo.get("db_path").getAsString();
     }
 
     public static String getConfigFileName() {

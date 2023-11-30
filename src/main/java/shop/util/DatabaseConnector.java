@@ -7,7 +7,7 @@ public class DatabaseConnector {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(JsonIO.getDbUrl(), JsonIO.getDbUser(), JsonIO.getDbPw());
+            return DriverManager.getConnection(JsonIO.getDbUrl());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
