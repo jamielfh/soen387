@@ -20,23 +20,15 @@ public class StorefrontFacade {
 
     public StorefrontFacade() {}
 
-    public void createUser(User user, boolean isStaff, String passcode) throws PasscodeExistsException, UserIdExistsException, PasscodeInvalidException {
-        if (UserDAO.passcodeExists(passcode)) {
-            throw new PasscodeExistsException();
+    public User getUserFromId(int id) throws UserIdDoesNotExistException {
+        User user = UserDAO.getUserFromId(id);
+        if (user == null) {
+            throw new UserIdDoesNotExistException();
         }
-
-        if (!isValidPasscode(passcode)) {
-            throw new PasscodeInvalidException();
-        }
-
-        if (UserDAO.idExists(user.getId())) {
-            throw new UserIdExistsException();
-        }
-
-        UserDAO.createUser(isStaff, passcode);
+        return user;
     }
 
-    public void setPasscode(User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+    public int createUser(boolean isStaff, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
         if (UserDAO.passcodeExists(passcode)) {
             throw new PasscodeExistsException();
         }
@@ -45,7 +37,19 @@ public class StorefrontFacade {
             throw new PasscodeInvalidException();
         }
 
-        UserDAO.setPasscode(user, passcode);
+        return UserDAO.createUser(isStaff, passcode);
+    }
+
+    public void changePasscode(User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+        if (UserDAO.passcodeExists(passcode)) {
+            throw new PasscodeExistsException();
+        }
+
+        if (!isValidPasscode(passcode)) {
+            throw new PasscodeInvalidException();
+        }
+
+        UserDAO.changePasscode(user, passcode);
     }
 
     public void changePermission(User user, String role) {

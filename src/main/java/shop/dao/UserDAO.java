@@ -95,7 +95,7 @@ public class UserDAO {
 
     public static int createUser(boolean isStaff, String passcode) {
         String sql = "insert into user (is_staff, passcode) values(?, ?)";
-        String sql2 = "SELECT LAST_INSERT_ID()";
+        String sql2 = "SELECT last_insert_rowid()";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -115,7 +115,7 @@ public class UserDAO {
         return -1;
     }
 
-    public static void setPasscode(User user, String passcode) {
+    public static void changePasscode(User user, String passcode) {
         String sql = "update user set passcode = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
