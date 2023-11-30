@@ -20,10 +20,18 @@ public class StorefrontFacade {
 
     public StorefrontFacade() {}
 
-    public User getUserFromId(int id) throws UserIdDoesNotExistException {
+    public User getUserFromId(int id) throws UserDoesNotExistException {
         User user = UserDAO.getUserFromId(id);
         if (user == null) {
-            throw new UserIdDoesNotExistException();
+            throw new UserDoesNotExistException();
+        }
+        return user;
+    }
+
+    public User getUserFromPasscode(String passcode) throws UserDoesNotExistException {
+        User user = UserDAO.getUserFromPasscode(passcode);
+        if (user == null) {
+            throw new UserDoesNotExistException();
         }
         return user;
     }

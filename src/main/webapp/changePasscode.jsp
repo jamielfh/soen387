@@ -16,17 +16,31 @@
 <h1 style="padding-left: 250px">Change your Passcode</h1>
 
 <div class="wrapper">
-  <form method="post">
-    <div class="input-box">
-      <label style="font-size: larger">Old Passcode<input type="password" required></label>
+  <form method="post" action="<%= request.getContextPath() %>/passcode/change">
+    <h5>Passcode requirements:</h5>
+    <div>Passcode must be at least 4 characters long.</div>
+    <div>Passcode must contain alphanumerical characters only.</div>
+    <br>
+    <!-- Display success or error message -->
+    <% String message = (String)request.getAttribute("message"); %>
+    <% if (message != null) { %>
+    <div class="error-message" style="color:red">
+      <%= message %>
     </div>
+    <% } %>
     <div class="input-box">
-      <label style="font-size: larger">New Passcode<input type="password" required></label>
+      <label style="font-size: larger">Old Passcode: <input type="password" name="oldPasscode" required></label>
     </div>
+    <br>
     <div class="input-box">
-      <label style="font-size: larger">Confirm Passcode<input type="password" required></label>
+      <label style="font-size: larger">New Passcode: <input type="password" name="newPasscode" required></label>
     </div>
-    <button type="submit" class="btn">Submit</button>
+    <br>
+    <div class="input-box">
+      <label style="font-size: larger">Confirm Passcode: <input type="password" name="confirmPasscode" required></label>
+    </div>
+    <br>
+    <button type="submit">Submit</button>
   </form>
 </div>
 

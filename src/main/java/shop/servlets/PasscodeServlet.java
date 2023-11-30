@@ -7,17 +7,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import shop.dao.UserDAO;
 import shop.exceptions.PasscodeExistsException;
 import shop.exceptions.PasscodeInvalidException;
-import shop.exceptions.UserIdDoesNotExistException;
-import shop.exceptions.UserIdExistsException;
-import shop.models.CartProduct;
+import shop.exceptions.UserDoesNotExistException;
 import shop.models.StorefrontFacade;
 import shop.models.User;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/passcode/*")
 public class PasscodeServlet extends HttpServlet {
@@ -63,7 +59,7 @@ public class PasscodeServlet extends HttpServlet {
                 request.setAttribute("message", "Passcode set successfully.");
             } catch (PasscodeExistsException | PasscodeInvalidException e) {
                 request.setAttribute("message", e.getMessage());
-            } catch (UserIdDoesNotExistException e) {
+            } catch (UserDoesNotExistException e) {
                 request.setAttribute("message", "Failed to set passcode. Please try again.");
             } finally {
                 dispatcher = request.getRequestDispatcher("/setPasscode.jsp");
@@ -71,16 +67,46 @@ public class PasscodeServlet extends HttpServlet {
             }
         } else {
             // Change passcode function
-            dispatcher = request.getRequestDispatcher("/changePasscode.jsp");
+            String oldPasscode = request.getParameter("oldPasscode");
+            String newPasscode = request.getParameter("newPasscode");
+            String confirmPasscode = request.getParameter("confirmPasscode");
+
+            if (!newPasscode.equals(confirmPasscode)) {
+                request.setAttribute("message", "New and confirm passcodes do not match. Please try again.");
+                dispatcher = request.getRequestDispatcher("/changePasscode.jsp");
+                dispatcher.forward(request, response);
+            }
+
+            try {
+                User user = getUserFromPasscode(facade, oldPasscode);
+                changePasscode(facade, user, newPasscode);
+                request.setAttribute("message", "Passcode changed successfully.");
+            } catch (UserDoesNotExistException e) {
+                request.setAttribute("message", "Old passcode does not match any user. Please set passcode instead.");
+            } catch (PasscodeExistsException e) {
+                request.setAttribute("message", "This passcode has been taken by another user. Please use a different passcode.");
+            } catch (PasscodeInvalidException e) {
+                request.setAttribute("message", e.getMessage());
+            } finally {
+                dispatcher = request.getRequestDispatcher("/changePasscode.jsp");
+                dispatcher.forward(request, response);
+            }
         }
-        dispatcher.forward(request, response);
     }
 
     private int setPasscode(StorefrontFacade facade, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
         return facade.createUser(false, passcode);
     }
 
-    private User getUserFromId(StorefrontFacade facade, int userId) throws UserIdDoesNotExistException {
+    private User getUserFromId(StorefrontFacade facade, int userId) throws UserDoesNotExistException {
         return facade.getUserFromId(userId);
+    }
+
+    private User getUserFromPasscode(StorefrontFacade facade, String passcode) throws UserDoesNotExistException {
+        return facade.getUserFromPasscode(passcode);
+    }
+
+    private void changePasscode(StorefrontFacade facade, User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+        facade.changePasscode(user, passcode);
     }
 }
