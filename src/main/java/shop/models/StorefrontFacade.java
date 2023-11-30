@@ -36,7 +36,7 @@ public class StorefrontFacade {
         return user;
     }
 
-    public int createUser(boolean isStaff, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+    public int setPasscode(User user, boolean isStaff, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
         if (UserDAO.passcodeExists(passcode)) {
             throw new PasscodeExistsException();
         }

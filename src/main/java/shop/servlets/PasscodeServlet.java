@@ -95,7 +95,7 @@ public class PasscodeServlet extends HttpServlet {
     }
 
     private int setPasscode(StorefrontFacade facade, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
-        return facade.createUser(false, passcode);
+        return facade.setPasscode(null, false, passcode);
     }
 
     private User getUserFromId(StorefrontFacade facade, int userId) throws UserDoesNotExistException {
