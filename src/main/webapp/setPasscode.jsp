@@ -38,6 +38,10 @@
         <br>
         <button type="submit">Submit</button>
     </form>
+    <br>
+    <div>
+        <a href="<%= request.getContextPath() %>/passcode/change">Existing user? Change your passcode here instead</a>
+    </div>
 </div>
 
 
