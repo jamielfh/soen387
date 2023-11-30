@@ -15,6 +15,12 @@
 
 <!--Customer View All Orders-->
 <h1>All Orders</h1>
+<% String message = (String)request.getAttribute("message"); %>
+<% if (message != null) { %>
+<div class="error-message" style="color:red">
+  <%= message %>
+</div>
+<% } %>
 <div class="container">
   <table class="table table-loght">
     <thead>
@@ -60,5 +66,8 @@
     %>
     </tbody>
   </table>
+  <a href="<%= request.getContextPath() %>/orders/claim">
+    <button class="btn btn-primary justify-content-center" type="submit">Claim Order</button>
+  </a>
 </div>
 </body>

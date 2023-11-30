@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import shop.models.Cart;
 import shop.models.CartProduct;
 import shop.models.StorefrontFacade;
 import shop.models.User;
@@ -21,17 +22,15 @@ public class CheckoutServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         StorefrontFacade facade = (StorefrontFacade) context.getAttribute("storefrontFacade");
         User user = (User) request.getSession().getAttribute("user");
+        List<CartProduct> items;
 
         if (user == null) {
-            // User is not logged in, redirect to login page with message
-            request.setAttribute("error", "You must log in to check out.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request, response);
-            return;
+            // User is not logged in, check out anonymously
+            items = (List<CartProduct>) request.getSession().getAttribute("anonCart");
+        } else {
+            items = getCart(facade, user);
         }
 
-        // Request for the items in cart
-        List<CartProduct> items = getCart(facade, user);
         request.setAttribute("items", items);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/checkout.jsp");
         dispatcher.forward(request, response);

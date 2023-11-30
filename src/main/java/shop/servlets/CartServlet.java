@@ -44,6 +44,7 @@ public class CartServlet extends HttpServlet {
         }
 
         request.setAttribute("items", items);
+        request.setAttribute("message", request.getParameter("message"));
         RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
         dispatcher.forward(request, response);
     }

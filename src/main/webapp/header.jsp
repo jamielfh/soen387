@@ -47,10 +47,10 @@
                         <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/login">Login</a>
                     </li>
                     <li class="nav-item hidden" id="admin-button">
-                        <a class="nav-link" href="<%= request.getContextPath() %>/admin/home">Admin</a>
+                        <a class="nav-link" aria-current="page" href="<%= request.getContextPath() %>/admin/home">Admin</a>
                     </li>
                     <li class="nav-item hidden" id="change-passcode-button">
-                        <a class="nav-link" href="<%= request.getContextPath() %>/passcode/change">Change Passcode</a>
+                        <a class="nav-link" aria-current="page" href="<%= request.getContextPath() %>/passcode/change">Change Passcode</a>
                     </li>
                     <li class="nav-item hidden" id="logout-button">
                         <a class="nav-link"  aria-current="page" href="<%= request.getContextPath() %>/logout">Logout</a>

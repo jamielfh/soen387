@@ -40,7 +40,7 @@
       <label style="font-size: larger">Confirm Passcode: <input type="password" name="confirmPasscode" required></label>
     </div>
     <br>
-    <button type="submit">Submit</button>
+    <button class="btn btn-primary justify-content-center" type="submit">Submit</button>
   </form>
 </div>
 

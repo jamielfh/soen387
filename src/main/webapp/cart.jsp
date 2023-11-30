@@ -16,6 +16,13 @@
 
 <!--CART PAGE-->
 <h2>Your Shopping Cart</h2>
+<!-- Display cart checkout success message for anonymous users -->
+<% String message = (String)request.getAttribute("message"); %>
+<% if (message != null) { %>
+<div class="error-message" style="color:red">
+    <%= message %>
+</div>
+<% } %>
 <div class="container">
     <table class="table table-loght">
         <thead>

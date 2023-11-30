@@ -13,21 +13,22 @@
 <jsp:include page="header.jsp" />
 
 <!--Claim Order Page-->
-<h1 style="padding-left: 250px">Claim Order</h1>
-
+<h1>Claim Order</h1>
+<!-- Display error message -->
+<% String message = (String)request.getAttribute("message"); %>
+<% if (message != null) { %>
+<div class="error-message" style="color:red">
+    <%= message %>
+</div>
+<% } %>
 <div class="wrapper">
     <form method="post">
-        <h4>Claim your order ID with your passcode</h4>
+        <br>
         <div class="input-box">
-            <label>Enter your Order ID<input type="text" placeholder="123456" required></label>
+            <label>Enter your Order ID: <input type="text" name="orderId" placeholder="123456" required></label>
         </div>
-        <div class="input-box">
-            <label>Enter your Username<input type="text" placeholder="Jane Doe" required></label>
-        </div>
-        <div class="input-box">
-            <label>Enter your passcode<input type="password" required></label>
-        </div>
-        <button type="submit" class="btn">Claim Order</button>
+        <br>
+        <button class="btn btn-primary justify-content-center" type="submit">Claim Order</button>
     </form>
 </div>
 

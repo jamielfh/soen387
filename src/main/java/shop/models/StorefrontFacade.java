@@ -210,6 +210,15 @@ public class StorefrontFacade {
         clearCart(user);
     }
 
+    public int createAnonymousOrder(List<CartProduct> cartProducts, String shippingAddress) {
+        List<OrderProduct> orderProducts = cartProducts.stream()
+                .map(x -> new OrderProduct(x.getProduct(), x.getQuantity()))
+                .collect(Collectors.toList());
+
+        Order newOrder = new Order(shippingAddress, null, orderProducts);
+        return orderDAO.createOrder(newOrder);
+    }
+
     public List<Order> getAllOrders() {
         return orderDAO.getAllOrders();
     }
@@ -224,6 +233,20 @@ public class StorefrontFacade {
             throw new UserDoesNotMatchOrderException();
         }
         return order;
+    }
+
+    public void claimOrder(User user, int id) throws OrderAlreadyClaimedException, OrderDoesNotExistException {
+        Order order = orderDAO.getOrder(id);
+
+        if (order == null) {
+            throw new OrderDoesNotExistException();
+        }
+
+        if (order.getUser() != null) {
+            throw new OrderAlreadyClaimedException();
+        }
+
+        orderDAO.claimOrder(id, user);
     }
 
     public void shipOrder(int id, String trackingNumber) {

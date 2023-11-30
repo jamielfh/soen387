@@ -11,35 +11,39 @@ import java.util.List;
 
 public class OrderDAO {
 
-    public void createOrder(Order order) {
+    public int createOrder(Order order) {
         String sql = "insert into `order` (user_id, shipping_address, tracking_num) values(?, ?, ?)";
+        String sql2 = "SELECT last_insert_rowid()";
 
         try (Connection connection = DatabaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, order.getUser().getId());
+             PreparedStatement statement = connection.prepareStatement(sql);
+             Statement statement2 = connection.createStatement()) {
+            if (order.getUser() == null) {
+                statement.setNull(1, Types.INTEGER);
+            } else {
+                statement.setInt(1, order.getUser().getId());
+            }
             statement.setString(2, order.getShippingAddress());
             statement.setNull(3, Types.VARCHAR);
 
-            // Execute the insert statement
-            int affectedRows = statement.executeUpdate();
+            statement.executeUpdate();
             int orderId = 0;
 
-            if (affectedRows > 0) {
-                // Retrieve the auto-incremented ID
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        orderId = generatedKeys.getInt(1);
-                    }
-                }
+            ResultSet resultSet = statement2.executeQuery(sql2);
+
+            if (resultSet.next()) {
+                orderId = resultSet.getInt(1);
             }
 
             for (OrderProduct orderProduct : order.getOrderProducts()) {
                 createOrderProduct(orderId, orderProduct);
             }
 
+            return orderId;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public void createOrderProduct(int orderId, OrderProduct orderProduct) {
@@ -149,6 +153,20 @@ public class OrderDAO {
         }
 
         return orderProducts;
+    }
+
+    public void claimOrder(int id, User user) {
+        String sql = "update `order` set user_id = ? where id = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, user.getId());
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void shipOrder(int id, String trackingNumber) {

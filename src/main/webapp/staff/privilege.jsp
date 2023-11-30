@@ -37,7 +37,7 @@
             <td>
                 <form method="post">
                     <input type="hidden" name="userId" value="<%=staff.getId()%>">
-                    <button type="submit" class="btn" style="background-color: lightgrey">Remove Staff Access</button>
+                    <button class="btn btn-primary justify-content-center" type="submit">Remove Staff Access</button>
                 </form>
             </td>
         </tr>
@@ -75,7 +75,7 @@
             <td>
                 <form method="post">
                     <input type="hidden" name="userId" value="<%=customer.getId()%>">
-                    <button type="submit" class="btn" style="background-color: lightgrey">Grant Staff Access</button>
+                    <button class="btn btn-primary justify-content-center" type="submit">Grant Staff Access</button>
                 </form>
             </td>
         </tr>
