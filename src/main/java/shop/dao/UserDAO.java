@@ -67,19 +67,19 @@ public class UserDAO {
         return user;
     }
 
-    public static User getUserFromPassword(String password) {
+    public static User getUserFromPasscode(String passcode) {
         User user = null;
         String sql = "select * from user where passcode = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, password);
+            statement.setString(1, passcode);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User(
                         resultSet.getInt("id"),
                         resultSet.getBoolean("is_staff"),
-                        password
+                        passcode
                 );
             }
         } catch (SQLException e) {
@@ -89,11 +89,11 @@ public class UserDAO {
         return user;
     }
 
-    public static boolean passwordExists(String password) {
-        return getUserFromPassword(password) != null;
+    public static boolean passcodeExists(String passcode) {
+        return getUserFromPasscode(passcode) != null;
     }
 
-    public static int createUser(boolean isStaff, String password) {
+    public static int createUser(boolean isStaff, String passcode) {
         String sql = "insert into user (is_staff, passcode) values(?, ?)";
         String sql2 = "SELECT LAST_INSERT_ID()";
 
@@ -101,7 +101,7 @@ public class UserDAO {
              PreparedStatement statement = connection.prepareStatement(sql);
              Statement statement2 = connection.createStatement()) {
             statement.setBoolean(1, isStaff);
-            statement.setString(2, password);
+            statement.setString(2, passcode);
 
             statement.executeUpdate();
             ResultSet resultSet = statement2.executeQuery(sql2);
@@ -115,12 +115,12 @@ public class UserDAO {
         return -1;
     }
 
-    public static void setPassword(User user, String password) {
+    public static void setPasscode(User user, String passcode) {
         String sql = "update user set passcode = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, password);
+            statement.setString(1, passcode);
             statement.setInt(2, user.getId());
 
             statement.executeUpdate();

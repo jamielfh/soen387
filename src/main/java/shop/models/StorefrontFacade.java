@@ -20,32 +20,32 @@ public class StorefrontFacade {
 
     public StorefrontFacade() {}
 
-    public void createUser(User user, boolean isStaff, String password) throws PasswordExistsException, UserIdExistsException, PasswordInvalidException {
-        if (UserDAO.passwordExists(password)) {
-            throw new PasswordExistsException();
+    public void createUser(User user, boolean isStaff, String passcode) throws PasscodeExistsException, UserIdExistsException, PasscodeInvalidException {
+        if (UserDAO.passcodeExists(passcode)) {
+            throw new PasscodeExistsException();
         }
 
-        if (!isValidPassword(password)) {
-            throw new PasswordInvalidException();
+        if (!isValidPasscode(passcode)) {
+            throw new PasscodeInvalidException();
         }
 
         if (UserDAO.idExists(user.getId())) {
             throw new UserIdExistsException();
         }
 
-        UserDAO.createUser(isStaff, password);
+        UserDAO.createUser(isStaff, passcode);
     }
 
-    public void setPassword(User user, String password) throws PasswordExistsException, PasswordInvalidException {
-        if (UserDAO.passwordExists(password)) {
-            throw new PasswordExistsException();
+    public void setPasscode(User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+        if (UserDAO.passcodeExists(passcode)) {
+            throw new PasscodeExistsException();
         }
 
-        if (!isValidPassword(password)) {
-            throw new PasswordInvalidException();
+        if (!isValidPasscode(passcode)) {
+            throw new PasscodeInvalidException();
         }
 
-        UserDAO.setPassword(user, password);
+        UserDAO.setPasscode(user, passcode);
     }
 
     public void changePermission(User user, String role) {
@@ -63,9 +63,9 @@ public class StorefrontFacade {
     }
      */
 
-    private boolean isValidPassword(String input) {
-        // Check if the password is not null and at least 4 characters
-        // Use a regular expression to check if the password contains only alphanumeric characters
+    private boolean isValidPasscode(String input) {
+        // Check if the passcode is not null and at least 4 characters
+        // Use a regular expression to check if the passcode contains only alphanumeric characters
         return input != null && input.length() >= 4 && input.matches("^[a-zA-Z0-9]*$");
     }
 

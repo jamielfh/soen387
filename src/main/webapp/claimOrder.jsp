@@ -17,7 +17,7 @@
 
 <div class="wrapper">
     <form method="post">
-        <h4>Claim your order ID with your password</h4>
+        <h4>Claim your order ID with your passcode</h4>
         <div class="input-box">
             <label>Enter your Order ID<input type="text" placeholder="123456" required></label>
         </div>
@@ -25,7 +25,7 @@
             <label>Enter your Username<input type="text" placeholder="Jane Doe" required></label>
         </div>
         <div class="input-box">
-            <label>Enter your password<input type="password" required></label>
+            <label>Enter your passcode<input type="password" required></label>
         </div>
         <button type="submit" class="btn">Claim Order</button>
     </form>
