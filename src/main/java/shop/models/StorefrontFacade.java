@@ -52,17 +52,6 @@ public class StorefrontFacade {
         UserDAO.changePermission(user, role.equals("staff"));
     }
 
-    /*
-    // Create user with auto-generated id, return the new id
-    public int createUser(Boolean is_staff, String password) throws UserIdExistsException {
-        if (UserDAO.passwordExists(password)) {
-            throw new UserIdExistsException();
-        }
-
-        return UserDAO.add(is_staff, password);
-    }
-     */
-
     private boolean isValidPasscode(String input) {
         // Check if the passcode is not null and at least 4 characters
         // Use a regular expression to check if the passcode contains only alphanumeric characters
@@ -139,10 +128,6 @@ public class StorefrontFacade {
         }
         throw new ProductNotFoundException();
     }
-
-    /*public void newUser(String user) {
-        this.carts.put(user, new Cart());
-    }*/
 
     public List<CartProduct> getCart(User user) {
         Cart cart = cartDAO.getCart(user);

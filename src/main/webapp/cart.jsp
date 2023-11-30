@@ -98,15 +98,6 @@
     // Set up the callback function for when the request completes
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
-        // Handle the response, if needed
-        console.log(xhr.responseText);
-
-        // Remove the HTML row for the deleted product
-        var productRow = document.querySelector('tr[data-slug="' + slug + '"]');
-        if (productRow) {
-          productRow.remove();
-        }
-
         // Reload the page
         location.reload();
       }
