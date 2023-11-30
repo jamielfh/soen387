@@ -1,13 +1,25 @@
 package shop.util;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 
 public class DatabaseConnector {
 
+    static DataSource dataSource;
+
+    static {
+        try {
+            dataSource = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/database");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(JsonIO.getDbUrl());
+            return dataSource.getConnection();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
