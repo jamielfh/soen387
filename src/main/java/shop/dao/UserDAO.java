@@ -57,7 +57,7 @@ public class UserDAO {
                 user = new User(
                         userId,
                         resultSet.getBoolean("is_staff"),
-                        resultSet.getString("password")
+                        resultSet.getString("passcode")
                 );
             }
         } catch (SQLException e) {
@@ -69,7 +69,7 @@ public class UserDAO {
 
     public static User getUserFromPassword(String password) {
         User user = null;
-        String sql = "select * from user where password = ?";
+        String sql = "select * from user where passcode = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -94,7 +94,7 @@ public class UserDAO {
     }
 
     public static int createUser(boolean isStaff, String password) {
-        String sql = "insert into user (isStaff, password) values(?, ?)";
+        String sql = "insert into user (is_staff, passcode) values(?, ?)";
         String sql2 = "SELECT LAST_INSERT_ID()";
 
         try (Connection connection = DatabaseConnector.getConnection();
@@ -116,7 +116,7 @@ public class UserDAO {
     }
 
     public static void setPassword(User user, String password) {
-        String sql = "update user set password = ? where id = ?";
+        String sql = "update user set passcode = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -130,7 +130,7 @@ public class UserDAO {
     }
 
     public static void changePermission(User user, boolean isStaff) {
-        String sql = "update user set isStaff = ? where id = ?";
+        String sql = "update user set is_staff = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
