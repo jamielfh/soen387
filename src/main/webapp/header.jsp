@@ -10,6 +10,8 @@
         document.getElementById("logout-button").style.display = "block";
         document.getElementById("login-button").style.display = "none";
     } else {
+        document.getElementById("order-button").style.display = "none";
+        document.getElementById("change-passcode-button").style.display = "none";
         document.getElementById("logout-button").style.display = "none";
         document.getElementById("login-button").style.display = "block";
     }
