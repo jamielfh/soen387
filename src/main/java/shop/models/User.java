@@ -5,6 +5,11 @@ public class User {
     private boolean isStaff;
     private String passcode;
 
+    public User(int id, boolean isStaff) {
+        this.id = id;
+        this.isStaff = isStaff;
+    }
+
     public User(int id, String passcode) {
         this.id = id;
         this.isStaff = false;

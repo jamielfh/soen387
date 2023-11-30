@@ -29,8 +29,8 @@
             <% } %>
         </div>
         <button type="submit" class="btn">Login</button>
-        <br>
         <div>
+            <br>
             <a href="<%= request.getContextPath() %>/passcode/set">New User? Set your passcode here</a>
         </div>
         <div>

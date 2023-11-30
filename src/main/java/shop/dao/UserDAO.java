@@ -1,9 +1,14 @@
 package shop.dao;
 
+import shop.models.Cart;
+import shop.models.CartProduct;
+import shop.models.Product;
 import shop.models.User;
 import shop.util.DatabaseConnector;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -127,6 +132,48 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<User> getAllCustomers() {
+        List<User> customers = new ArrayList<>();
+        String sql = "select * from user where is_staff = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, false);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User customer = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getBoolean("is_staff")
+                );
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
+
+    public static List<User> getAllStaff() {
+        List<User> staff = new ArrayList<>();
+        String sql = "select * from user where is_staff = ?";
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, true);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User staffMember = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getBoolean("is_staff")
+                );
+                staff.add(staffMember);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return staff;
     }
 
     public static void changePermission(User user, boolean isStaff) {

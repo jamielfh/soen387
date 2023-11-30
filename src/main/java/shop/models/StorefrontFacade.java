@@ -70,6 +70,14 @@ public class StorefrontFacade {
         return input != null && input.length() >= 4 && input.matches("^[a-zA-Z0-9]*$");
     }
 
+    public List<User> getAllCustomers() {
+        return UserDAO.getAllCustomers();
+    }
+
+    public List<User> getAllStaff() {
+        return UserDAO.getAllStaff();
+    }
+
     public void createProduct(String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // validate if sku is unique
         if (productDAO.getBySku(sku) != null) {
