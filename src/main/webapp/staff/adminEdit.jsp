@@ -2,10 +2,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%
-    String homePageUrl = request.getContextPath() + "/";
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,9 +51,9 @@
             <td><%= product.getDescription() %></td>
             <td><%= product.getPrice() %></td>
             <td><%= product.getVendor() %></td>
-            <td><a href="<%= homePageUrl + "products/" + product.getSlug()%>">LINK</a></td>
+            <td><a href="<%= request.getContextPath() %>/products/<%= product.getSlug() %>">LINK</a></td>
             <td>
-                <a href="/admin/<%=product.getSlug()%>">
+                <a href="<%= request.getContextPath() %>/admin/<%=product.getSlug()%>">
                     <button type="button" class="btn" style="background-color: lightgrey">Edit Product</button>
                 </a>
             </td>

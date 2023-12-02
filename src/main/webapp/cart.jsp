@@ -87,7 +87,7 @@
         </tbody>
     </table>
 
-    <a href="/cart/checkout">
+    <a href="<%= request.getContextPath() %>/cart/checkout">
         <button class="btn btn-primary justify-content-center" type="submit">Place Order</button>
     </a>
 </div>
@@ -100,7 +100,7 @@
     var xhr = new XMLHttpRequest();
 
     // Configure the request
-    xhr.open("DELETE", "http://localhost:8080/cart/products/" + slug, true);
+    xhr.open("DELETE", "<%= request.getContextPath() %>/cart/products/" + slug, true);
 
     // Set up the callback function for when the request completes
     xhr.onreadystatechange = function () {
@@ -116,10 +116,10 @@
 
   function clearCart () {
     // Create an XMLHttpRequest object
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
     // Configure the request
-    xhr.open("DELETE", "http://localhost:8080/cart/products/clear-cart");
+    xhr.open("DELETE", "<%= request.getContextPath() %>/cart/products/clear-cart");
 
     // Set up the callback function for when the request completes
     xhr.onreadystatechange = function () {

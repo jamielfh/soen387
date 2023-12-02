@@ -96,17 +96,17 @@ public class OrderServlet extends HttpServlet {
                 request.getSession().setAttribute("anonCart", new ArrayList<>());
 
                 String message = "Cart checkout successfully. Your order ID is " + orderId;
-                response.sendRedirect("/cart/products/?message=" + URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+                response.sendRedirect(request.getContextPath() + "/cart/products/?message=" + URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
             } else {
                 createOrder(facade, user, shippingAddress);
-                response.sendRedirect("/orders/");
+        response.sendRedirect(request.getContextPath() + "/orders/");
             }
         } else {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             try {
                 claimOrder(facade, user, orderId);
                 String message = "Order claimed successfully";
-                response.sendRedirect("/orders/?message=" + URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
+                response.sendRedirect(request.getContextPath() + "/orders/?message=" + URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
             } catch (OrderAlreadyClaimedException | OrderDoesNotExistException e) {
                 request.setAttribute("message", e.getMessage());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/claimOrder.jsp");

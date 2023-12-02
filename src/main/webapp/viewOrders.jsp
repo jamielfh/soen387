@@ -40,7 +40,7 @@
     <tr>
       <td><%=order.getId()%></td>
       <td>
-        <a class="viewOrder" href="/orders/<%= order.getId()%>">View Order Details</a>
+        <a class="viewOrder" href="<%= request.getContextPath() %>/orders/<%= order.getId()%>">View Order Details</a>
       </td>
       <td>
         <%

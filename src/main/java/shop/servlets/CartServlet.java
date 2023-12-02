@@ -134,7 +134,7 @@ public class CartServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("/cart/products/");
+        response.sendRedirect(request.getContextPath() + "/cart/products/");
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)

@@ -44,9 +44,9 @@ public class LoginServlet extends HttpServlet {
             request.getSession().setAttribute("user", user);
 
             if (isStaff) {
-                response.sendRedirect("/admin/home");
+                response.sendRedirect(request.getContextPath() + "/admin/home");
             } else {
-                response.sendRedirect("/");
+                response.sendRedirect(request.getContextPath());
             }
         } else {
             // Set an error attribute and re-forward the request to the login page with the error message

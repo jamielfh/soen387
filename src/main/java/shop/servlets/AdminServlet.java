@@ -92,7 +92,7 @@ public class AdminServlet extends HttpServlet {
             try {
                 BigDecimal price = new BigDecimal(request.getParameter("price"));
                 createProduct(facade, sku, name, description, vendor, slug, price);
-                response.sendRedirect("/products/" + slug);
+                response.sendRedirect(request.getContextPath() + "/products/" + slug);
             } catch (ProductSkuExistsException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product sku already in use");
             } catch (ProductSlugInvalidException e) {
@@ -112,7 +112,7 @@ public class AdminServlet extends HttpServlet {
                 } else {
                     changePermission(facade, user, "staff");
                 }
-                response.sendRedirect("/admin/change-permission");
+                response.sendRedirect(request.getContextPath() + "/admin/change-permission");
             } catch (UserDoesNotExistException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "User does not exist");
             }
