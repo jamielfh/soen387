@@ -1,7 +1,7 @@
 package shop.dao;
 
+import shop.database.Database;
 import shop.models.*;
-import shop.database.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class CartDAO {
         List<CartProduct> cartProducts = new ArrayList<>();
         String sql = "select * from cart where user_id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -34,7 +34,7 @@ public class CartDAO {
         Integer qt = null;
         String sql = "select qt from `cart` where user_id = ? and product_sku = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             statement.setString(2, sku);
@@ -52,7 +52,7 @@ public class CartDAO {
     public void addProductToCart(User user, String sku) {
         String sql = "insert into cart (user_id, product_sku, qt) values(?, ?, ?)";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             statement.setString(2, sku);
@@ -67,7 +67,7 @@ public class CartDAO {
     public void removeProductFromCart(User user, String sku) {
         String sql = "delete from cart where user_id = ? and product_sku = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             statement.setString(2, sku);
@@ -81,7 +81,7 @@ public class CartDAO {
     public void setProductQuantityInCart(User user, String sku, int quantity) {
         String sql = "UPDATE `cart` SET qt = ? WHERE user_id = ? AND product_sku = ?;";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(2, user.getId());
             statement.setString(3, sku);
@@ -96,7 +96,7 @@ public class CartDAO {
     public void clearCart(User user) {
         String sql = "delete from cart where user_id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             statement.executeUpdate();

@@ -1,7 +1,7 @@
 package shop.dao;
 
+import shop.database.Database;
 import shop.models.User;
-import shop.database.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class UserDAO {
     public static boolean idExists(int id) {
         String sql = "select 1 from `user` where id=?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
@@ -31,7 +31,7 @@ public class UserDAO {
     public static boolean idIsStaff(int id) {
         String sql = "select is_staff from `user` where id=?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
@@ -51,7 +51,7 @@ public class UserDAO {
         User user = null;
         String sql = "select * from user where id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -73,7 +73,7 @@ public class UserDAO {
         User user = null;
         String sql = "select * from user where passcode = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, passcode);
             ResultSet resultSet = statement.executeQuery();
@@ -99,7 +99,7 @@ public class UserDAO {
         String sql = "insert into user (is_staff, passcode) values(?, ?)";
         String sql2 = "SELECT last_insert_rowid()";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              Statement statement2 = connection.createStatement()) {
             statement.setBoolean(1, isStaff);
@@ -120,7 +120,7 @@ public class UserDAO {
     public static void changePasscode(User user, String passcode) {
         String sql = "update user set passcode = ? where id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, passcode);
             statement.setInt(2, user.getId());
@@ -135,7 +135,7 @@ public class UserDAO {
         List<User> customers = new ArrayList<>();
         String sql = "select * from user where is_staff = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, false);
             ResultSet resultSet = statement.executeQuery();
@@ -156,7 +156,7 @@ public class UserDAO {
         List<User> staff = new ArrayList<>();
         String sql = "select * from user where is_staff = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, true);
             ResultSet resultSet = statement.executeQuery();
@@ -176,7 +176,7 @@ public class UserDAO {
     public static void changePermission(User user, boolean isStaff) {
         String sql = "update user set is_staff = ? where id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, isStaff);
             statement.setInt(2, user.getId());

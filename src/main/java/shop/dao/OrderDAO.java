@@ -1,9 +1,9 @@
 package shop.dao;
 
+import shop.database.Database;
 import shop.models.Order;
 import shop.models.OrderProduct;
 import shop.models.User;
-import shop.database.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class OrderDAO {
         String sql = "insert into `order` (user_id, shipping_address, tracking_num) values(?, ?, ?)";
         String sql2 = "SELECT last_insert_rowid()";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              Statement statement2 = connection.createStatement()) {
             if (order.getUser() == null) {
@@ -49,7 +49,7 @@ public class OrderDAO {
     public void createOrderProduct(int orderId, OrderProduct orderProduct) {
         String sql = "insert into order_product (order_id, product_sku, qt) values(?, ?, ?)";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, orderId);
             statement.setString(2, orderProduct.getProduct().getSku());
@@ -65,7 +65,7 @@ public class OrderDAO {
         List<Order> orders = new ArrayList<>();
         String sql = "select * from `order`";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -89,8 +89,8 @@ public class OrderDAO {
         List<Order> orders = new ArrayList<>();
         String sql = "select * from `order` where user_id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = Database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -114,7 +114,7 @@ public class OrderDAO {
         Order order = null;
         String sql = "select * from `order` where id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -137,7 +137,7 @@ public class OrderDAO {
         List<OrderProduct> orderProducts = new ArrayList<>();
         String sql = "select * from order_product where order_id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, orderId);
             ResultSet resultSet = statement.executeQuery();
@@ -158,7 +158,7 @@ public class OrderDAO {
     public void setOrderOwner(int id, int userId) {
         String sql = "update `order` set user_id = ? where id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.setInt(2, id);
@@ -172,7 +172,7 @@ public class OrderDAO {
     public void shipOrder(int id, String trackingNumber) {
         String sql = "update `order` set tracking_num = ? where id = ?";
 
-        try (Connection connection = DatabaseConnector.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, trackingNumber);
             statement.setInt(2, id);
