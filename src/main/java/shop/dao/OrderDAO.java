@@ -155,12 +155,12 @@ public class OrderDAO {
         return orderProducts;
     }
 
-    public void setOrderOwner(int id, User user) {
+    public void setOrderOwner(int id, int userId) {
         String sql = "update `order` set user_id = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, user.getId());
+            statement.setInt(1, userId);
             statement.setInt(2, id);
 
             statement.executeUpdate();

@@ -235,8 +235,8 @@ public class StorefrontFacade {
         return order;
     }
 
-    public void setOrderOwner(User user, int id) throws OrderAlreadyClaimedException, OrderDoesNotExistException {
-        Order order = orderDAO.getOrder(id);
+    public void setOrderOwner(int orderId, int userId) throws OrderAlreadyClaimedException, OrderDoesNotExistException {
+        Order order = orderDAO.getOrder(orderId);
 
         if (order == null) {
             throw new OrderDoesNotExistException();
@@ -246,7 +246,7 @@ public class StorefrontFacade {
             throw new OrderAlreadyClaimedException();
         }
 
-        orderDAO.setOrderOwner(id, user);
+        orderDAO.setOrderOwner(orderId, userId);
     }
 
     public void shipOrder(int id, String trackingNumber) {
