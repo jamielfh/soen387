@@ -1,6 +1,5 @@
-package shop.util;
+package shop.database;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;

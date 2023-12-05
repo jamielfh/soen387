@@ -1,7 +1,7 @@
 package shop.dao;
 
 import shop.models.Product;
-import shop.util.DatabaseConnector;
+import shop.database.DatabaseConnector;
 
 import java.math.BigDecimal;
 import java.sql.*;
