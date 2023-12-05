@@ -136,7 +136,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void claimOrder(StorefrontFacade facade, User user, int orderId) throws OrderAlreadyClaimedException, OrderDoesNotExistException {
-        facade.claimOrder(user, orderId);
+        facade.setOrderOwner(user, orderId);
     }
 
 }

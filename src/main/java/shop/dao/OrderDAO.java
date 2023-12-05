@@ -155,7 +155,7 @@ public class OrderDAO {
         return orderProducts;
     }
 
-    public void claimOrder(int id, User user) {
+    public void setOrderOwner(int id, User user) {
         String sql = "update `order` set user_id = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
