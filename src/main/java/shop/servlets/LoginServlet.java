@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import shop.dao.UserDAO;
+import shop.database.Database;
 import shop.models.CartProduct;
 import shop.models.StorefrontFacade;
 import shop.models.User;
@@ -27,10 +28,11 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String enteredPasscode = request.getParameter("passcode");
-        int userId = UserDAO.getUserFromPasscode(enteredPasscode).getId();
+        UserDAO userDAO = new UserDAO(new Database());
+        int userId = userDAO.getUserFromPasscode(enteredPasscode).getId();
 
         if (userId != -1) {
-            boolean isStaff = UserDAO.idIsStaff(userId);
+            boolean isStaff = userDAO.idIsStaff(userId);
             User user = new User(userId, isStaff, enteredPasscode);
 
             // Merge user's cart with the past session cart if it exists

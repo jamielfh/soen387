@@ -1,6 +1,6 @@
 package shop.dao;
 
-import shop.database.Database;
+import shop.database.DatabaseConnector;
 import shop.models.Order;
 import shop.models.OrderProduct;
 import shop.models.User;
@@ -10,12 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAO {
+    private final DatabaseConnector DB;
+
+    public OrderDAO(DatabaseConnector databaseConnector) {
+        this.DB = databaseConnector;
+    }
 
     public int createOrder(Order order) {
         String sql = "insert into `order` (user_id, shipping_address, tracking_num) values(?, ?, ?)";
         String sql2 = "SELECT last_insert_rowid()";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              Statement statement2 = connection.createStatement()) {
             if (order.getUser() == null) {
@@ -49,7 +54,7 @@ public class OrderDAO {
     public void createOrderProduct(int orderId, OrderProduct orderProduct) {
         String sql = "insert into order_product (order_id, product_sku, qt) values(?, ?, ?)";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, orderId);
             statement.setString(2, orderProduct.getProduct().getSku());
@@ -65,7 +70,7 @@ public class OrderDAO {
         List<Order> orders = new ArrayList<>();
         String sql = "select * from `order`";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -73,7 +78,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        UserDAO.getUserFromId(resultSet.getInt("user_id")),
+                        new UserDAO(DB).getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
                 orders.add(order);
@@ -89,7 +94,7 @@ public class OrderDAO {
         List<Order> orders = new ArrayList<>();
         String sql = "select * from `order` where user_id = ?";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -114,7 +119,7 @@ public class OrderDAO {
         Order order = null;
         String sql = "select * from `order` where id = ?";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -123,7 +128,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        UserDAO.getUserFromId(resultSet.getInt("user_id")),
+                        new UserDAO(DB).getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
             }
@@ -137,13 +142,13 @@ public class OrderDAO {
         List<OrderProduct> orderProducts = new ArrayList<>();
         String sql = "select * from order_product where order_id = ?";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, orderId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 OrderProduct orderProduct = new OrderProduct(
-                        new ProductDAO().getBySku(resultSet.getString("product_sku")),
+                        new ProductDAO(DB).getBySku(resultSet.getString("product_sku")),
                         resultSet.getInt("qt")
                 );
                 orderProducts.add(orderProduct);
@@ -158,7 +163,7 @@ public class OrderDAO {
     public void setOrderOwner(int id, int userId) {
         String sql = "update `order` set user_id = ? where id = ?";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.setInt(2, id);
@@ -172,7 +177,7 @@ public class OrderDAO {
     public void shipOrder(int id, String trackingNumber) {
         String sql = "update `order` set tracking_num = ? where id = ?";
 
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = DB.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, trackingNumber);
             statement.setInt(2, id);

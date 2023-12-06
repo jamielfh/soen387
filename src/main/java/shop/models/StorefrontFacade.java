@@ -6,6 +6,8 @@ import shop.dao.CartDAO;
 import shop.dao.OrderDAO;
 import shop.dao.ProductDAO;
 import shop.dao.UserDAO;
+import shop.database.Database;
+import shop.database.DatabaseConnector;
 import shop.exceptions.*;
 
 import java.math.BigDecimal;
@@ -14,14 +16,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StorefrontFacade {
-    private ProductDAO productDAO = new ProductDAO();
-    private CartDAO cartDAO = new CartDAO();
-    private OrderDAO orderDAO = new OrderDAO();
+    private final ProductDAO productDAO;
+    private final CartDAO cartDAO;
+    private final OrderDAO orderDAO;
+    private final UserDAO userDAO;
 
-    public StorefrontFacade() {}
+    public StorefrontFacade() {
+        // Use default shop database
+        Database db = new Database();
+        this.productDAO = new ProductDAO(db);
+        this.cartDAO = new CartDAO(db);
+        this.orderDAO = new OrderDAO(db);
+        this.userDAO = new UserDAO(db);
+    }
+
+    public StorefrontFacade(DatabaseConnector databaseConnector) {
+        this.productDAO = new ProductDAO(databaseConnector);
+        this.cartDAO = new CartDAO(databaseConnector);
+        this.orderDAO = new OrderDAO(databaseConnector);
+        this.userDAO = new UserDAO(databaseConnector);
+    }
 
     public User getUserFromId(int id) throws UserDoesNotExistException {
-        User user = UserDAO.getUserFromId(id);
+        User user = userDAO.getUserFromId(id);
         if (user == null) {
             throw new UserDoesNotExistException();
         }
@@ -29,7 +46,7 @@ public class StorefrontFacade {
     }
 
     public User getUserFromPasscode(String passcode) throws UserDoesNotExistException {
-        User user = UserDAO.getUserFromPasscode(passcode);
+        User user = userDAO.getUserFromPasscode(passcode);
         if (user == null) {
             throw new UserDoesNotExistException();
         }
@@ -37,7 +54,7 @@ public class StorefrontFacade {
     }
 
     public int setPasscode(User user, boolean isStaff, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
-        if (UserDAO.passcodeExists(passcode)) {
+        if (userDAO.passcodeExists(passcode)) {
             throw new PasscodeExistsException();
         }
 
@@ -45,11 +62,11 @@ public class StorefrontFacade {
             throw new PasscodeInvalidException();
         }
 
-        return UserDAO.createUser(isStaff, passcode);
+        return userDAO.createUser(isStaff, passcode);
     }
 
     public void changePasscode(User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
-        if (UserDAO.passcodeExists(passcode)) {
+        if (userDAO.passcodeExists(passcode)) {
             throw new PasscodeExistsException();
         }
 
@@ -57,11 +74,11 @@ public class StorefrontFacade {
             throw new PasscodeInvalidException();
         }
 
-        UserDAO.changePasscode(user, passcode);
+        userDAO.changePasscode(user, passcode);
     }
 
     public void changePermission(User user, String role) {
-        UserDAO.changePermission(user, role.equals("staff"));
+        userDAO.changePermission(user, role.equals("staff"));
     }
 
     private boolean isValidPasscode(String input) {
@@ -71,11 +88,11 @@ public class StorefrontFacade {
     }
 
     public List<User> getAllCustomers() {
-        return UserDAO.getAllCustomers();
+        return userDAO.getAllCustomers();
     }
 
     public List<User> getAllStaff() {
-        return UserDAO.getAllStaff();
+        return userDAO.getAllStaff();
     }
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
