@@ -27,11 +27,9 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String enteredPasscode = request.getParameter("passcode");
-        int userId = new UserDAO().getUserFromPasscode(enteredPasscode).getId();
+        User user = new UserDAO().getUserFromPasscode(enteredPasscode);
 
-        if (userId != -1) {
-            boolean isStaff = new UserDAO().idIsStaff(userId);
-            User user = new User(userId, isStaff, enteredPasscode);
+        if (user != null) {
 
             // Merge user's cart with the past session cart if it exists
             List<CartProduct> pastCart = (List<CartProduct>) request.getSession().getAttribute("anonCart");
@@ -43,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 
             request.getSession().setAttribute("user", user);
 
-            if (isStaff) {
+            if (user.isStaff()) {
                 response.sendRedirect(request.getContextPath() + "/admin/home");
             } else {
                 response.sendRedirect(request.getContextPath());
