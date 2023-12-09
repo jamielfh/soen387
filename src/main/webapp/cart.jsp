@@ -51,7 +51,7 @@
                       method="post" class="form-inline">
                     <input type="hidden" name="id" value="<%= index + 1 %>" class="form-input">
                     <div class="form-group d-sm-flex justify-content-sm-center">
-                        <input type="number" name="quantity" class="form-control" id="autoSizingInput"
+                        <input type="number" name="quantity" min=0 class="form-control" id="autoSizingInput"
                                value="<%= product.getQuantity() %>">
                     </div>
                 </form>
