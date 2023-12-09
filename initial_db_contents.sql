@@ -65,9 +65,9 @@ VALUES (103, 'secret', 1),
 
 INSERT INTO `product`
 VALUES ('Cat Tower', 'Multi-level cat tower with scratching posts and cozy perches.', 'Kitty Haven', 'cat-tower',
-        'AB123', 79.99, 'https://demofree.sirv.com/nope-not-here.jpg'),
+        'AB123', 79.99, 'https://i.pinimg.com/564x/18/56/ae/1856aef7a0961513ab4bf85f92aa081d.jpg'),
        ('Cat Food Bowl', 'Stylish ceramic cat food bowl with fish design.', 'Purrfect Supplies', 'cat-food-bowl',
-        'CD456', 9.99, 'https://demofree.sirv.com/nope-not-here.jpg'),
+        'CD456', 9.99, 'https://i.pinimg.com/564x/d5/0c/c1/d50cc15eedf9192ec126de225d7538d1.jpg'),
        ('Portrait of Luna', 'Print of the cat queen Luna. Measures 30x30 inches.', 'Lunar Shadow', 'luna-portrait',
         'LU441', 39.99, 'https://i.etsystatic.com/42801559/r/il/98915b/5245110747/il_1588xN.5245110747_r5cb.jpg'),
        ('Catnip Crochet Toy', 'Random color. Measures 2 inches long. Comes with catnip sachet.', 'PetCo',
