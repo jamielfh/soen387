@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import shop.exceptions.OrderAlreadyClaimedException;
 import shop.exceptions.OrderDoesNotExistException;
+import shop.exceptions.UserDoesNotExistException;
 import shop.exceptions.UserDoesNotMatchOrderException;
 import shop.models.CartProduct;
 import shop.models.Order;
@@ -107,7 +108,7 @@ public class OrderServlet extends HttpServlet {
                 claimOrder(facade, user, orderId);
                 String message = "Order claimed successfully";
                 response.sendRedirect(request.getContextPath() + "/orders/?message=" + URLEncoder.encode(message, StandardCharsets.UTF_8.toString()));
-            } catch (OrderAlreadyClaimedException | OrderDoesNotExistException e) {
+            } catch (OrderAlreadyClaimedException | OrderDoesNotExistException | UserDoesNotExistException e) {
                 request.setAttribute("message", e.getMessage());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/claimOrder.jsp");
                 dispatcher.forward(request, response);
@@ -135,7 +136,7 @@ public class OrderServlet extends HttpServlet {
         return facade.createAnonymousOrder(cartProducts, shippingAddress);
     }
 
-    private void claimOrder(StorefrontFacade facade, User user, int orderId) throws OrderAlreadyClaimedException, OrderDoesNotExistException {
+    private void claimOrder(StorefrontFacade facade, User user, int orderId) throws OrderAlreadyClaimedException, OrderDoesNotExistException, UserDoesNotExistException {
         facade.setOrderOwner(orderId, user.getId());
     }
 

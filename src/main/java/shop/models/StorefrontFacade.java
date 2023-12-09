@@ -248,14 +248,21 @@ public class StorefrontFacade {
         return order;
     }
 
-    public void setOrderOwner(int orderId, int userId) throws OrderAlreadyClaimedException, OrderDoesNotExistException {
+    public void setOrderOwner(int orderId, int userId) throws OrderAlreadyClaimedException, OrderDoesNotExistException, UserDoesNotExistException {
         Order order = orderDAO.getOrder(orderId);
+        User newUser = userDAO.getUserFromId(userId);
+
+        if (newUser == null) {
+            throw new UserDoesNotExistException();
+        }
 
         if (order == null) {
             throw new OrderDoesNotExistException();
         }
 
-        if (order.getUser() != null) {
+        User previousUser = order.getUser();
+
+        if (previousUser != null && previousUser.getPasscode() != null) {
             throw new OrderAlreadyClaimedException();
         }
 
