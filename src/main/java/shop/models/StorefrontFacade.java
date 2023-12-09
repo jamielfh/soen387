@@ -49,7 +49,8 @@ public class StorefrontFacade {
         return user;
     }
 
-    public int setPasscode(User user, boolean isStaff, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+    // Sign up with automatically generated ID
+    public int setPasscode(String passcode) throws PasscodeExistsException, PasscodeInvalidException {
         if (userDAO.passcodeExists(passcode)) {
             throw new PasscodeExistsException();
         }
@@ -58,7 +59,8 @@ public class StorefrontFacade {
             throw new PasscodeInvalidException();
         }
 
-        return userDAO.createUser(isStaff, passcode);
+        // The user staff status defaults to false on signup. It can be changed through other avenues afterward
+        return userDAO.createUser(false, passcode);
     }
 
     public void changePasscode(User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
