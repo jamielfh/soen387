@@ -4,22 +4,21 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
-public class Database implements DatabaseConnector {
+public class Database {
 
-    private static final DataSource DATASOURCE;
+    static DataSource dataSource;
 
     static {
         try {
-            DATASOURCE = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/database");
+            dataSource = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/database");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
-            return DATASOURCE.getConnection();
+            return dataSource.getConnection();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

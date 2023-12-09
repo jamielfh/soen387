@@ -1,6 +1,6 @@
 package shop.dao;
 
-import shop.database.DatabaseConnector;
+import shop.database.Database;
 import shop.models.Product;
 
 import java.math.BigDecimal;
@@ -9,12 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-
-    private final DatabaseConnector DB;
-
-    public ProductDAO(DatabaseConnector databaseConnector) {
-        this.DB = databaseConnector;
-    }
 
     public Product getBySku(String sku) {
         String sql = "select * from product where sku = ?";
@@ -29,7 +23,7 @@ public class ProductDAO {
     private Product getProduct(String param, String sql) {
         Product product = null;
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, param);
             ResultSet resultSet = statement.executeQuery();
@@ -53,7 +47,7 @@ public class ProductDAO {
     public boolean add(String sku, String name, String description, String vendor, String slug, BigDecimal price, String imageURL) {
         String sql = "insert into product (sku, name, description, vendor, slug, price, img_url) values(?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, sku);
             statement.setString(2, name);
@@ -82,7 +76,7 @@ public class ProductDAO {
     public List<Product> getAll() {
         List<Product> products = new ArrayList<>();
 
-        try (Connection dbConnection = DB.getConnection();
+        try (Connection dbConnection = Database.getConnection();
              Statement statement = dbConnection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select * from product;");
             while (resultSet.next()) {
@@ -107,7 +101,7 @@ public class ProductDAO {
     public boolean update(String oldSku, String sku, String name, String description, String vendor, String slug, BigDecimal price) {
         String sql = "update product set name=?, description=?, vendor=?, slug=?, price=?, sku=? where sku=?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, name);

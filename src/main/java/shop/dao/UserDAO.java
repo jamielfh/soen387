@@ -1,6 +1,6 @@
 package shop.dao;
 
-import shop.database.DatabaseConnector;
+import shop.database.Database;
 import shop.models.User;
 
 import java.sql.*;
@@ -8,16 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-    private final DatabaseConnector DB;
-    
-    public UserDAO(DatabaseConnector databaseConnector) {
-        this.DB = databaseConnector;
-    }
 
-    public boolean idExists(int id) {
+    public static boolean idExists(int id) {
         String sql = "select 1 from `user` where id=?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
@@ -33,10 +28,10 @@ public class UserDAO {
         return false;
     }
 
-    public boolean idIsStaff(int id) {
+    public static boolean idIsStaff(int id) {
         String sql = "select is_staff from `user` where id=?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
@@ -52,11 +47,11 @@ public class UserDAO {
         return false; // ID was not found
     }
 
-    public User getUserFromId(int userId) {
+    public static User getUserFromId(int userId) {
         User user = null;
         String sql = "select * from user where id = ?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -74,11 +69,11 @@ public class UserDAO {
         return user;
     }
 
-    public User getUserFromPasscode(String passcode) {
+    public static User getUserFromPasscode(String passcode) {
         User user = null;
         String sql = "select * from user where passcode = ?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, passcode);
             ResultSet resultSet = statement.executeQuery();
@@ -96,15 +91,15 @@ public class UserDAO {
         return user;
     }
 
-    public boolean passcodeExists(String passcode) {
+    public static boolean passcodeExists(String passcode) {
         return getUserFromPasscode(passcode) != null;
     }
 
-    public int createUser(boolean isStaff, String passcode) {
+    public static int createUser(boolean isStaff, String passcode) {
         String sql = "insert into user (is_staff, passcode) values(?, ?)";
         String sql2 = "SELECT last_insert_rowid()";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              Statement statement2 = connection.createStatement()) {
             statement.setBoolean(1, isStaff);
@@ -122,10 +117,10 @@ public class UserDAO {
         return -1;
     }
 
-    public void changePasscode(User user, String passcode) {
+    public static void changePasscode(User user, String passcode) {
         String sql = "update user set passcode = ? where id = ?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, passcode);
             statement.setInt(2, user.getId());
@@ -136,11 +131,11 @@ public class UserDAO {
         }
     }
 
-    public List<User> getAllCustomers() {
+    public static List<User> getAllCustomers() {
         List<User> customers = new ArrayList<>();
         String sql = "select * from user where is_staff = ?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, false);
             ResultSet resultSet = statement.executeQuery();
@@ -157,11 +152,11 @@ public class UserDAO {
         return customers;
     }
 
-    public List<User> getAllStaff() {
+    public static List<User> getAllStaff() {
         List<User> staff = new ArrayList<>();
         String sql = "select * from user where is_staff = ?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, true);
             ResultSet resultSet = statement.executeQuery();
@@ -178,10 +173,10 @@ public class UserDAO {
         return staff;
     }
 
-    public void changePermission(User user, boolean isStaff) {
+    public static void changePermission(User user, boolean isStaff) {
         String sql = "update user set is_staff = ? where id = ?";
 
-        try (Connection connection = DB.getConnection();
+        try (Connection connection = Database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, isStaff);
             statement.setInt(2, user.getId());
