@@ -79,7 +79,7 @@ public class ProductServlet extends HttpServlet {
             BigDecimal price = new BigDecimal(request.getParameter("price"));
             String oldSku = getProductBySlug(facade, oldSlug).getSku();
             updateProduct(facade, oldSku, sku, name, description, vendor, newSlug, price);
-            response.sendRedirect("/admin");
+            response.sendRedirect(request.getContextPath() + "/admin");
         } catch (ProductNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
         } catch (ProductSlugInvalidException ex) {

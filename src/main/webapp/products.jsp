@@ -33,10 +33,10 @@
             <h5 class="productName"><%= product.getName() %></h5>
             <h6 class="sku"><%= product.getSku()%></h6>
             <p class="description"><%= product.getDescription() %></p>
-            <a class="viewProduct" href="/products/<%= product.getSlug()%>">View Product</a>
+            <a class="viewProduct" href="<%= request.getContextPath() %>/products/<%= product.getSlug()%>">View Product</a>
             <h6><%= product.getPrice()%></h6>
 
-            <form id="addToCartForm" action="/cart/products/<%=product.getSlug()%>" method="post">
+            <form id="addToCartForm" action="<%= request.getContextPath() %>/cart/products/<%=product.getSlug()%>" method="post">
               <button type="submit">Add to Cart</button>
             </form>
           </div>

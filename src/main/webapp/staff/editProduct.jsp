@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-7">
             <%Product product = (Product) request.getAttribute("product");%>
-            <form id="editProductForm" action="/products/<%=product.getSlug()%>" method="post">
+            <form id="editProductForm" action="<%= request.getContextPath() %>/products/<%=product.getSlug()%>" method="post">
                 <label for="sku">SKU:</label>
                 <input class="form-control" type="text" id="sku" name="sku" value="<%=product.getSku()%>">
                 <br>

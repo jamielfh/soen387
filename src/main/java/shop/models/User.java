@@ -1,16 +1,28 @@
 package shop.models;
 
 public class User {
-    private int id;          // Stored in both the database and in the JSON file
-    private boolean isStaff; // Stored in the database only. Note: passwords are only stored in the JSON file
+    private int id;
+    private boolean isStaff;
+    private String passcode;
 
     public User(int id) {
         this.id = id;
-        this.isStaff = false;
     }
+
     public User(int id, boolean isStaff) {
         this.id = id;
         this.isStaff = isStaff;
+    }
+
+    public User(int id, String passcode) {
+        this.id = id;
+        this.isStaff = false;
+        this.passcode = passcode;
+    }
+    public User(int id, boolean isStaff, String passcode) {
+        this.id = id;
+        this.isStaff = isStaff;
+        this.passcode = passcode;
     }
 
     public int getId() {
@@ -29,4 +41,11 @@ public class User {
         isStaff = staff;
     }
 
+    public String getPasscode() {
+        return passcode;
+    }
+
+    public void setPasscode(String passcode) {
+        this.passcode = passcode;
+    }
 }

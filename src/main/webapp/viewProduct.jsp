@@ -27,7 +27,7 @@
             <h5><%= product.getVendor()%></h5>
             <h4><%= product.getPrice()%></h4>
 
-            <form id="addToCartForm" action="/cart/products/<%=product.getSlug()%>" method="post">
+            <form id="addToCartForm" action="<%= request.getContextPath() %>/cart/products/<%=product.getSlug()%>" method="post">
                 <button type="submit">Add to Cart</button>
             </form>
         </div>

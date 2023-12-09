@@ -14,31 +14,83 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StorefrontFacade {
-    private ProductDAO productDAO = new ProductDAO();
-    private CartDAO cartDAO = new CartDAO();
-    private OrderDAO orderDAO = new OrderDAO();
+    private ProductDAO productDAO;
+    private CartDAO cartDAO;
+    private OrderDAO orderDAO;
+    private UserDAO userDAO;
 
-    public StorefrontFacade() {}
-
-    public void createUser(User user, String password) throws PasswordExistsException, UserIdExistsException {
-        if (UserDAO.passwordExists(password)) {
-            throw new PasswordExistsException();
-        }
-
-        if (UserDAO.idExists(user.getId())) {
-            throw new UserIdExistsException();
-        }
-
-        UserDAO.add(user, password);
+    public StorefrontFacade() {
+        productDAO = new ProductDAO();
+        cartDAO = new CartDAO();
+        orderDAO = new OrderDAO();
+        userDAO = new UserDAO();
     }
 
-    // Create user with auto-generated id, return the new id
-    public int createUser(Boolean is_staff, String password) throws UserIdExistsException {
-        if (UserDAO.passwordExists(password)) {
-            throw new UserIdExistsException();
+    public StorefrontFacade(ProductDAO productDAO, CartDAO cartDAO, OrderDAO orderDAO, UserDAO userDAO) {
+        this.productDAO = productDAO;
+        this.cartDAO = cartDAO;
+        this.orderDAO = orderDAO;
+        this.userDAO = userDAO;
+    }
+
+    public User getUserFromId(int id) throws UserDoesNotExistException {
+        User user = userDAO.getUserFromId(id);
+        if (user == null) {
+            throw new UserDoesNotExistException();
+        }
+        return user;
+    }
+
+    public User getUserFromPasscode(String passcode) throws UserDoesNotExistException {
+        User user = userDAO.getUserFromPasscode(passcode);
+        if (user == null) {
+            throw new UserDoesNotExistException();
+        }
+        return user;
+    }
+
+    // Sign up with automatically generated ID
+    public int setPasscode(String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+        if (userDAO.passcodeExists(passcode)) {
+            throw new PasscodeExistsException();
         }
 
-        return UserDAO.add(is_staff, password);
+        if (!isValidPasscode(passcode)) {
+            throw new PasscodeInvalidException();
+        }
+
+        // The user staff status defaults to false on signup. It can be changed through other avenues afterward
+        return userDAO.createUser(false, passcode);
+    }
+
+    public void changePasscode(User user, String passcode) throws PasscodeExistsException, PasscodeInvalidException {
+        if (userDAO.passcodeExists(passcode)) {
+            throw new PasscodeExistsException();
+        }
+
+        if (!isValidPasscode(passcode)) {
+            throw new PasscodeInvalidException();
+        }
+
+        userDAO.changePasscode(user, passcode);
+    }
+
+    public void changePermission(User user, String role) {
+        userDAO.changePermission(user, role.equals("staff"));
+    }
+
+    private boolean isValidPasscode(String input) {
+        // Check if the passcode is not null and at least 4 characters
+        // Use a regular expression to check if the passcode contains only alphanumeric characters
+        return input != null && input.length() >= 4 && input.matches("^[a-zA-Z0-9]*$");
+    }
+
+    public List<User> getAllCustomers() {
+        return userDAO.getAllCustomers();
+    }
+
+    public List<User> getAllStaff() {
+        return userDAO.getAllStaff();
     }
 
     public void createProduct(String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
@@ -112,10 +164,6 @@ public class StorefrontFacade {
         throw new ProductNotFoundException();
     }
 
-    /*public void newUser(String user) {
-        this.carts.put(user, new Cart());
-    }*/
-
     public List<CartProduct> getCart(User user) {
         Cart cart = cartDAO.getCart(user);
         if (cart != null) {
@@ -177,6 +225,15 @@ public class StorefrontFacade {
         clearCart(user);
     }
 
+    public int createAnonymousOrder(List<CartProduct> cartProducts, String shippingAddress) {
+        List<OrderProduct> orderProducts = cartProducts.stream()
+                .map(x -> new OrderProduct(x.getProduct(), x.getQuantity()))
+                .collect(Collectors.toList());
+
+        Order newOrder = new Order(shippingAddress, null, orderProducts);
+        return orderDAO.createOrder(newOrder);
+    }
+
     public List<Order> getAllOrders() {
         return orderDAO.getAllOrders();
     }
@@ -193,6 +250,27 @@ public class StorefrontFacade {
         return order;
     }
 
+    public void setOrderOwner(int orderId, int userId) throws OrderAlreadyClaimedException, OrderDoesNotExistException, UserDoesNotExistException {
+        Order order = orderDAO.getOrder(orderId);
+        User newUser = userDAO.getUserFromId(userId);
+
+        if (newUser == null) {
+            throw new UserDoesNotExistException();
+        }
+
+        if (order == null) {
+            throw new OrderDoesNotExistException();
+        }
+
+        User previousUser = order.getUser();
+
+        if (previousUser != null && previousUser.getPasscode() != null) {
+            throw new OrderAlreadyClaimedException();
+        }
+
+        orderDAO.setOrderOwner(orderId, userId);
+    }
+
     public void shipOrder(int id, String trackingNumber) {
         orderDAO.shipOrder(id, trackingNumber);
     }
@@ -200,7 +278,7 @@ public class StorefrontFacade {
     // Merge the given user's cart to the given other cart
     public void mergeCart(User user, List<CartProduct> otherCart) {
 
-        for (CartProduct product: otherCart) {
+        for (CartProduct product : otherCart) {
             String sku = product.getProduct().getSku();
             int newQuantity = product.getQuantity();
             Integer oldQuantity = checkProductInCart(user, sku);

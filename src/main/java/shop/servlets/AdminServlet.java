@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import shop.exceptions.ProductNotFoundException;
-import shop.exceptions.ProductSkuExistsException;
-import shop.exceptions.ProductSlugExistsException;
-import shop.exceptions.ProductSlugInvalidException;
+import shop.exceptions.*;
 import shop.models.Product;
 import shop.models.StorefrontFacade;
 import shop.models.User;
@@ -44,8 +41,17 @@ public class AdminServlet extends HttpServlet {
         } else if (pathInfo.equals("/home")) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/staffHome.jsp");
             dispatcher.forward(request, response);
-        }else if (pathInfo.equals("/add-product")) {
+        } else if (pathInfo.equals("/add-product")) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/addProduct.jsp");
+            dispatcher.forward(request, response);
+        } else if (pathInfo.equals("/change-permission")) {
+            List<User> customers = getAllCustomers(facade);
+            request.setAttribute("customers", customers);
+
+            List<User> staff = getAllStaff(facade);
+            request.setAttribute("staff", staff);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/staff/privilege.jsp");
             dispatcher.forward(request, response);
         } else {
             // Request to get a specific product to edit
@@ -86,7 +92,7 @@ public class AdminServlet extends HttpServlet {
             try {
                 BigDecimal price = new BigDecimal(request.getParameter("price"));
                 createProduct(facade, sku, name, description, vendor, slug, price);
-                response.sendRedirect("/products/" + slug);
+                response.sendRedirect(request.getContextPath() + "/products/" + slug);
             } catch (ProductSkuExistsException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product sku already in use");
             } catch (ProductSlugInvalidException e) {
@@ -95,6 +101,20 @@ public class AdminServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product slug already in use");
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product price is not a number");
+            }
+        } else if (pathInfo.equals("/change-permission")) {
+            int userId = Integer.parseInt(request.getParameter("userId"));
+            System.out.println(userId);
+            try {
+                User user = getUserFromId(facade, userId);
+                if (user.isStaff()) {
+                    changePermission(facade, user, "customer");
+                } else {
+                    changePermission(facade, user, "staff");
+                }
+                response.sendRedirect(request.getContextPath() + "/admin/change-permission");
+            } catch (UserDoesNotExistException e) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "User does not exist");
             }
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Add product function not allowed");
@@ -114,6 +134,22 @@ public class AdminServlet extends HttpServlet {
     private void createProduct(StorefrontFacade facade, String sku, String name, String description, String vendor, String slug, BigDecimal price) throws ProductSkuExistsException, ProductSlugInvalidException, ProductSlugExistsException {
         // Create product in the facade
         facade.createProduct(sku, name, description, vendor, slug, price);
+    }
+
+    private List<User> getAllCustomers(StorefrontFacade facade) {
+        return facade.getAllCustomers();
+    }
+
+    private List<User> getAllStaff(StorefrontFacade facade) {
+        return facade.getAllStaff();
+    }
+
+    private User getUserFromId(StorefrontFacade facade, int userId) throws UserDoesNotExistException {
+        return facade.getUserFromId(userId);
+    }
+
+    private void changePermission(StorefrontFacade facade, User user, String role) {
+        facade.changePermission(user, role);
     }
 
 }

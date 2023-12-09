@@ -44,6 +44,7 @@ public class CartServlet extends HttpServlet {
         }
 
         request.setAttribute("items", items);
+        request.setAttribute("message", request.getParameter("message"));
         RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
         dispatcher.forward(request, response);
     }
@@ -133,7 +134,7 @@ public class CartServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("/cart/products/");
+        response.sendRedirect(request.getContextPath() + "/cart/products/");
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)

@@ -16,6 +16,13 @@
 
 <!--CART PAGE-->
 <h2>Your Shopping Cart</h2>
+<!-- Display cart checkout success message for anonymous users -->
+<% String message = (String)request.getAttribute("message"); %>
+<% if (message != null) { %>
+<div class="error-message" style="color:red">
+    <%= message %>
+</div>
+<% } %>
 <div class="container">
     <table class="table table-loght">
         <thead>
@@ -44,7 +51,7 @@
                       method="post" class="form-inline">
                     <input type="hidden" name="id" value="<%= index + 1 %>" class="form-input">
                     <div class="form-group d-sm-flex justify-content-sm-center">
-                        <input type="number" name="quantity" class="form-control" id="autoSizingInput"
+                        <input type="number" name="quantity" min=0 class="form-control" id="autoSizingInput"
                                value="<%= product.getQuantity() %>">
                     </div>
                 </form>
@@ -80,7 +87,7 @@
         </tbody>
     </table>
 
-    <a href="/cart/checkout">
+    <a href="<%= request.getContextPath() %>/cart/checkout">
         <button class="btn btn-primary justify-content-center" type="submit">Place Order</button>
     </a>
 </div>
@@ -93,20 +100,11 @@
     var xhr = new XMLHttpRequest();
 
     // Configure the request
-    xhr.open("DELETE", "http://localhost:8080/cart/products/" + slug, true);
+    xhr.open("DELETE", "<%= request.getContextPath() %>/cart/products/" + slug, true);
 
     // Set up the callback function for when the request completes
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
-        // Handle the response, if needed
-        console.log(xhr.responseText);
-
-        // Remove the HTML row for the deleted product
-        var productRow = document.querySelector('tr[data-slug="' + slug + '"]');
-        if (productRow) {
-          productRow.remove();
-        }
-
         // Reload the page
         location.reload();
       }
@@ -118,10 +116,10 @@
 
   function clearCart () {
     // Create an XMLHttpRequest object
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
 
     // Configure the request
-    xhr.open("DELETE", "http://localhost:8080/cart/products/clear-cart");
+    xhr.open("DELETE", "<%= request.getContextPath() %>/cart/products/clear-cart");
 
     // Set up the callback function for when the request completes
     xhr.onreadystatechange = function () {

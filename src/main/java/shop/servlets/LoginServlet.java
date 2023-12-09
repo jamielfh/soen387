@@ -26,12 +26,10 @@ public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String enteredPassword = request.getParameter("password");
-        int userId = UserDAO.getIdForPassword(enteredPassword);
+        String enteredPasscode = request.getParameter("passcode");
+        User user = new UserDAO().getUserFromPasscode(enteredPasscode);
 
-        if (userId != -1) {
-            boolean isStaff = UserDAO.idIsStaff(userId);
-            User user = new User(userId, isStaff);
+        if (user != null) {
 
             // Merge user's cart with the past session cart if it exists
             List<CartProduct> pastCart = (List<CartProduct>) request.getSession().getAttribute("anonCart");
@@ -43,14 +41,14 @@ public class LoginServlet extends HttpServlet {
 
             request.getSession().setAttribute("user", user);
 
-            if (isStaff) {
-                response.sendRedirect("/admin/home");
+            if (user.isStaff()) {
+                response.sendRedirect(request.getContextPath() + "/admin/home");
             } else {
-                response.sendRedirect("/");
+                response.sendRedirect(request.getContextPath());
             }
         } else {
             // Set an error attribute and re-forward the request to the login page with the error message
-            request.setAttribute("error", "Invalid password. Please try again.");
+            request.setAttribute("error", "Invalid passcode. Please try again.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
         }

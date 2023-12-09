@@ -18,7 +18,7 @@
     <form method="post" action="<%= request.getContextPath() %>/login">
         <h1>Login</h1>
         <div class="input-box">
-            <input type="password" name="password" placeholder="Password" aria-label="Password" required><i class="bi bi-lock"></i>
+            <input type="password" name="passcode" placeholder="Passcode" aria-label="Passcode" required><i class="bi bi-lock"></i>
 
             <!-- Check if there's an error message and display it -->
             <% String error = (String)request.getAttribute("error"); %>
@@ -28,7 +28,12 @@
             </div>
             <% } %>
         </div>
-        <button type="submit" class="btn">Log in</button>
+        <button type="submit" class="btn">Login</button>
+        <div>
+            <br>
+            <a href="<%= request.getContextPath() %>/passcode/set">New User? Set your passcode here</a>
+        </div>
+
     </form>
 </div>
 </body>

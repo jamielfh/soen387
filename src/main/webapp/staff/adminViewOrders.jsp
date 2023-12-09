@@ -35,7 +35,7 @@
     <tr>
       <td><%=order.getId()%></td>
       <td>
-        <a class="viewOrder" href="/orders/<%= order.getId()%>">View Order Details</a>
+        <a class="viewOrder" href="<%= request.getContextPath() %>/orders/<%= order.getId()%>">View Order Details</a>
       </td>
       <td>
         <%
@@ -49,7 +49,7 @@
         <%=trackingNumber%>
       </td>
       <td>
-        <a href="/shipping/<%=order.getId()%>">
+        <a href="<%= request.getContextPath() %>/shipping/<%=order.getId()%>">
           <button type="button" class="btn" style="background-color: lightgrey">Ship Order</button>
         </a>
       </td>

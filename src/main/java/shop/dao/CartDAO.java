@@ -1,7 +1,7 @@
 package shop.dao;
 
 import shop.models.*;
-import shop.util.DatabaseConnector;
+import shop.database.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;

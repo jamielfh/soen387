@@ -66,17 +66,7 @@
 
         <div class="col-md-8 order-md-1">
             <h4>Billing Address</h4>
-            <form action="/orders/" method="post">
-                <!--div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label>First Name</label>
-                        <input type="text" class="form-control" placeholder="" required="required">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" placeholder="" required="required">
-                    </div>
-                </div-->
+            <form action="<%= request.getContextPath() %>/orders/" method="post">
                 <div class="mb-3">
                     <div class="input-group">
                         <label>Address

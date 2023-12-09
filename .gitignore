@@ -79,6 +79,3 @@ fabric.properties
 # Additional Maven files
 target/
 META-INF/
-
-# Other
-src/main/resources/db_config.json

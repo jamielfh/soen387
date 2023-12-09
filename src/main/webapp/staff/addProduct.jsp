@@ -20,7 +20,7 @@
             <h2>Product Image</h2>
         </div>
         <div class="col-md-7">
-            <form id="addProductForm" action="/admin/add-product" method="post">
+            <form id="addProductForm" action="<%= request.getContextPath() %>/admin/add-product" method="post">
                 <label for="sku">SKU:</label>
                 <input class="form-control" type="text" id="sku" name="sku" placeholder="SKU">
                 <br>

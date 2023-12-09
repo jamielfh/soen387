@@ -50,7 +50,7 @@
         </li>
     </ul>
 
-    <form action="/shipping/<%=order.getId()%>" method="post">
+    <form action="<%= request.getContextPath() %>/shipping/<%=order.getId()%>" method="post">
     <div class="row">
         <p>User ID: <%=order.getUser().getId()%></p>
         <p>Shipping Address: <%=order.getShippingAddress()%>></p>

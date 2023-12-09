@@ -64,7 +64,7 @@ public class ShippingServlet extends HttpServlet {
             int orderId = Integer.parseInt(pathInfo.substring(1));
             String trackingNumber = request.getParameter("trackingNumber");
             shipOrder(facade, orderId, trackingNumber);
-            response.sendRedirect("/orders/");
+            response.sendRedirect(request.getContextPath() + "/orders/");
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Order ID is not a number");
         }

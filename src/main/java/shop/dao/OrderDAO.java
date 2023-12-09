@@ -3,7 +3,7 @@ package shop.dao;
 import shop.models.Order;
 import shop.models.OrderProduct;
 import shop.models.User;
-import shop.util.DatabaseConnector;
+import shop.database.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,35 +11,39 @@ import java.util.List;
 
 public class OrderDAO {
 
-    public void createOrder(Order order) {
+    public int createOrder(Order order) {
         String sql = "insert into `order` (user_id, shipping_address, tracking_num) values(?, ?, ?)";
+        String sql2 = "SELECT last_insert_rowid()";
 
         try (Connection connection = DatabaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, order.getUser().getId());
+             PreparedStatement statement = connection.prepareStatement(sql);
+             Statement statement2 = connection.createStatement()) {
+            if (order.getUser() == null) {
+                statement.setNull(1, Types.INTEGER);
+            } else {
+                statement.setInt(1, order.getUser().getId());
+            }
             statement.setString(2, order.getShippingAddress());
             statement.setNull(3, Types.VARCHAR);
 
-            // Execute the insert statement
-            int affectedRows = statement.executeUpdate();
+            statement.executeUpdate();
             int orderId = 0;
 
-            if (affectedRows > 0) {
-                // Retrieve the auto-incremented ID
-                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        orderId = generatedKeys.getInt(1);
-                    }
-                }
+            ResultSet resultSet = statement2.executeQuery(sql2);
+
+            if (resultSet.next()) {
+                orderId = resultSet.getInt(1);
             }
 
             for (OrderProduct orderProduct : order.getOrderProducts()) {
                 createOrderProduct(orderId, orderProduct);
             }
 
+            return orderId;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public void createOrderProduct(int orderId, OrderProduct orderProduct) {
@@ -69,7 +73,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        getUser(resultSet.getInt("user_id")),
+                        new UserDAO().getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
                 orders.add(order);
@@ -119,7 +123,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        getUser(resultSet.getInt("user_id")),
+                        new UserDAO().getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
             }
@@ -151,25 +155,18 @@ public class OrderDAO {
         return orderProducts;
     }
 
-    public User getUser(int userId) {
-        User user = null;
-        String sql = "select * from user where id = ?";
+    public void setOrderOwner(int id, int userId) {
+        String sql = "update `order` set user_id = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = new User(
-                        userId,
-                        resultSet.getBoolean("is_staff")
-                );
-            }
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return user;
     }
 
     public void shipOrder(int id, String trackingNumber) {
