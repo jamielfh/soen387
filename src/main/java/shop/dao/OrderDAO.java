@@ -73,7 +73,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        UserDAO.getUserFromId(resultSet.getInt("user_id")),
+                        new UserDAO().getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
                 orders.add(order);
@@ -123,7 +123,7 @@ public class OrderDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("shipping_address"),
                         resultSet.getString("tracking_num"),
-                        UserDAO.getUserFromId(resultSet.getInt("user_id")),
+                        new UserDAO().getUserFromId(resultSet.getInt("user_id")),
                         getOrderProducts(resultSet.getInt("id"))
                 );
             }

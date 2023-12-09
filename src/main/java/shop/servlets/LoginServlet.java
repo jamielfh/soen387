@@ -27,10 +27,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String enteredPasscode = request.getParameter("passcode");
-        int userId = UserDAO.getUserFromPasscode(enteredPasscode).getId();
+        int userId = new UserDAO().getUserFromPasscode(enteredPasscode).getId();
 
         if (userId != -1) {
-            boolean isStaff = UserDAO.idIsStaff(userId);
+            boolean isStaff = new UserDAO().idIsStaff(userId);
             User user = new User(userId, isStaff, enteredPasscode);
 
             // Merge user's cart with the past session cart if it exists

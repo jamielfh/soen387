@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserDAO {
 
-    public static boolean idExists(int id) {
+    public boolean idExists(int id) {
         String sql = "select 1 from `user` where id=?";
 
         try (Connection connection = DatabaseConnector.getConnection();
@@ -28,7 +28,7 @@ public class UserDAO {
         return false;
     }
 
-    public static boolean idIsStaff(int id) {
+    public boolean idIsStaff(int id) {
         String sql = "select is_staff from `user` where id=?";
 
         try (Connection connection = DatabaseConnector.getConnection();
@@ -47,7 +47,7 @@ public class UserDAO {
         return false; // ID was not found
     }
 
-    public static User getUserFromId(int userId) {
+    public User getUserFromId(int userId) {
         User user = null;
         String sql = "select * from user where id = ?";
 
@@ -69,7 +69,7 @@ public class UserDAO {
         return user;
     }
 
-    public static User getUserFromPasscode(String passcode) {
+    public User getUserFromPasscode(String passcode) {
         User user = null;
         String sql = "select * from user where passcode = ?";
 
@@ -91,11 +91,11 @@ public class UserDAO {
         return user;
     }
 
-    public static boolean passcodeExists(String passcode) {
+    public boolean passcodeExists(String passcode) {
         return getUserFromPasscode(passcode) != null;
     }
 
-    public static int createUser(boolean isStaff, String passcode) {
+    public int createUser(boolean isStaff, String passcode) {
         String sql = "insert into user (is_staff, passcode) values(?, ?)";
         String sql2 = "SELECT last_insert_rowid()";
 
@@ -117,7 +117,7 @@ public class UserDAO {
         return -1;
     }
 
-    public static void changePasscode(User user, String passcode) {
+    public void changePasscode(User user, String passcode) {
         String sql = "update user set passcode = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
@@ -131,7 +131,7 @@ public class UserDAO {
         }
     }
 
-    public static List<User> getAllCustomers() {
+    public List<User> getAllCustomers() {
         List<User> customers = new ArrayList<>();
         String sql = "select * from user where is_staff = ?";
 
@@ -152,7 +152,7 @@ public class UserDAO {
         return customers;
     }
 
-    public static List<User> getAllStaff() {
+    public List<User> getAllStaff() {
         List<User> staff = new ArrayList<>();
         String sql = "select * from user where is_staff = ?";
 
@@ -173,7 +173,7 @@ public class UserDAO {
         return staff;
     }
 
-    public static void changePermission(User user, boolean isStaff) {
+    public void changePermission(User user, boolean isStaff) {
         String sql = "update user set is_staff = ? where id = ?";
 
         try (Connection connection = DatabaseConnector.getConnection();
