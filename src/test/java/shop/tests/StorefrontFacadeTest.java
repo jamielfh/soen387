@@ -5,9 +5,7 @@ import shop.dao.CartDAO;
 import shop.dao.OrderDAO;
 import shop.dao.ProductDAO;
 import shop.dao.UserDAO;
-import shop.exceptions.OrderAlreadyClaimedException;
-import shop.exceptions.OrderDoesNotExistException;
-import shop.exceptions.UserDoesNotExistException;
+import shop.exceptions.*;
 import shop.models.Order;
 import shop.models.StorefrontFacade;
 import shop.models.User;
@@ -100,6 +98,37 @@ public class StorefrontFacadeTest {
         // Order corresponding to orderId has an owner with a passcode
         assertThrows(OrderAlreadyClaimedException.class, () -> storefrontFacade.setOrderOwner(orderId, userId));
     }
+
+    @Test
+    public void setPasscode_Successful() {
+        String passcode = "test";
+
+        when(userDAOMock.passcodeExists(passcode)).thenReturn(false);
+
+        assertDoesNotThrow(() -> storefrontFacade.setPasscode(passcode));
+        verify(userDAOMock).createUser(false, passcode);
+    }
+
+    @Test
+    public void setPasscode_PasscodeInvalidException() {
+        String passcode = "inv";
+
+        when(userDAOMock.passcodeExists(passcode)).thenReturn(false);
+
+        assertThrows(PasscodeInvalidException.class, () -> storefrontFacade.setPasscode(passcode));
+        verify(userDAOMock, never()).createUser(false, passcode);
+    }
+
+    @Test
+    public void setPasscode_PasscodeExistsException() {
+        String passcode = "test";
+
+        when(userDAOMock.passcodeExists(passcode)).thenReturn(true);
+
+        assertThrows(PasscodeExistsException.class, () -> storefrontFacade.setPasscode(passcode));
+        verify(userDAOMock, never()).createUser(false, passcode);
+    }
+
 
 }
 
