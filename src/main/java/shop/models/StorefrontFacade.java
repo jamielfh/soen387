@@ -14,12 +14,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StorefrontFacade {
-    private ProductDAO productDAO = new ProductDAO();
-    private CartDAO cartDAO = new CartDAO();
-    private OrderDAO orderDAO = new OrderDAO();
-    private UserDAO userDAO = new UserDAO();
+    private ProductDAO productDAO;
+    private CartDAO cartDAO;
+    private OrderDAO orderDAO;
+    private UserDAO userDAO;
 
-    public StorefrontFacade() {}
+    public StorefrontFacade() {
+        productDAO = new ProductDAO();
+        cartDAO = new CartDAO();
+        orderDAO = new OrderDAO();
+        userDAO = new UserDAO();
+    }
+
+    public StorefrontFacade(ProductDAO productDAO, CartDAO cartDAO, OrderDAO orderDAO, UserDAO userDAO) {
+        this.productDAO = productDAO;
+        this.cartDAO = cartDAO;
+        this.orderDAO = orderDAO;
+        this.userDAO = userDAO;
+    }
 
     public User getUserFromId(int id) throws UserDoesNotExistException {
         User user = userDAO.getUserFromId(id);
@@ -257,7 +269,7 @@ public class StorefrontFacade {
     // Merge the given user's cart to the given other cart
     public void mergeCart(User user, List<CartProduct> otherCart) {
 
-        for (CartProduct product: otherCart) {
+        for (CartProduct product : otherCart) {
             String sku = product.getProduct().getSku();
             int newQuantity = product.getQuantity();
             Integer oldQuantity = checkProductInCart(user, sku);

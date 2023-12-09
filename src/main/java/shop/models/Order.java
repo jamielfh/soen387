@@ -12,6 +12,15 @@ public class Order {
     public Order() {
     }
 
+    public Order(int id) {
+        this.id = id;
+    }
+
+    public Order(int id, User user) {
+        this.id = id;
+        this.user = user;
+    }
+
     public Order(String shippingAddress, User user, List<OrderProduct> orderProducts) {
         this.shippingAddress = shippingAddress;
         this.user = user;
